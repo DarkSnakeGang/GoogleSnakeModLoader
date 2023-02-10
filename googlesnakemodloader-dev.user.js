@@ -698,10 +698,10 @@ window.testMod = {};
 window.testMod.runCodeBefore = function() {
   
 }
-window.testMod.alterSnakeCode = function(snakeCode) {
-  snakeCode = snakeCode.replaceAll('.66','.36')
+window.testMod.alterSnakeCode = function(code) {
+  code = code.replaceAll('.66','.36')
 
-  return snakeCode;
+  return code;
 }
 window.testMod.runCodeAfter = function() {
 
