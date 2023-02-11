@@ -904,3 +904,11 @@ ${candidateRegex}`);
 
   throw new Error('Line break error! Failed to failed to find match for regex - most likely caused by a new line break. No suggestions provided');
 }
+
+function appendCodeWithinSnakeModule(snakeCode, codeToAdd, addSemicolonAfter) {
+  if(addSemicolonAfter) {
+    codeToAdd += ';';
+  }
+  var newSnakeCode = snakeCode.replace(/}\)\(this\._s\);\n\/\/ Google Inc\./, codeToAdd + '$&');
+  return newSnakeCode;
+}
