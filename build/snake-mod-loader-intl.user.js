@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Google Snake Mod Loader
+// @name         Google Snake Mod Loader (Intl)
 // @namespace    https://github.com/DarkSnakeGang
 // @version      0.1
 // @description  Allows you to run multiple different google snake mods
@@ -7,6 +7,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @run-at       document-start
 // @grant        none
+// @updateURL    https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-intl.meta.js
+// @downloadURL  https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-intl.user.js
 // @match        https://*.google.com/fbx?fbx=snake_arcade
 // @match        https://*.google.ad/fbx?fbx=snake_arcade
 // @match        https://*.google.ae/fbx?fbx=snake_arcade
@@ -388,17 +390,37 @@
 // @match        https://*.google.co.zw/search*
 // @match        https://*.google.cat/search*
 // ==/UserScript==
+
+const IS_DEVELOPER_MODE = false;
+
 let modsConfig = {
   moreMenu: {
+    displayName: 'More Menu Mod',
     hasUrl: true,
     url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/main/modloadercode.js'
   },
   levelEditorMod: {
+    displayName: 'Level Editor Mod',
     hasUrl: true,
-    url: 'https://raw.githubusercontent.com/hwatson381/GoogleSnakeModTest/main/modloadercode.js'
+    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js'
   },
-  testMod: {
+  mouseMode: {
+    displayName: 'Mouse Mode',
+    hasUrl: true,
+    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js'
+  },
+}
+
+if(IS_DEVELOPER_MODE) {
+  modsConfig.testMod = {
+    displayName: 'Test Mod',
     hasUrl: false
+  };
+  modsConfig.customUrl = {
+    displayName: 'Load from url (see advanced options)',
+    customModName: JSON.parse(localStorage.getItem('snakeAdvancedSettings'))?.customModName ?? 'PLEASE_CHOOSE_CUSTOM_NAME_FROM_ADVANCED_SETTINGS',
+    url: JSON.parse(localStorage.getItem('snakeAdvancedSettings'))?.customUrl ?? 'PLEASE_CHOOSE_URL_FROM_ADVANCED_SETTINGS',
+    hasUrl: true
   }
 }
 
@@ -420,6 +442,10 @@ document.body.appendChild = function(el) {
 
   //Log which script(s) go through the ajax process
   console.log(el);
+
+  //Make sure to return the correct thing that appendChild would normally return
+  let returnVal = el instanceof DocumentFragment ? new DocumentFragment : el;
+
   /*
     Run some code depending on what google snake mod was chosen
     Request the text contents of the google snake code.
@@ -431,58 +457,69 @@ document.body.appendChild = function(el) {
 
   req.onload = function() {
     //Do default behaviour if the source code doesn't look like the google snake code.
-    //Note that this doesn't strictly conform to spec of document.body.appendChild since it won't return the correct value.
+    //Set returnVal so it returns the correct thing for document.body.appendChild.
     if(this.responseText.indexOf('trophy') === -1 || this.responseText.indexOf('apple') === -1 || this.responseText.indexOf('snake_arcade') === -1) {
-      document.body.appendChildOld(el);
+      returnVal = document.body.appendChildOld(el);
       return;
     }
 
-    if(this.responseText.indexOf('trophy') !== -1) {
-      console.log(`Selected mod: ${currentlySelectedMod}`);
-      //Make sure currentlySelectedMod is an allowed value
-      if(!(modsConfig.hasOwnProperty(currentlySelectedMod) || currentlySelectedMod === 'none' || currentlySelectedMod === null)) throw new Error(`Bad value of snakeChosenMod: ${currentlySelectedMod}. The current allowed values are ${Object.keys(modsConfig)}`); 
+    console.log(`Selected mod: ${currentlySelectedMod}`);
+    //Make sure currentlySelectedMod is an allowed value
+    if(!(modsConfig.hasOwnProperty(currentlySelectedMod) || currentlySelectedMod === 'none' || currentlySelectedMod === null)) {
+      const errMessage = `Bad value of snakeChosenMod: ${currentlySelectedMod}. The current allowed values are ${Object.keys(modsConfig)}. Changing this to the "None" setting for next time.`;
+      localStorage.setItem('snakeChosenMod', 'none');
+      throw new Error(errMessage);
+    } 
 
-      if(modsConfig[currentlySelectedMod].hasUrl) {
-        const modUrl = modsConfig[currentlySelectedMod].url;
+    if(modsConfig[currentlySelectedMod].hasUrl) {
+      const modUrl = modsConfig[currentlySelectedMod].url;
 
-        //Load and run the code for this mod.
-        console.log(`Retrieving code for this mod from ${modUrl}`);
+      //Load and run the code for this mod.
+      console.log(`Retrieving code for this mod from ${modUrl}`);
 
-        loadAndRunCodeSynchronous(modUrl);
-      }
-
-      //Skip below if either the code didn't load, or it has the wrong variable
-      if(!window[currentlySelectedMod]) {
-        (0,eval)(this.responseText);
-        throw new Error(`We were expecting to find a glboal variable called window.${currentlySelectedMod} but this is missing. Running snake without the mod.`);
-      }
-
-      //Mod specific code to run before running google snake script
-      if(window[currentlySelectedMod].runCodeBefore) window[currentlySelectedMod].runCodeBefore();
-
-      let newSnakeCode;
-      //Alter google snake code and then run it
-      if(window[currentlySelectedMod].alterSnakeCode) {
-        try {
-          newSnakeCode = window[currentlySelectedMod].alterSnakeCode(this.responseText);
-        } catch (err) {
-          alert(`Something went wrong when the "${currentlySelectedMod}" mod was trying to alter the google snake code. This can happen when google make changes to the game's code (update the game).
-          We suggest trying again in a few days. You could also try one of the other mods, although there is a chance that they might be broken as well.
-          Select the "None" mod option if you just want to play normally.`);
-          console.log('Displaying message to user and then running the google snake script and then throwing the original error that occurred in "alterSnakeCode"');
-          (0,eval)(this.responseText);
-          throw err;
-        }
-      }
-
-      (0,eval)(newSnakeCode);
-
-      //Mod specific code to run after running google snake script
-      if(window[currentlySelectedMod].runCodeAfter) window[currentlySelectedMod].runCodeAfter();
+      loadAndRunCodeSynchronous(modUrl);
     }
+
+    //Name of the object that contains runCodeBefore/alterSnakeCode/runCodeAfter methods
+    let modObjectName = currentlySelectedMod;
+    if(IS_DEVELOPER_MODE && modsConfig[currentlySelectedMod].customModName) {
+      modObjectName = modsConfig[currentlySelectedMod].customModName;
+    }
+
+    //Skip below if either the code didn't load, or it has the wrong variable
+    if(!window[modObjectName]) {
+      (0,eval)(this.responseText);
+      throw new Error(`We were expecting to find a global variable called window.${modObjectName} but this is missing. Running snake without the mod.`);
+    }
+
+    //Mod specific code to run before running google snake script
+    if(window[modObjectName].runCodeBefore) window[modObjectName].runCodeBefore();
+
+    let newSnakeCode;
+    //Alter google snake code and then run it
+    if(window[modObjectName].alterSnakeCode) {
+      try {
+        newSnakeCode = window[modObjectName].alterSnakeCode(this.responseText);
+      } catch (err) {
+        let snakeErrEl = document.getElementById('snake-error-message')
+        if(snakeErrEl) {snakeErrEl.style.display = 'block';}
+        window.showSnakeErrMessage = true;
+        console.log('Displaying message to user and then running the google snake script and then throwing the original error that occurred in "alterSnakeCode"');
+        (0,eval)(this.responseText);
+        throw err;
+      }
+    }
+
+    (0,eval)(newSnakeCode);
+
+    //Mod specific code to run after running google snake script
+    if(window[modObjectName].runCodeAfter) window[modObjectName].runCodeAfter();
+  
   };
 
   req.send();
+
+  return returnVal;
 }
 
 //Setup Modal box that lets the user choose which mod to run
@@ -492,13 +529,45 @@ let addModSelectorPopup = function() {
     return;
   }
 
+  const modCornerIndicatorHTML = `
+      Current mod: <span id="mod-name-span" style="background-color: #eeeaca;padding: 2px;border-radius: 3px;font-family: consolas, monospace;"></span>
+      <div id="change-mod-button" style="text-align: center;font-size: 0.84em;font-family: arial, sans-serif;color: #069;text-decoration: underline;cursor: pointer;margin-top: 3px;">Change mod</div>
+      <div id="snake-error-message" style="font-family: helvetica, sans-serif;color: #f44336;margin-top: 2px;display: ${window.showSnakeErrMessage ? 'block' : 'none'};">
+        Error changing snake code.
+        <br>
+        <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/mod_errors.md" target="_blank">Why does this happen?</a>
+      </div>
+  `;
+
+  let modIndicatorEl = document.createElement('div');
+  modIndicatorEl.id = 'mod-indicator';
+  modIndicatorEl.style = 'z-index: 9999999;background-color: #fffce0;position: fixed;bottom: 0;right: 0;border-top: 1px solid #cccccc;border-left: 1px solid #cccccc;font-size: 1.2em;border-top-left-radius: 5px;padding: 5px;-webkit-box-shadow: 0px 0px 7px 1px hwb(0deg 0% 100% / 12%);box-shadow: 0px 0px 7px 1px rgb(0 0 0 / 12%);font-family: helvetica, sans-serif;height: initial;user-select:none;';
+  modIndicatorEl.innerHTML = modCornerIndicatorHTML;
+  document.body.appendChild(modIndicatorEl);
+
+  document.getElementById('change-mod-button').addEventListener('click', ()=>{
+    document.getElementById('mod-selector-dialogue-container').style.display = document.getElementById('mod-selector-dialogue-container').style.display === 'none' ? 'block' : 'none';
+  });
+
+  let modSelectorRadioOptions = '';
+  for(const [key, value] of Object.entries(modsConfig)) {
+    modSelectorRadioOptions += `<label><input type="radio" name="mod-selector" value="${key}">${value.displayName}</label><br>`;
+  }
+  modSelectorRadioOptions += `<label><input type="radio" name="mod-selector" value="none">None</label>`;
+
+  let customUrlOptions = '';
+  if(IS_DEVELOPER_MODE) {
+    customUrlOptions = `<label><input id="custom-mod-name" type="text"> Custom Mod Name</label><br>
+                        <label><input id="custom-url" type="text"> Custom Mod Url</label><br>`;
+  }
+
   const modSelectorModal = `
-  <div id="mod-selector-dialogue" style="display: block;margin:50px auto;padding:10px;border:1px solid black; width:316.4px; background-color:beige;border-radius:5px">
-    <p>Select which mod you want to use, then refresh the page. Hit close if you're already on the correct mod.</p>
-    <label><input type="radio" name="mod-selector" value="moreMenu">More Menu Mod</label><br>
-    <label><input type="radio" name="mod-selector" value="levelEditorMod">Level Editor Mod</label><br>
-    <label><input type="radio" name="mod-selector" value="testMod">Test Mod</label><br>
-    <label><input type="radio" name="mod-selector" value="none">None</label>
+  <div id="mod-selector-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid rgb(204 204 204);width:316.4px;background-color: #fffce0;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;">
+  <!-- <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 2px 2px 3px #a2a2a2;">Snake Mod Loader</h1> -->
+  <!-- <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 1px 1px 1px #000000, 1px 1px 1px #000000, 1px 1px 5px #000000;color: #4674e9;">Snake Mod Loader</h1> -->
+  <!-- <div style="background-color: #aad751;height: 17px;position: relative;top: -31px;transform: skewX(-21deg);z-index: 5;"></div> -->
+  <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 1px 1px 1px #000000, 1px 1px 1px #000000, 1px 1px 5px #000000;color: #4674e9;border: 5px inset #e4e0be;background-color: #ece9d4;">Snake Mod Loader</h1>
+    ${modSelectorRadioOptions}
     <div id="advanced-options" style="display:none">
       <hr>
       <label><input id="fbx-centered-checkbox" type="checkbox">Make fbx centered</label><br>
@@ -514,10 +583,12 @@ let addModSelectorPopup = function() {
         <label><input id="custom-theme-col6" type="color" value="#4a752c"> Top Bar</label><br>
         <label><input id="custom-theme-col7" type="color" value="#4dc1f9"> Endscreen background</label><br>
       </div>
+      ${customUrlOptions}
     </div>
     <br>
-    <button id="close-mod-selector">Close</button>
-    <a href="#" style="float: right;" id="advanced-options-toggle">Advanced options</a>
+    <div style="display:inline-block;padding-top: 15px;margin-bottom: 4px;text-align: center;font-family: arial, sans-serif;color: #069;text-decoration: underline;cursor: pointer;" id="advanced-options-toggle">Advanced options</div>
+    <div id="apply-mod" class="mod-sel-btn" style="display:inline-block;background-color: hsl(24deg 64% 97%);padding: 4px;margin-top: 7px;border-radius: 3px;border: 2px solid #4caf50;color: #4caf50;font-weight: bold;user-select: none;float:right;cursor: pointer;">Apply</div>
+    <div id="close-mod-selector" class="mod-sel-btn" style="display:inline-block;background-color: hsl(24deg 64% 97%);padding: 4px;margin-top: 7px;margin-right:10px;border-radius: 3px;border: 2px solid #606060;color: #606060;font-weight: bold;user-select: none;cursor: pointer;float:right">Close</div>
   </div>
   `;
 
@@ -525,23 +596,25 @@ let addModSelectorPopup = function() {
   let modSelectorModalContainer = document.createElement('div');
   modSelectorModalContainer.innerHTML = modSelectorModal;
   modSelectorModalContainer.id = 'mod-selector-dialogue-container';
-  modSelectorModalContainer.style = 'display:block; position:fixed; width:100%; height:100%; z-index: 999999; left:0; top:0';
+  modSelectorModalContainer.style = 'display:none; position:fixed; width:100%; height:100%; z-index: 999999; left:0; top:0';
   document.body.appendChild(modSelectorModalContainer);
 
-  //Tick the currently selected mod choice according to localStorage.
+  //Tick the currently selected mod choice according to localStorage. Also, set the mod name in the indicator
   const currentlySelectedMod = localStorage.getItem('snakeChosenMod');
+  let newlySelectedMod = currentlySelectedMod;
 
   if(modsConfig.hasOwnProperty(currentlySelectedMod) && currentlySelectedMod !== null && currentlySelectedMod !== 'none') {
     document.querySelector(`input[name="mod-selector"][value="${currentlySelectedMod}"]`).checked = true;
+    document.getElementById('mod-name-span').textContent = modsConfig[currentlySelectedMod].displayName;
   } else {
     document.querySelector('input[name="mod-selector"][value="none"]').checked = true;
+    document.getElementById('mod-name-span').textContent = 'None';
   }
 
   //save the mod selected when clicking on any of the radio buttons
   [...document.querySelectorAll('input[type="radio"][name="mod-selector"]')].forEach(radioEl=>{
     radioEl.addEventListener('click', function(){
-      if(this.value === localStorage.getItem('snakeChosenMod')) return;
-      localStorage.setItem('snakeChosenMod', this.value);
+      newlySelectedMod = this.value;
     });
   });
 
@@ -592,15 +665,23 @@ let addModSelectorPopup = function() {
     updateAdvancedSetting('themeCol7', this.value);
   });
 
+  if(IS_DEVELOPER_MODE) {
+    document.getElementById('custom-mod-name').addEventListener('input', function() {
+      updateAdvancedSetting('customModName', this.value);
+    });
+    document.getElementById('custom-url').addEventListener('input', function() {
+      updateAdvancedSetting('customUrl', this.value);
+    });
+  }
+
   //Hide mod selector dialogue when clicking close button
   document.getElementById('close-mod-selector').addEventListener('click', function() {
-    if(currentlySelectedMod !== localStorage.getItem('snakeChosenMod')) {
-      if(confirm('Currently selected mod has been changed. Refresh to apply?')) {
-        location.reload();
-      }
-    }
+    document.getElementById('mod-selector-dialogue-container').style.display = 'none';
+  });
 
-    //Check if advanced settings have been changed. This doesn't work if a setting is changed for the first time and then changed back, but whatever
+  //Apply button should save settings and refresh page
+  document.getElementById('apply-mod').addEventListener('click', function(event) {
+    //Figure out if advanced settings have been changed.
     let shallowEquality = true;
     for(let setting in advancedSettings) {
       if(advancedSettings[setting] !== advancedSettingsOriginal?.[setting]) {
@@ -609,21 +690,32 @@ let addModSelectorPopup = function() {
       }
     }
 
-    if(!shallowEquality) {
-      if(confirm('Advanced settings have been changed. Refresh to apply?')) {
-        location.reload();
-      }
+    //Skip if settings/mod chosen are the same as before.
+    if(shallowEquality && newlySelectedMod === currentlySelectedMod) {
+      alert('Settings are the same as before!')
+      return;
     }
 
-    document.getElementById('mod-selector-dialogue-container').style.display = 'none';
+    //Save new settings and refresh to run with the new settings
+    localStorage.setItem('snakeChosenMod', newlySelectedMod);
+    localStorage.setItem('snakeAdvancedSettings',JSON.stringify(advancedSettings));
+    location.reload();
   });
 
-  try {
-    setTimeout(applyAdvancedSettingsToGame, 100);//Small delay to give the game more time to load.
-  } catch (err) {
-    console.log('Something went wrong when applying advanced settings');
-    console.log(err);
-  }
+  //Set up CSS
+  const css = `
+    .mod-sel-btn:hover {
+      background-color: #fefcfb !important;
+    }
+
+    .mod-sel-btn:active {
+        background-color: #f0e9e5 !important;
+    }
+  `;
+  document.getElementsByTagName('style')[0].innerHTML = document.getElementsByTagName('style')[0].innerHTML + css;
+
+  let attemptsApplyingAdvancedSettings = 0;
+  setTimeout(applyAdvancedSettingsToGame, 300);//Small delay to give the game more time to load.
 
   function updateAdvancedSettingInputs() {
     if(advancedSettings.hasOwnProperty('fbxCentered')) {
@@ -662,34 +754,52 @@ let addModSelectorPopup = function() {
     if(advancedSettings.hasOwnProperty('themeCol7')) {
       document.getElementById('custom-theme-col7').value = advancedSettings.themeCol7;
     }
+
+    if(IS_DEVELOPER_MODE) {
+      if(advancedSettings.hasOwnProperty('customModName')) {
+        document.getElementById('custom-mod-name').value = advancedSettings.customModName;
+      }
+      if(advancedSettings.hasOwnProperty('customUrl')) {
+        document.getElementById('custom-url').value = advancedSettings.customUrl;
+      }
+    }
   }
 
   function updateAdvancedSetting(settingName, settingValue) {
     advancedSettings[settingName] = settingValue;
-    localStorage.setItem('snakeAdvancedSettings',JSON.stringify(advancedSettings));
   }
 
   function applyAdvancedSettingsToGame() {
-    if(advancedSettings.fbxCentered && window.location.href.includes('fbx?fbx=snake_arcade')) {
-      //Copied from GoogleSnakeCenteredFBX mod
-      document.getElementsByTagName('div')[0].style = 'position:relative;top:50%;transform:translate(0%,-50%);margin:auto;';
-    }
-    if(advancedSettings.timerStartsOn) {
-      window.snake.speedrun();
-    }
-    if(advancedSettings.useCustomTheme) {
-      window.snake.setCustomTheme(
-        advancedSettings.themeCol1 ?? '#aad751',
-        advancedSettings.themeCol2 ?? '#a2d149',
-        advancedSettings.themeCol3 ?? '#94bd46',
-        advancedSettings.themeCol4 ?? '#578a34',
-        advancedSettings.themeCol5 ?? '#38630d',
-        advancedSettings.themeCol6 ?? '#4a752c',
-        advancedSettings.themeCol7 ?? '#4dc1f9'
-      );
-    }
-    if(window.location.href.includes('fbx?fbx=snake_arcade')) {
-      document.body.style.backgroundColor = advancedSettings.backgroundColor;
+    if(attemptsApplyingAdvancedSettings > 10) {
+      //Stop trying to apply advanced setting if we've tried this much and the game still isn't ready
+      console.log('window.snake is still not available after retrying many times. Skipping applying advanced settings');
+    } else if(!window.snake) {
+      //Game not ready. Wait a bit and then try again.
+      console.log('window.snake not ready for when we apply advanced settings. Will retry again after waiting.');
+      attemptsApplyingAdvancedSettings++;
+      setTimeout(applyAdvancedSettingsToGame, 300);
+    } else {
+      if(advancedSettings.fbxCentered && window.location.href.includes('fbx?fbx=snake_arcade')) {
+        //Copied from GoogleSnakeCenteredFBX mod
+        document.getElementsByTagName('div')[0].style = 'position:relative;top:50%;transform:translate(0%,-50%);margin:auto;';
+      }
+      if(advancedSettings.timerStartsOn) {
+        window.snake.speedrun();
+      }
+      if(advancedSettings.useCustomTheme) {
+        window.snake.setCustomTheme(
+          advancedSettings.themeCol1 ?? '#aad751',
+          advancedSettings.themeCol2 ?? '#a2d149',
+          advancedSettings.themeCol3 ?? '#94bd46',
+          advancedSettings.themeCol4 ?? '#578a34',
+          advancedSettings.themeCol5 ?? '#38630d',
+          advancedSettings.themeCol6 ?? '#4a752c',
+          advancedSettings.themeCol7 ?? '#4dc1f9'
+        );
+      }
+      if(window.location.href.includes('fbx?fbx=snake_arcade')) {
+        document.body.style.backgroundColor = advancedSettings.backgroundColor;
+      }
     }
   }
 }
@@ -730,7 +840,7 @@ window.addEventListener('load', addModSelectorPopup);
 //Utility functions below
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function swapInMainClassPrototype(mainClass, functionText) {
+window.swapInMainClassPrototype = function(mainClass, functionText) {
   if(/^[$a-zA-Z0-9_]{0,6}=function/.test(functionText)) {
     throw new Error("Error, function is of form abc=function(), but this only works for stuff like s_.abc=function()");
   }
@@ -751,7 +861,7 @@ somethingInsideFunction will be regex matching something in the function
 for example if we are trying to find a function like s_xD = function(a, b, c, d, e) {...a.Xa&&10!==a.Qb...}
 then put somethingInsideFunction = /a\.[$a-zA-Z0-9_]{0,6}&&10!==a\.[$a-zA-Z0-9_]{0,6}/
 */
-function findFunctionInCode(code, functionSignature, somethingInsideFunction, logging = false) {
+window.findFunctionInCode = function(code, functionSignature, somethingInsideFunction, logging = false) {
   let functionSignatureSource = functionSignature.source;
   let functionSignatureFlags = functionSignature.flags;//Probably empty string
 
@@ -828,7 +938,7 @@ function findFunctionInCode(code, functionSignature, somethingInsideFunction, lo
 /*
 Same as replace, but throws an error if nothing is changed
 */
-function assertReplace(baseText, regex, replacement) {
+window.assertReplace = function(baseText, regex, replacement) {
   if (typeof baseText !== 'string') {
     throw new Error('String argument expected for assertReplace');
   }
@@ -845,7 +955,7 @@ function assertReplace(baseText, regex, replacement) {
 /*
 Same as replaceAll, but throws an error if nothing is changed
 */
-function assertReplaceAll(baseText, regex, replacement) {
+window.assertReplaceAll = function(baseText, regex, replacement) {
   if (typeof baseText !== 'string') {
     throw new Error('String argument expected for assertReplace');
   }
@@ -859,7 +969,7 @@ function assertReplaceAll(baseText, regex, replacement) {
   return outputText;
 }
 
-function diagnoseRegexError(baseText, regex) {  
+window.diagnoseRegexError = function(baseText, regex) {  
   if(!(regex instanceof RegExp)) {
     throw new Error('Failed to find match using string argument. No more details available');
   }
@@ -905,10 +1015,15 @@ ${candidateRegex}`);
   throw new Error('Line break error! Failed to failed to find match for regex - most likely caused by a new line break. No suggestions provided');
 }
 
-function appendCodeWithinSnakeModule(snakeCode, codeToAdd, addSemicolonAfter) {
+window.appendCodeWithinSnakeModule = function(snakeCode, codeToAdd, addSemicolonAfter) {
   if(addSemicolonAfter) {
     codeToAdd += ';';
   }
   var newSnakeCode = snakeCode.replace(/}\)\(this\._s\);\n\/\/ Google Inc\./, codeToAdd + '$&');
   return newSnakeCode;
+}
+
+//Turns _.abc into _s.abc
+window.swapInSnakeGlobal = function(text) {
+  return assertReplace(text, /^_\./, '_s.');
 }
