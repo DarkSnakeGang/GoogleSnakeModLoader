@@ -33,9 +33,21 @@ Use the relevant link for your browser.
 
 # Images
 
-Images go here :)
+## Mod loader Menu
+![image](https://user-images.githubusercontent.com/69080709/220425503-39107cba-4275-428d-8fbd-8f16f249154c.png)
 
-### Search terms for standard version
+## Custom Menu Stuff
+![image](https://user-images.githubusercontent.com/69080709/220422804-b19527a2-e52b-4cbc-8c3a-df9135c8215e.png)
+![image](https://user-images.githubusercontent.com/69080709/220424971-93030dff-325d-47c8-957e-b8b322ea9307.png)
+
+## Level Editor Mod
+![screenshot 1](https://user-images.githubusercontent.com/69080709/213930896-68a9ecf7-1516-4203-9c62-a30e5740b63f.png)
+![Screenshot 2](https://user-images.githubusercontent.com/69080709/213930901-8076193a-eed3-4b52-8ac7-b75dab9e8e35.png)
+
+## Mouse Mode
+![image](https://user-images.githubusercontent.com/69080709/164514052-4990128c-f1df-4a41-b646-a32ec1322d4d.png)
+
+# Search terms for standard version
 
 The standard version will work for search terms including any of the below words/phrases. It must have the full word (i.e. "google snaking" or "google snaek" won't work, since they don't contain the word snake)
 
