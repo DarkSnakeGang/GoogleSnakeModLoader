@@ -25,7 +25,7 @@ Use the relevant link for your browser.
 
 | Where do you play snake  | Description | Install |
 | ------------- | ------------- |------------- |
-| I use a search term including the word snake (google snake, snake game...). Many other languages work too (serpiente, serpent, slange, [full list](https://github.com/DarkSnakeGang/GoogleSnakeModLoader#Search-terms-for-standard-version))  | Works for common search terms and on the fbx page. | [INSTALL (standard)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-standard.user.js) |
+| I use a search term including the word snake (google snake, snake game etc). Many other languages work too (serpiente, serpent, slange, [full list](#Search-terms-for-standard-version))  | Works for common search terms and on the fbx page. | [INSTALL (standard)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-standard.user.js) |
 | standalone fbx page only  | Recommended if you only play on the fbx page | [INSTALL (fbx-only)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-fbx.user.js) |
 | anywhere | This version will run on every google search page, so only use it if the other versions don't run for you | [INSTALL (international)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-intl.user.js) |
 
