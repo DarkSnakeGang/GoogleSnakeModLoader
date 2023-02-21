@@ -37,7 +37,7 @@ Images go here :)
 
 ### Search terms for standard version
 
-The standard version will work for search terms including any of the below words/phrases. It must have the full word (i.e. "google snaking" or "google snaek" won't work, since it doesn't contain the word snake)
+The standard version will work for search terms including any of the below words/phrases. It must have the full word (i.e. "google snaking" or "google snaek" won't work, since they don't contain the word snake)
 
 snake  
 serpiente  
