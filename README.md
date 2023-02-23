@@ -3,7 +3,7 @@
 New way to get snake mods since bookmarks broke.
 
 Featured mods (may change):
-- Custom Menu Stuff (More Menu mod)
+- More Menu Mod
 - Level Editor Mod
 - Mouse Mode
 
@@ -25,17 +25,29 @@ Use the relevant link for your browser.
 
 | Where do you play snake  | Description | Install |
 | ------------- | ------------- |------------- |
-| I use a search term including the word snake (google snake, snake game etc). Many other languages work too (serpiente, serpent, slange, [full list](#Search-terms-for-standard-version))  | Works for common search terms and on the fbx page. | [INSTALL (standard)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-standard.user.js) |
-| standalone fbx page only  | Recommended if you only play on the fbx page | [INSTALL (fbx-only)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-fbx.user.js) |
+| I google the word **snake** or a phrase containing it (google *snake*, *snake* game etc). We also support other languages: serpiente, serpent, slange, [full list](#Search-terms-for-standard-version) | Works for common search terms and on the fbx page. | [INSTALL (standard)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-standard.user.js) |
+| standalone [fbx](https://www.google.com/fbx?fbx=snake_arcade) page only  | Recommended if you only play on the fbx page | [INSTALL (fbx-only)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-fbx.user.js) |
 | anywhere | This version will run on every google search page, so only use it if the other versions don't run for you | [INSTALL (international)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-intl.user.js) |
 
 3) Play Google Snake. The mod will run automatically. A panel will show up in the bottom right that lets you choose which mod to run.
 
-# Images
+# Screenshots
 
-Images go here :)
+## Mod loader Menu
+![image](https://user-images.githubusercontent.com/69080709/220425503-39107cba-4275-428d-8fbd-8f16f249154c.png)
 
-### Search terms for standard version
+## More Menu Mod
+![image](https://user-images.githubusercontent.com/69080709/220422804-b19527a2-e52b-4cbc-8c3a-df9135c8215e.png)
+![image](https://user-images.githubusercontent.com/69080709/220424971-93030dff-325d-47c8-957e-b8b322ea9307.png)
+
+## Level Editor Mod
+![screenshot 1](https://user-images.githubusercontent.com/69080709/213930896-68a9ecf7-1516-4203-9c62-a30e5740b63f.png)
+![Screenshot 2](https://user-images.githubusercontent.com/69080709/213930901-8076193a-eed3-4b52-8ac7-b75dab9e8e35.png)
+
+## Mouse Mode
+![image](https://user-images.githubusercontent.com/69080709/164514052-4990128c-f1df-4a41-b646-a32ec1322d4d.png)
+
+# Search terms for standard version
 
 The standard version will work for search terms including any of the below words/phrases. It must have the full word (i.e. "google snaking" or "google snaek" won't work, since they don't contain the word snake)
 
