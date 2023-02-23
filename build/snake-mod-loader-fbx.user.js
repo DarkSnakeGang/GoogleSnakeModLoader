@@ -396,7 +396,7 @@ let addModSelectorPopup = function() {
       ${customUrlOptions}
     </div>
     <br>
-    <div style="display:inline-block;padding-top: 15px;margin-bottom: 4px;text-align: center;font-family: arial, sans-serif;color: #069;text-decoration: underline;cursor: pointer;" id="advanced-options-toggle">Advanced options</div>
+    <div style="display:inline-block;padding-top: 15px;margin-bottom: 4px;text-align: center;font-family: arial, sans-serif;color: #069;text-decoration: underline;cursor: pointer;user-select:none" id="advanced-options-toggle">Advanced options</div>
     <div id="apply-mod" class="mod-sel-btn" style="display:inline-block;background-color: hsl(24deg 64% 97%);padding: 4px;margin-top: 7px;border-radius: 3px;border: 2px solid #4caf50;color: #4caf50;font-weight: bold;user-select: none;float:right;cursor: pointer;">Apply</div>
     <div id="close-mod-selector" class="mod-sel-btn" style="display:inline-block;background-color: hsl(24deg 64% 97%);padding: 4px;margin-top: 7px;margin-right:10px;border-radius: 3px;border: 2px solid #606060;color: #606060;font-weight: bold;user-select: none;cursor: pointer;float:right">Close</div>
   </div>
@@ -778,6 +778,16 @@ window.assertReplaceAll = function(baseText, regex, replacement) {
 
   return outputText;
 }
+
+//Alternate way to use assertReplace. Example: code = code.assertReplace('Thing to change', 'New thing');
+String.prototype.assertReplace = function(regex, replacement) {
+  return assertReplace(this.toString(), regex, replacement);
+};
+
+//Same as above for assertReplaceAll.
+String.prototype.assertReplaceAll = function(regex, replacement) {
+  return assertReplaceAll(this.toString(), regex, replacement);
+};
 
 window.diagnoseRegexError = function(baseText, regex) {  
   if(!(regex instanceof RegExp)) {
