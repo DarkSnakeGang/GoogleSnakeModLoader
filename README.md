@@ -3,7 +3,7 @@
 New way to get snake mods since bookmarks broke.
 
 Featured mods (may change):
-- Custom Menu Stuff (More Menu mod)
+- More Menu Mod
 - Level Editor Mod
 - Mouse Mode
 
@@ -36,7 +36,7 @@ Use the relevant link for your browser.
 ## Mod loader Menu
 ![image](https://user-images.githubusercontent.com/69080709/220425503-39107cba-4275-428d-8fbd-8f16f249154c.png)
 
-## Custom Menu Stuff
+## More Menu Mod
 ![image](https://user-images.githubusercontent.com/69080709/220422804-b19527a2-e52b-4cbc-8c3a-df9135c8215e.png)
 ![image](https://user-images.githubusercontent.com/69080709/220424971-93030dff-325d-47c8-957e-b8b322ea9307.png)
 
