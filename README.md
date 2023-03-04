@@ -13,13 +13,13 @@ Featured mods (may change):
 
 Use the relevant link for your browser.
 
-| Browser  | Link |
-| ------------- | ------------- |
+| Browser  | Link | Extra steps |
+| ------------- | ------------- | ------------- | 
 | Chrome  | [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)  |
 | Firefox  | [Tampermonkey](https://addons.mozilla.org/firefox/addon/tampermonkey/), [Greasemonkey](https://addons.mozilla.org/firefox/addon/greasemonkey/) |
 | Safari  | [Tampermonkey](http://tampermonkey.net/?browser=safari)  |
 | Microsoft Edge  | [Tampermonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)  |
-| Opera  | [Tampermonkey](https://addons.opera.com/extensions/details/tampermonkey-beta/)  |
+| Opera  | [Tampermonkey](https://addons.opera.com/extensions/details/tampermonkey-beta/) | You must [enable it on search page results](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/opera_extra_steps.md) otherwise it won't work. |
 
 2) Click one of the install links below to get the snake mod and confirm it. The version will depend on what you search for to play google snake or whether you play it on the standalone fbx page (https://www.google.com/fbx?fbx=snake_arcade)<br>
 
