@@ -9,24 +9,24 @@ Featured mods (may change):
 
 # How to install
 
-1) Install a userscript manager. We recommend the Tampermonkey browser extension for this, although there are alternatives.
+1) Install a userscript manager. We recommend the **Tampermonkey** browser extension for this. Note that greasemonkey won't work.
 
 Use the relevant link for your browser.
 
-| Browser  | Link |
-| ------------- | ------------- |
+| Browser  | Link | Extra steps |
+| ------------- | ------------- | ------------- | 
 | Chrome  | [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)  |
-| Firefox  | [Tampermonkey](https://addons.mozilla.org/firefox/addon/tampermonkey/), [Greasemonkey](https://addons.mozilla.org/firefox/addon/greasemonkey/) |
-| Safari  | [Tampermonkey](http://tampermonkey.net/?browser=safari)  |
+| Firefox  | [Tampermonkey](https://addons.mozilla.org/firefox/addon/tampermonkey/) |
+| Safari  | [Userscripts](https://apps.apple.com/app/userscripts/id1463298887)  |
 | Microsoft Edge  | [Tampermonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)  |
-| Opera  | [Tampermonkey](https://addons.opera.com/extensions/details/tampermonkey-beta/)  |
+| Opera  | [Tampermonkey](https://addons.opera.com/extensions/details/tampermonkey-beta/) | You must [enable it on search page results](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/opera_extra_steps.md) otherwise it won't work. |
 
 2) Click one of the install links below to get the snake mod and confirm it. The version will depend on what you search for to play google snake or whether you play it on the standalone fbx page (https://www.google.com/fbx?fbx=snake_arcade)<br>
 
 | Where do you play snake  | Description | Install |
 | ------------- | ------------- |------------- |
-| I google the word **snake** or a phrase containing it (google *snake*, *snake* game etc). We also support other languages: serpiente, serpent, slange, [full list](#Search-terms-for-standard-version) | Works for common search terms and on the fbx page. | [INSTALL (standard)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-standard.user.js) |
 | standalone [fbx](https://www.google.com/fbx?fbx=snake_arcade) page only  | Recommended if you only play on the fbx page | [INSTALL (fbx-only)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-fbx.user.js) |
+| I google the word **snake** or a phrase containing it (google *snake*, *snake* game etc). We also support other languages: serpiente, serpent, slange, [full list](#Search-terms-for-standard-version) | Works for common search terms and on the fbx page. | [INSTALL (standard)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-standard.user.js) |
 | anywhere | This version will run on every google search page, so only use it if the other versions don't run for you | [INSTALL (international)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-intl.user.js) |
 
 3) Play Google Snake. The mod will run automatically. A panel will show up in the bottom right that lets you choose which mod to run.
