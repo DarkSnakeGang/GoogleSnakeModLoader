@@ -17,7 +17,7 @@ Use the relevant link for your browser.
 | ------------- | ------------- | ------------- | 
 | Chrome  | [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)  |
 | Firefox  | [Tampermonkey](https://addons.mozilla.org/firefox/addon/tampermonkey/) |
-| Safari  | [Tampermonkey](http://tampermonkey.net/?browser=safari)  |
+| Safari  | [Userscripts](https://apps.apple.com/app/userscripts/id1463298887)  |
 | Microsoft Edge  | [Tampermonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)  |
 | Opera  | [Tampermonkey](https://addons.opera.com/extensions/details/tampermonkey-beta/) | You must [enable it on search page results](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/opera_extra_steps.md) otherwise it won't work. |
 
