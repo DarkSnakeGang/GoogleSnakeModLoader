@@ -9,14 +9,14 @@ Featured mods (may change):
 
 # How to install
 
-1) Install a userscript manager. We recommend the Tampermonkey browser extension for this, although there are alternatives.
+1) Install a userscript manager. We recommend the **Tampermonkey** browser extension for this. Note that greasemonkey won't work.
 
 Use the relevant link for your browser.
 
 | Browser  | Link | Extra steps |
 | ------------- | ------------- | ------------- | 
 | Chrome  | [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)  |
-| Firefox  | [Tampermonkey](https://addons.mozilla.org/firefox/addon/tampermonkey/), [Greasemonkey](https://addons.mozilla.org/firefox/addon/greasemonkey/) |
+| Firefox  | [Tampermonkey](https://addons.mozilla.org/firefox/addon/tampermonkey/) |
 | Safari  | [Tampermonkey](http://tampermonkey.net/?browser=safari)  |
 | Microsoft Edge  | [Tampermonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)  |
 | Opera  | [Tampermonkey](https://addons.opera.com/extensions/details/tampermonkey-beta/) | You must [enable it on search page results](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/opera_extra_steps.md) otherwise it won't work. |
