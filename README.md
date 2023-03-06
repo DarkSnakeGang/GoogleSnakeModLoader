@@ -13,11 +13,11 @@ Featured mods (may change):
 
 Use the relevant link for your browser.
 
-| Browser  | Link | Extra steps |
+| Browser  | Link | Extra steps/Notes |
 | ------------- | ------------- | ------------- | 
 | Chrome  | [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)  |
 | Firefox  | [Tampermonkey](https://addons.mozilla.org/firefox/addon/tampermonkey/) |
-| Safari  | [Userscripts](https://apps.apple.com/app/userscripts/id1463298887)  |
+| Safari  | [Userscripts](https://apps.apple.com/app/userscripts/id1463298887)  | This requires macOS 12 or later. [Example usage](https://youtu.be/x1r3-L7pdYQ?t=14). |
 | Microsoft Edge  | [Tampermonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)  |
 | Opera  | [Tampermonkey](https://addons.opera.com/extensions/details/tampermonkey-beta/) | You must [enable it on search page results](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/opera_extra_steps.md) otherwise it won't work. |
 
