@@ -785,13 +785,13 @@ let addModSelectorPopup = function() {
       }
       if(advancedSettings.useCustomTheme) {
         window.snake.setCustomTheme(
-          advancedSettings.themeCol1 ?? '#aad751',
-          advancedSettings.themeCol2 ?? '#a2d149',
-          advancedSettings.themeCol3 ?? '#94bd46',
-          advancedSettings.themeCol4 ?? '#578a34',
-          advancedSettings.themeCol5 ?? '#38630d',
-          advancedSettings.themeCol6 ?? '#4a752c',
-          advancedSettings.themeCol7 ?? '#4dc1f9'
+          advancedSettings.themeCol1 ?? '#1D1D1D',
+          advancedSettings.themeCol2 ?? '#161616',
+          advancedSettings.themeCol3 ?? '#111111',
+          advancedSettings.themeCol4 ?? '#000000',
+          advancedSettings.themeCol5 ?? '#1D1D1D',
+          advancedSettings.themeCol6 ?? '#111111',
+          advancedSettings.themeCol7 ?? '#000000'
         );
       }
       if(window.location.href.includes('fbx?fbx=snake_arcade')) {
