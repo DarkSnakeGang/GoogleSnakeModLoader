@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (Dev)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.0
+// @version      1.0.1
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
@@ -569,16 +569,16 @@ let addModSelectorPopup = function() {
       <hr>
       <label><input id="fbx-centered-checkbox" type="checkbox">Make fbx centered</label><br>
       <label><input id="timer-starts-on" type="checkbox">Timer starts on</label><br>
-      <label><input id="background-color-picker" type="color" value="#FFFFFF"> Background color on fbx</label><br>
+      <label><input id="background-color-picker" type="color" value="#000000"> Background color on fbx</label><br>
       <label><input id="use-custom-theme" type="checkbox">Use custom theme</label><br>
       <div id="custom-theme-pickers">
-        <label><input id="custom-theme-col1" type="color" value="#aad751"> Light Tiles</label><br>
-        <label><input id="custom-theme-col2" type="color" value="#a2d149"> Dark Tiles</label><br>
-        <label><input id="custom-theme-col3" type="color" value="#94bd46"> Shadow</label><br>
-        <label><input id="custom-theme-col4" type="color" value="#578a34"> Border</label><br>
-        <label><input id="custom-theme-col5" type="color" value="#38630d"> Lock Sign</label><br>
-        <label><input id="custom-theme-col6" type="color" value="#4a752c"> Top Bar</label><br>
-        <label><input id="custom-theme-col7" type="color" value="#4dc1f9"> Endscreen background</label><br>
+        <label><input id="custom-theme-col1" type="color" value="#1D1D1D"> Light Tiles</label><br>
+        <label><input id="custom-theme-col2" type="color" value="#161616"> Dark Tiles</label><br>
+        <label><input id="custom-theme-col3" type="color" value="#111111"> Shadow</label><br>
+        <label><input id="custom-theme-col4" type="color" value="#000000"> Border</label><br>
+        <label><input id="custom-theme-col5" type="color" value="#1D1D1D"> Lock Sign</label><br>
+        <label><input id="custom-theme-col6" type="color" value="#111111"> Top Bar</label><br>
+        <label><input id="custom-theme-col7" type="color" value="#000000"> Endscreen background</label><br>
       </div>
       ${customUrlOptions}
     </div>
