@@ -531,7 +531,12 @@ let addModSelectorPopup = function() {
       background-color: #f0e9e5 !important;
   }
 
-  /*light*/
+  /*hide end screen depending on checkbox*/
+  .wjOYOd:has(#toggle-death:checked) {
+    opacity:0.1 !important;
+  }
+
+  /*light theme*/
   #mod-indicator, #mod-selector-dialogue-container {
     --mod-loader-font-col: #000000;
     --mod-loader-main-bg: #fffce0;
@@ -545,7 +550,7 @@ let addModSelectorPopup = function() {
     --mod-loader-button-apply-col: #4caf50;
   }
 
-  /*dark*/
+  /*dark theme*/
   #mod-indicator.dark-mod-theme, #mod-selector-dialogue-container.dark-mod-theme {
     --mod-loader-font-col: #ffffff;
     --mod-loader-main-bg: #343542;
@@ -638,6 +643,14 @@ let addModSelectorPopup = function() {
   modSelectorModalContainer.id = 'mod-selector-dialogue-container';
   modSelectorModalContainer.style = 'display:none; position:fixed; width:100%; height:100%; z-index: 999999; left:0; top:0';
   document.body.appendChild(modSelectorModalContainer);
+
+  let hideEndScreenContainer = document.createElement('div');
+  hideEndScreenContainer.style = "display: block;position: absolute;left: 10px;top: 10px;background: rgba(0,0,0,0.5);padding: 2px;color: white;padding-left: 5px;";
+  hideEndScreenContainer.innerHTML = `<label style="cursor: pointer;">Hide <input id="toggle-death" type="checkbox" style="cursor: pointer;"></label>`;
+  let firstMenuScreen = document.getElementsByClassName('T7SB3d')[0];
+  if(firstMenuScreen) {
+    firstMenuScreen.appendChild(hideEndScreenContainer);
+  }
 
   //Tick the currently selected mod choice according to localStorage. Also, set the mod name in the indicator
   const currentlySelectedMod = localStorage.getItem('snakeChosenMod');
