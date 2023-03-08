@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (Intl)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.0
+// @version      1.0.2
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
@@ -524,14 +524,55 @@ document.body.appendChild = function(el) {
 
 //Setup Modal box that lets the user choose which mod to run
 let addModSelectorPopup = function() {
+  //Set up CSS
+  const css = `
+  .mod-sel-btn:hover {
+    background-color: #fefcfb !important;
+  }
+
+  .mod-sel-btn:active {
+      background-color: #f0e9e5 !important;
+  }
+
+  /*light*/
+  #mod-indicator, #mod-selector-dialogue-container {
+    --mod-loader-font-col: #000000;
+    --mod-loader-main-bg: #fffce0;
+    --mod-loader-title-bg: #ece9d4;
+    --mod-loader-title-border: #e4e0be;
+    --mod-loader-thin-border: #cccccc;
+    --mod-loader-indicator-display-bg: #eeeaca;
+    --mod-loader-link-font-col: #069;
+    --mod-loader-button-bg: #fcf6f2;
+    --mod-loader-button-close-col: #606060;
+    --mod-loader-button-apply-col: #4caf50;
+  }
+
+  /*dark*/
+  #mod-indicator.dark-mod-theme, #mod-selector-dialogue-container.dark-mod-theme {
+    --mod-loader-font-col: #ffffff;
+    --mod-loader-main-bg: #343542;
+    --mod-loader-title-bg: #66636f;
+    --mod-loader-title-border: #7d7a89;
+    --mod-loader-thin-border: #ccc;
+    --mod-loader-indicator-display-bg: #000000;
+    --mod-loader-link-font-col: #18f6ff;
+    --mod-loader-button-bg: #010104;
+    --mod-loader-button-close-col: #b5b5b5;
+    --mod-loader-button-apply-col: #5cf062;
+  }
+  `;
+
+  document.getElementsByTagName('style')[0].innerHTML = document.getElementsByTagName('style')[0].innerHTML + css;
+
   if(document.body.querySelector('img[src^="//www.google.com/logos/fnbx/snake_arcade"]') === null) {
     //We aren't on a page with google snake. Don't show the mod selector dialogue. Exit early.
     return;
   }
 
   const modCornerIndicatorHTML = `
-      Current mod: <span id="mod-name-span" style="background-color: #eeeaca;padding: 2px;border-radius: 3px;font-family: consolas, monospace;"></span>
-      <div id="change-mod-button" style="text-align: center;font-size: 0.84em;font-family: arial, sans-serif;color: #069;text-decoration: underline;cursor: pointer;margin-top: 3px;">Change mod</div>
+      <span style="color:var(--mod-loader-font-col) !important">Current mod: </span><span id="mod-name-span" style="background-color: var(--mod-loader-indicator-display-bg);padding: 2px;border-radius: 3px;font-family: consolas, monospace; color:var(--mod-loader-font-col) !important"></span>
+      <div id="change-mod-button" style="text-align: center;font-size: 0.84em;font-family: arial, sans-serif;color: var(--mod-loader-link-font-col);text-decoration: underline;cursor: pointer;margin-top: 3px;">Change mod</div>
       <div id="snake-error-message" style="font-family: helvetica, sans-serif;color: #f44336;margin-top: 2px;display: ${window.showSnakeErrMessage ? 'block' : 'none'};">
         Error changing snake code.
         <br>
@@ -541,7 +582,7 @@ let addModSelectorPopup = function() {
 
   let modIndicatorEl = document.createElement('div');
   modIndicatorEl.id = 'mod-indicator';
-  modIndicatorEl.style = 'z-index: 9999999;background-color: #fffce0;position: fixed;bottom: 0;right: 0;border-top: 1px solid #cccccc;border-left: 1px solid #cccccc;font-size: 1.2em;border-top-left-radius: 5px;padding: 5px;-webkit-box-shadow: 0px 0px 7px 1px hwb(0deg 0% 100% / 12%);box-shadow: 0px 0px 7px 1px rgb(0 0 0 / 12%);font-family: helvetica, sans-serif;height: initial;user-select:none;';
+  modIndicatorEl.style = 'z-index: 9999999;background-color: var(--mod-loader-main-bg) !important;position: fixed;bottom: 0;right: 0;border-top: 1px solid var(--mod-loader-thin-border);border-left: 1px solid var(--mod-loader-thin-border);font-size: 1.2em;border-top-left-radius: 5px;padding: 5px;-webkit-box-shadow: 0px 0px 7px 1px hwb(0deg 0% 100% / 12%);box-shadow: 0px 0px 7px 1px rgb(0 0 0 / 12%);font-family: helvetica, sans-serif;height: initial;user-select:none;display:block';
   modIndicatorEl.innerHTML = modCornerIndicatorHTML;
   document.body.appendChild(modIndicatorEl);
 
@@ -551,44 +592,46 @@ let addModSelectorPopup = function() {
 
   let modSelectorRadioOptions = '';
   for(const [key, value] of Object.entries(modsConfig)) {
-    modSelectorRadioOptions += `<label><input type="radio" name="mod-selector" value="${key}">${value.displayName}</label><br>`;
+    modSelectorRadioOptions += `<label style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="${key}">${value.displayName}</label><br>`;
   }
-  modSelectorRadioOptions += `<label><input type="radio" name="mod-selector" value="none">None</label>`;
+  modSelectorRadioOptions += `<label style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="none">None</label>`;
 
   let customUrlOptions = '';
   if(IS_DEVELOPER_MODE) {
-    customUrlOptions = `<label><input id="custom-mod-name" type="text"> Custom Mod Name</label><br>
-                        <label><input id="custom-url" type="text"> Custom Mod Url</label><br>`;
+    customUrlOptions = `<label style="color:var(--mod-loader-font-col) !important"><input id="custom-mod-name" type="text"> Custom Mod Name</label><br>
+                        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-url" type="text"> Custom Mod Url</label><br>`;
   }
 
   const modSelectorModal = `
-  <div id="mod-selector-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid rgb(204 204 204);width:316.4px;background-color: #fffce0;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;">
+  <div id="mod-selector-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:316.4px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;">
   <!-- <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 2px 2px 3px #a2a2a2;">Snake Mod Loader</h1> -->
   <!-- <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 1px 1px 1px #000000, 1px 1px 1px #000000, 1px 1px 5px #000000;color: #4674e9;">Snake Mod Loader</h1> -->
   <!-- <div style="background-color: #aad751;height: 17px;position: relative;top: -31px;transform: skewX(-21deg);z-index: 5;"></div> -->
-  <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 1px 1px 1px #000000, 1px 1px 1px #000000, 1px 1px 5px #000000;color: #4674e9;border: 5px inset #e4e0be;background-color: #ece9d4;">Snake Mod Loader</h1>
+  <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 1px 1px 1px #000000, 1px 1px 1px #000000, 1px 1px 5px #000000;color: #4674e9;border: 5px inset var(--mod-loader-title-border);background-color: var(--mod-loader-title-bg);">Snake Mod Loader</h1>
     ${modSelectorRadioOptions}
     <div id="advanced-options" style="display:none">
       <hr>
-      <label><input id="fbx-centered-checkbox" type="checkbox">Make fbx centered</label><br>
-      <label><input id="timer-starts-on" type="checkbox">Timer starts on</label><br>
-      <label><input id="background-color-picker" type="color" value="#FFFFFF"> Background color on fbx</label><br>
-      <label><input id="use-custom-theme" type="checkbox">Use custom theme</label><br>
+      <label style="color:var(--mod-loader-font-col) !important"><input id="fbx-centered-checkbox" type="checkbox">Make fbx centered</label><br>
+      <label style="color:var(--mod-loader-font-col) !important"><input id="timer-starts-on" type="checkbox">Timer starts on</label><br>
+      <label style="color:var(--mod-loader-font-col) !important"><input id="hide-indicator" type="checkbox">Auto-hide mod indicator (h to toggle)</label><br>
+      <label style="color:var(--mod-loader-font-col) !important"><input id="dark-mod-theme" type="checkbox">Dark mod loader theme</label><br>
+      <label style="color:var(--mod-loader-font-col) !important"><input id="background-color-picker" type="color" value="#FFFFFF"> Background color on fbx</label><br>
+      <label style="color:var(--mod-loader-font-col) !important"><input id="use-custom-theme" type="checkbox">Use custom theme</label><br>
       <div id="custom-theme-pickers">
-        <label><input id="custom-theme-col1" type="color" value="#aad751"> Light Tiles</label><br>
-        <label><input id="custom-theme-col2" type="color" value="#a2d149"> Dark Tiles</label><br>
-        <label><input id="custom-theme-col3" type="color" value="#94bd46"> Shadow</label><br>
-        <label><input id="custom-theme-col4" type="color" value="#578a34"> Border</label><br>
-        <label><input id="custom-theme-col5" type="color" value="#38630d"> Lock Sign</label><br>
-        <label><input id="custom-theme-col6" type="color" value="#4a752c"> Top Bar</label><br>
-        <label><input id="custom-theme-col7" type="color" value="#4dc1f9"> Endscreen background</label><br>
+        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col1" type="color" value="#1D1D1D"> Light Tiles</label><br>
+        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col2" type="color" value="#161616"> Dark Tiles</label><br>
+        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col3" type="color" value="#111111"> Shadow</label><br>
+        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col4" type="color" value="#000000"> Border</label><br>
+        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col5" type="color" value="#1D1D1D"> Lock Sign</label><br>
+        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col6" type="color" value="#111111"> Top Bar</label><br>
+        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col7" type="color" value="#000000"> Endscreen background</label><br>
       </div>
       ${customUrlOptions}
     </div>
     <br>
-    <div style="display:inline-block;padding-top: 15px;margin-bottom: 4px;text-align: center;font-family: arial, sans-serif;color: #069;text-decoration: underline;cursor: pointer;user-select:none" id="advanced-options-toggle">Advanced options</div>
-    <div id="apply-mod" class="mod-sel-btn" style="display:inline-block;background-color: hsl(24deg 64% 97%);padding: 4px;margin-top: 7px;border-radius: 3px;border: 2px solid #4caf50;color: #4caf50;font-weight: bold;user-select: none;float:right;cursor: pointer;">Apply</div>
-    <div id="close-mod-selector" class="mod-sel-btn" style="display:inline-block;background-color: hsl(24deg 64% 97%);padding: 4px;margin-top: 7px;margin-right:10px;border-radius: 3px;border: 2px solid #606060;color: #606060;font-weight: bold;user-select: none;cursor: pointer;float:right">Close</div>
+    <div style="display:inline-block;padding-top: 15px;margin-bottom: 4px;text-align: center;font-family: arial, sans-serif;color: var(--mod-loader-link-font-col);text-decoration: underline;cursor: pointer;user-select:none" id="advanced-options-toggle">Advanced options</div>
+    <div id="apply-mod" class="mod-sel-btn" style="display:inline-block;background-color: var(--mod-loader-button-bg);padding: 4px;margin-top: 7px;border-radius: 3px;border: 2px solid var(--mod-loader-button-apply-col);color: var(--mod-loader-button-apply-col);font-weight: bold;user-select: none;float:right;cursor: pointer;">Apply</div>
+    <div id="close-mod-selector" class="mod-sel-btn" style="display:inline-block;background-color: var(--mod-loader-button-bg);padding: 4px;margin-top: 7px;margin-right:10px;border-radius: 3px;border: 2px solid var(--mod-loader-button-close-col);color: var(--mod-loader-button-close-col);font-weight: bold;user-select: none;cursor: pointer;float:right">Close</div>
   </div>
   `;
 
@@ -664,6 +707,12 @@ let addModSelectorPopup = function() {
   document.getElementById('custom-theme-col7').addEventListener('input', function() {
     updateAdvancedSetting('themeCol7', this.value);
   });
+  document.getElementById('hide-indicator').addEventListener('change', function() {
+    updateAdvancedSetting('hideIndicator', this.checked);
+  });
+  document.getElementById('dark-mod-theme').addEventListener('change', function() {
+    updateAdvancedSetting('darkModTheme', this.checked);
+  });
 
   if(IS_DEVELOPER_MODE) {
     document.getElementById('custom-mod-name').addEventListener('input', function() {
@@ -702,20 +751,15 @@ let addModSelectorPopup = function() {
     location.reload();
   });
 
-  //Set up CSS
-  const css = `
-    .mod-sel-btn:hover {
-      background-color: #fefcfb !important;
-    }
-
-    .mod-sel-btn:active {
-        background-color: #f0e9e5 !important;
-    }
-  `;
-  document.getElementsByTagName('style')[0].innerHTML = document.getElementsByTagName('style')[0].innerHTML + css;
-
   let attemptsApplyingAdvancedSettings = 0;
   setTimeout(applyAdvancedSettingsToGame, 300);//Small delay to give the game more time to load.
+
+  document.body.addEventListener('keydown',function(event) {
+    if(event.key === 'h') {
+      let modIndicatorEl = document.getElementById('mod-indicator');
+      modIndicatorEl.style.display = (modIndicatorEl.style.display === 'block' ? 'none' : 'block');
+    }
+  });
 
   function updateAdvancedSettingInputs() {
     if(advancedSettings.hasOwnProperty('fbxCentered')) {
@@ -723,6 +767,12 @@ let addModSelectorPopup = function() {
     }
     if(advancedSettings.hasOwnProperty('timerStartsOn')) {
       document.getElementById('timer-starts-on').checked = advancedSettings.timerStartsOn;
+    }
+    if(advancedSettings.hasOwnProperty('darkModTheme')) {
+      document.getElementById('dark-mod-theme').checked = advancedSettings.darkModTheme;
+    }
+    if(advancedSettings.hasOwnProperty('hideIndicator')) {
+      document.getElementById('hide-indicator').checked = advancedSettings.hideIndicator;
     }
     if(advancedSettings.hasOwnProperty('useCustomTheme')) {
       document.getElementById('use-custom-theme').checked = advancedSettings.useCustomTheme;
@@ -786,15 +836,29 @@ let addModSelectorPopup = function() {
       if(advancedSettings.timerStartsOn) {
         window.snake.speedrun();
       }
+      if(advancedSettings.darkModTheme) {
+        document.getElementById('mod-indicator').classList.add('dark-mod-theme');
+        document.getElementById('mod-selector-dialogue-container').classList.add('dark-mod-theme');
+      }
+      if(advancedSettings.hideIndicator) {
+        setTimeout(function() {
+          if(window.showSnakeErrMessage) {return;}
+
+          let modIndicatorEl = document.getElementById('mod-indicator');
+          if(modIndicatorEl.style.display === 'block') {
+            modIndicatorEl.style.display = 'none';
+          }
+        }, 5000);
+      }
       if(advancedSettings.useCustomTheme) {
         window.snake.setCustomTheme(
-          advancedSettings.themeCol1 ?? '#aad751',
-          advancedSettings.themeCol2 ?? '#a2d149',
-          advancedSettings.themeCol3 ?? '#94bd46',
-          advancedSettings.themeCol4 ?? '#578a34',
-          advancedSettings.themeCol5 ?? '#38630d',
-          advancedSettings.themeCol6 ?? '#4a752c',
-          advancedSettings.themeCol7 ?? '#4dc1f9'
+          advancedSettings.themeCol1 ?? '#1D1D1D',
+          advancedSettings.themeCol2 ?? '#161616',
+          advancedSettings.themeCol3 ?? '#111111',
+          advancedSettings.themeCol4 ?? '#000000',
+          advancedSettings.themeCol5 ?? '#1D1D1D',
+          advancedSettings.themeCol6 ?? '#111111',
+          advancedSettings.themeCol7 ?? '#000000'
         );
       }
       if(window.location.href.includes('fbx?fbx=snake_arcade')) {
