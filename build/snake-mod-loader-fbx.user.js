@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (fbx)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.2
+// @version      1.0.3
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
@@ -245,13 +245,11 @@ document.body.appendChild = function(el) {
 
   //Just do default behaviour if it isn't the snake script or we don't have a mod to run
   const regexForScriptSrc = window.location.href.includes('fbx?fbx=snake_arcade') ? /xjs=s1$/ : /xjs=s2$/;
-  if(!(regexForScriptSrc.test(el.src)) || currentlySelectedMod === null || currentlySelectedMod === 'none') return document.body.appendChildOld(el);
+  let isSrcCorrectFormat = regexForScriptSrc.test(el.src) || el.src.includes('funbox');
+  if(!isSrcCorrectFormat || currentlySelectedMod === null || currentlySelectedMod === 'none') return document.body.appendChildOld(el);
 
   //default behaviour if we can't find any snake images on the webpage
   if(document.body.querySelector('img[src^="//www.google.com/logos/fnbx/snake_arcade"]') === null) return document.body.appendChildOld(el);
-
-  //Log which script(s) go through the ajax process
-  console.log(el);
 
   //Make sure to return the correct thing that appendChild would normally return
   let returnVal = el instanceof DocumentFragment ? new DocumentFragment : el;
@@ -344,7 +342,7 @@ let addModSelectorPopup = function() {
       background-color: #f0e9e5 !important;
   }
 
-  /*light*/
+  /*light theme*/
   #mod-indicator, #mod-selector-dialogue-container {
     --mod-loader-font-col: #000000;
     --mod-loader-main-bg: #fffce0;
@@ -358,7 +356,7 @@ let addModSelectorPopup = function() {
     --mod-loader-button-apply-col: #4caf50;
   }
 
-  /*dark*/
+  /*dark theme*/
   #mod-indicator.dark-mod-theme, #mod-selector-dialogue-container.dark-mod-theme {
     --mod-loader-font-col: #ffffff;
     --mod-loader-main-bg: #343542;
@@ -423,6 +421,7 @@ let addModSelectorPopup = function() {
       <hr>
       <label style="color:var(--mod-loader-font-col) !important"><input id="fbx-centered-checkbox" type="checkbox">Make fbx centered</label><br>
       <label style="color:var(--mod-loader-font-col) !important"><input id="timer-starts-on" type="checkbox">Timer starts on</label><br>
+      <label style="color:var(--mod-loader-font-col) !important"><input id="muted-starts-on" type="checkbox">Mute at start</label><br>
       <label style="color:var(--mod-loader-font-col) !important"><input id="hide-indicator" type="checkbox">Auto-hide mod indicator (h to toggle)</label><br>
       <label style="color:var(--mod-loader-font-col) !important"><input id="dark-mod-theme" type="checkbox">Dark mod loader theme</label><br>
       <label style="color:var(--mod-loader-font-col) !important"><input id="background-color-picker" type="color" value="#FFFFFF"> Background color on fbx</label><br>
@@ -451,6 +450,38 @@ let addModSelectorPopup = function() {
   modSelectorModalContainer.id = 'mod-selector-dialogue-container';
   modSelectorModalContainer.style = 'display:none; position:fixed; width:100%; height:100%; z-index: 999999; left:0; top:0';
   document.body.appendChild(modSelectorModalContainer);
+
+  let hideEndScreenImg = document.createElement('img');
+  hideEndScreenImg.style = "position: absolute;left: 10px;top: 10px;cursor: pointer; height:20px; width:auto;";
+  hideEndScreenImg.src = "https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/ToggleDeathscreen/EyeIcon.png?raw=true";
+  hideEndScreenImg.title = "Click to hide. Click anywhere to bring back";
+  hideEndScreenImg.id = "death-screen-toggle";
+  let firstMenuScreen = document.getElementsByClassName('T7SB3d')[0];
+  if(firstMenuScreen) {
+    firstMenuScreen.appendChild(hideEndScreenImg);
+  }
+
+  let showEndScreenCover = document.createElement('div');
+  showEndScreenCover.style = "display:none; background-color:transparent; position: fixed; top:0;left:0; width:100vw; height:100vh;box-shadow: cyan 0px 0px 10px inset; box-sizing: border-box;z-index: 1000000;"
+  document.body.appendChild(showEndScreenCover);
+
+  hideEndScreenImg.addEventListener('click', function() {
+    let endScreenContainer = document.getElementsByClassName('wjOYOd')[0];
+    if(endScreenContainer) {
+      endScreenContainer.style.visibility = 'hidden';
+    }
+
+    showEndScreenCover.style.display = 'block';
+  });
+
+  showEndScreenCover.addEventListener('click', function() {
+    let endScreenContainer = document.getElementsByClassName('wjOYOd')[0];
+    if(endScreenContainer) {
+      endScreenContainer.style.visibility = 'visible';
+    }
+
+    showEndScreenCover.style.display = 'none';
+  });
 
   //Tick the currently selected mod choice according to localStorage. Also, set the mod name in the indicator
   const currentlySelectedMod = localStorage.getItem('snakeChosenMod');
@@ -492,6 +523,9 @@ let addModSelectorPopup = function() {
   });
   document.getElementById('timer-starts-on').addEventListener('change', function() {
     updateAdvancedSetting('timerStartsOn', this.checked);
+  });
+  document.getElementById('muted-starts-on').addEventListener('change', function() {
+    updateAdvancedSetting('mutedStartsOn', this.checked);
   });
   document.getElementById('background-color-picker').addEventListener('input', function() {
     updateAdvancedSetting('backgroundColor', this.value);
@@ -578,6 +612,9 @@ let addModSelectorPopup = function() {
     if(advancedSettings.hasOwnProperty('timerStartsOn')) {
       document.getElementById('timer-starts-on').checked = advancedSettings.timerStartsOn;
     }
+    if(advancedSettings.hasOwnProperty('mutedStartsOn')) {
+      document.getElementById('muted-starts-on').checked = advancedSettings.mutedStartsOn;
+    }
     if(advancedSettings.hasOwnProperty('darkModTheme')) {
       document.getElementById('dark-mod-theme').checked = advancedSettings.darkModTheme;
     }
@@ -646,6 +683,9 @@ let addModSelectorPopup = function() {
       if(advancedSettings.timerStartsOn) {
         window.snake.speedrun();
       }
+      if(advancedSettings.mutedStartsOn) {
+        applyMuteToGame();
+      }
       if(advancedSettings.darkModTheme) {
         document.getElementById('mod-indicator').classList.add('dark-mod-theme');
         document.getElementById('mod-selector-dialogue-container').classList.add('dark-mod-theme');
@@ -675,6 +715,30 @@ let addModSelectorPopup = function() {
         document.body.style.backgroundColor = advancedSettings.backgroundColor;
       }
     }
+  }
+
+  function applyMuteToGame() {
+    //On fbx we can mute right way. On search, we need to wait until the game is visible.
+    if(window.location.href.includes('fbx?fbx=snake_arcade')) {
+      //Match mute button, but only if it's on (i.e. the image url includes the word up instead of the word off)
+      let muteButton = document.querySelector('img[alt="Mute"]:not([src*="off"])');
+      if(muteButton) {muteButton.click();}
+      return;
+    }
+
+    //Only true if we can find the invis el and it has style "None"
+    let someRandomGameContainer = document.getElementsByClassName('ynlwjd')[0];
+    let isGameInvis = someRandomGameContainer && someRandomGameContainer.style.display === 'none';
+
+    //Handle search snake here.
+    if(!window.snake || isGameInvis) {
+      console.log('Game not visible yet. Waiting to apply mute.');
+      setTimeout(applyMuteToGame, 400);
+    } else {
+      //Game is visible so safe to mute.
+      let muteButton = document.querySelector('img[alt="Mute"][src*="up"]');
+      if(muteButton) {muteButton.click();}
+    }    
   }
 }
 

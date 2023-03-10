@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (Dev)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.2
+// @version      1.0.3
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
@@ -432,13 +432,11 @@ document.body.appendChild = function(el) {
 
   //Just do default behaviour if it isn't the snake script or we don't have a mod to run
   const regexForScriptSrc = window.location.href.includes('fbx?fbx=snake_arcade') ? /xjs=s1$/ : /xjs=s2$/;
-  if(!(regexForScriptSrc.test(el.src)) || currentlySelectedMod === null || currentlySelectedMod === 'none') return document.body.appendChildOld(el);
+  let isSrcCorrectFormat = regexForScriptSrc.test(el.src) || el.src.includes('funbox');
+  if(!isSrcCorrectFormat || currentlySelectedMod === null || currentlySelectedMod === 'none') return document.body.appendChildOld(el);
 
   //default behaviour if we can't find any snake images on the webpage
   if(document.body.querySelector('img[src^="//www.google.com/logos/fnbx/snake_arcade"]') === null) return document.body.appendChildOld(el);
-
-  //Log which script(s) go through the ajax process
-  console.log(el);
 
   //Make sure to return the correct thing that appendChild would normally return
   let returnVal = el instanceof DocumentFragment ? new DocumentFragment : el;
@@ -642,7 +640,7 @@ let addModSelectorPopup = function() {
 
   let hideEndScreenImg = document.createElement('img');
   hideEndScreenImg.style = "position: absolute;left: 10px;top: 10px;cursor: pointer; height:20px; width:auto;";
-  hideEndScreenImg.src = "https://github.com/DarkSnakeGang/GoogleSnakeIcons/raw/main/ToggleDeathscreen/EyeIcon.png";
+  hideEndScreenImg.src = "https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/ToggleDeathscreen/EyeIcon.png?raw=true";
   hideEndScreenImg.title = "Click to hide. Click anywhere to bring back";
   hideEndScreenImg.id = "death-screen-toggle";
   let firstMenuScreen = document.getElementsByClassName('T7SB3d')[0];
@@ -910,7 +908,7 @@ let addModSelectorPopup = function() {
     //On fbx we can mute right way. On search, we need to wait until the game is visible.
     if(window.location.href.includes('fbx?fbx=snake_arcade')) {
       //Match mute button, but only if it's on (i.e. the image url includes the word up instead of the word off)
-      let muteButton = document.querySelector('img[alt="Mute"][src*="up"]');
+      let muteButton = document.querySelector('img[alt="Mute"]:not([src*="off"])');
       if(muteButton) {muteButton.click();}
       return;
     }
