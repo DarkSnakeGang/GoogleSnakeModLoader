@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (Dev)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.3
+// @version      1.0.4
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
@@ -1104,6 +1104,18 @@ String.prototype.assertReplaceAll = function(regex, replacement) {
   return assertReplaceAll(this.toString(), regex, replacement);
 };
 
+//Also do this for assertMatch (We just have the prototype version for this).
+//Same as match, but throws an error if it's null.
+String.prototype.assertMatch = function(regex) {
+  let output = this.match(regex);
+
+  //Throw error if nothing was found
+  if(output === null) {
+    diagnoseRegexError(this, regex)
+  }
+  return output;
+}
+
 window.diagnoseRegexError = function(baseText, regex) {  
   if(!(regex instanceof RegExp)) {
     throw new Error('Failed to find match using string argument. No more details available');
@@ -1154,7 +1166,9 @@ window.appendCodeWithinSnakeModule = function(snakeCode, codeToAdd, addSemicolon
   if(addSemicolonAfter) {
     codeToAdd += ';';
   }
-  var newSnakeCode = snakeCode.replace(/}\)\(this\._s\);\n\/\/ Google Inc\./, codeToAdd + '$&');
+
+  //We could remove the first bit before the pipe symbol in the future. This is just to handle before + after a snake update.
+  var newSnakeCode = snakeCode.replace(/}\)\(this\._s\);\n\/\/ Google Inc\.|}\);\n\/\/ Google Inc\./, codeToAdd + '$&');
   return newSnakeCode;
 }
 
