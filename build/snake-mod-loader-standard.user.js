@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (Standard)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.4
+// @version      1.0.5
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
@@ -410,6 +410,17 @@ let modsConfig = {
     hasUrl: true,
     url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js'
   },
+  mouseMode: {
+    displayName: 'Mouse Mode',
+    hasUrl: true,
+    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js'
+  },
+  PuddingMod: {
+    displayName: 'Pudding Mod',
+    hasUrl: true,
+    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js',
+    startHidden: true
+  }
 }
 
 if(IS_DEVELOPER_MODE) {
@@ -560,6 +571,14 @@ let addModSelectorPopup = function() {
     --mod-loader-button-close-col: #b5b5b5;
     --mod-loader-button-apply-col: #5cf062;
   }
+
+  .start-hidden {
+    display: none;
+  }
+
+  .start-hidden.show-hidden {
+    display: block;
+  }
   `;
 
   document.getElementsByTagName('style')[0].innerHTML = document.getElementsByTagName('style')[0].innerHTML + css;
@@ -591,7 +610,8 @@ let addModSelectorPopup = function() {
 
   let modSelectorRadioOptions = '';
   for(const [key, value] of Object.entries(modsConfig)) {
-    modSelectorRadioOptions += `<label style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="${key}">${value.displayName}</label><br>`;
+    let optionalHiddenClass = value.startHidden ? 'class="start-hidden"' : '';
+    modSelectorRadioOptions += `<label ${optionalHiddenClass} style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="${key}">${value.displayName}<br></label>`;
   }
   modSelectorRadioOptions += `<label style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="none">None</label>`;
 
@@ -615,6 +635,7 @@ let addModSelectorPopup = function() {
       <label style="color:var(--mod-loader-font-col) !important"><input id="muted-starts-on" type="checkbox">Mute at start</label><br>
       <label style="color:var(--mod-loader-font-col) !important"><input id="hide-indicator" type="checkbox">Auto-hide mod indicator (h to toggle)</label><br>
       <label style="color:var(--mod-loader-font-col) !important"><input id="dark-mod-theme" type="checkbox">Dark mod loader theme</label><br>
+      <label style="color:var(--mod-loader-font-col) !important"><input id="hidden-mod-toggle" type="checkbox">Show early access mods</label><br>
       <label style="color:var(--mod-loader-font-col) !important"><input id="background-color-picker" type="color" value="#FFFFFF"> Background color on fbx</label><br>
       <label style="color:var(--mod-loader-font-col) !important"><input id="use-custom-theme" type="checkbox">Use custom theme</label><br>
       <div id="custom-theme-pickers">
@@ -715,6 +736,9 @@ let addModSelectorPopup = function() {
   document.getElementById('timer-starts-on').addEventListener('change', function() {
     updateAdvancedSetting('timerStartsOn', this.checked);
   });
+  document.getElementById('hidden-mod-toggle').addEventListener('change', function() {
+    updateAdvancedSetting('showHiddenMods', this.checked);
+  });
   document.getElementById('muted-starts-on').addEventListener('change', function() {
     updateAdvancedSetting('mutedStartsOn', this.checked);
   });
@@ -758,6 +782,15 @@ let addModSelectorPopup = function() {
     });
   }
 
+  //Event listener for toggling the early access/hidden mods
+  document.getElementById('hidden-mod-toggle').addEventListener('change', function() {
+    if(this.checked) {
+      [...document.getElementsByClassName('start-hidden')].forEach(el=>el.classList.add('show-hidden'));
+    } else {
+      [...document.getElementsByClassName('start-hidden')].forEach(el=>el.classList.remove('show-hidden'));
+    }
+  })
+
   //Hide mod selector dialogue when clicking close button
   document.getElementById('close-mod-selector').addEventListener('click', function() {
     document.getElementById('mod-selector-dialogue-container').style.display = 'none';
@@ -787,7 +820,8 @@ let addModSelectorPopup = function() {
   });
 
   let attemptsApplyingAdvancedSettings = 0;
-  setTimeout(applyAdvancedSettingsToGame, 300);//Small delay to give the game more time to load.
+  setTimeout(applyAdvancedSnakeSettingsToGame, 300);//Small delay to give the game more time to load.
+  setTimeout(applyAdvancedNonSnakeSettingsToGame,300);
 
   document.body.addEventListener('keydown',function(event) {
     if(event.key === 'h') {
@@ -802,6 +836,9 @@ let addModSelectorPopup = function() {
     }
     if(advancedSettings.hasOwnProperty('timerStartsOn')) {
       document.getElementById('timer-starts-on').checked = advancedSettings.timerStartsOn;
+    }
+    if(advancedSettings.hasOwnProperty('showHiddenMods')) {
+      document.getElementById('hidden-mod-toggle').checked = advancedSettings.showHiddenMods;
     }
     if(advancedSettings.hasOwnProperty('mutedStartsOn')) {
       document.getElementById('muted-starts-on').checked = advancedSettings.mutedStartsOn;
@@ -857,39 +894,19 @@ let addModSelectorPopup = function() {
     advancedSettings[settingName] = settingValue;
   }
 
-  function applyAdvancedSettingsToGame() {
+  //Advanced settings that need to wait for window.snake
+  function applyAdvancedSnakeSettingsToGame() {
     if(attemptsApplyingAdvancedSettings > 10) {
       //Stop trying to apply advanced setting if we've tried this much and the game still isn't ready
-      console.log('window.snake is still not available after retrying many times. Skipping applying advanced settings');
+      console.log('window.snake is still not available after retrying many times. Skipping applying advanced snake settings');
     } else if(!window.snake) {
       //Game not ready. Wait a bit and then try again.
       console.log('window.snake not ready for when we apply advanced settings. Will retry again after waiting.');
       attemptsApplyingAdvancedSettings++;
-      setTimeout(applyAdvancedSettingsToGame, 300);
+      setTimeout(applyAdvancedSnakeSettingsToGame, 300);
     } else {
-      if(advancedSettings.fbxCentered && window.location.href.includes('fbx?fbx=snake_arcade')) {
-        //Copied from GoogleSnakeCenteredFBX mod
-        document.getElementsByTagName('div')[0].style = 'position:relative;top:50%;transform:translate(0%,-50%);margin:auto;';
-      }
       if(advancedSettings.timerStartsOn) {
         window.snake.speedrun();
-      }
-      if(advancedSettings.mutedStartsOn) {
-        applyMuteToGame();
-      }
-      if(advancedSettings.darkModTheme) {
-        document.getElementById('mod-indicator').classList.add('dark-mod-theme');
-        document.getElementById('mod-selector-dialogue-container').classList.add('dark-mod-theme');
-      }
-      if(advancedSettings.hideIndicator) {
-        setTimeout(function() {
-          if(window.showSnakeErrMessage) {return;}
-
-          let modIndicatorEl = document.getElementById('mod-indicator');
-          if(modIndicatorEl.style.display === 'block') {
-            modIndicatorEl.style.display = 'none';
-          }
-        }, 5000);
       }
       if(advancedSettings.useCustomTheme) {
         window.snake.setCustomTheme(
@@ -902,9 +919,39 @@ let addModSelectorPopup = function() {
           advancedSettings.themeCol7 ?? '#000000'
         );
       }
-      if(window.location.href.includes('fbx?fbx=snake_arcade')) {
-        document.body.style.backgroundColor = advancedSettings.backgroundColor;
+    }
+  }
+
+  function applyAdvancedNonSnakeSettingsToGame() {
+    if(advancedSettings.fbxCentered && window.location.href.includes('fbx?fbx=snake_arcade')) {
+      //Copied from GoogleSnakeCenteredFBX mod
+      let snakeCanvasAncestor = document.querySelector('div[data-is-standalone]');
+      if(snakeCanvasAncestor) {
+        snakeCanvasAncestor.style = 'position:relative;top:50%;transform:translate(0%,-50%);margin:auto;';
       }
+    }
+    if(advancedSettings.mutedStartsOn) {
+      applyMuteToGame();
+    }
+    if(advancedSettings.showHiddenMods) {
+      [...document.getElementsByClassName('start-hidden')].forEach(el=>el.classList.add('show-hidden'));
+    }
+    if(advancedSettings.darkModTheme) {
+      document.getElementById('mod-indicator').classList.add('dark-mod-theme');
+      document.getElementById('mod-selector-dialogue-container').classList.add('dark-mod-theme');
+    }
+    if(advancedSettings.hideIndicator) {
+      setTimeout(function() {
+        if(window.showSnakeErrMessage) {return;}
+
+        let modIndicatorEl = document.getElementById('mod-indicator');
+        if(modIndicatorEl.style.display === 'block') {
+          modIndicatorEl.style.display = 'none';
+        }
+      }, 5000);
+    }
+    if(window.location.href.includes('fbx?fbx=snake_arcade')) {
+      document.body.style.backgroundColor = advancedSettings.backgroundColor;
     }
   }
 
@@ -922,7 +969,7 @@ let addModSelectorPopup = function() {
     let isGameInvis = someRandomGameContainer && someRandomGameContainer.style.display === 'none';
 
     //Handle search snake here.
-    if(!window.snake || isGameInvis) {
+    if(isGameInvis) {
       console.log('Game not visible yet. Waiting to apply mute.');
       setTimeout(applyMuteToGame, 400);
     } else {
