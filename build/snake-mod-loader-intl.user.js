@@ -704,7 +704,7 @@ let addModSelectorPopup = function() {
     </div>
 
     <div id="advanced-options" style="display:none">
-      <hr>
+      <hr style="margin-block-start: 0.5em; margin-block-end: 0.5em;">
       <div id="advanced-settings" style="display: flex;justify-content: space-between;">
         <div id="settings-wrapper-1">
           <label style="color:var(--mod-loader-font-col) !important"><input id="fbx-centered-checkbox" type="checkbox">Make fbx centered</label><br>
