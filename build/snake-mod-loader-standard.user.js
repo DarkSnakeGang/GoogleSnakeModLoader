@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (Standard)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.5
+// @version      1.0.6
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
@@ -393,48 +393,86 @@
 // ==/UserScript==
 
 const IS_DEVELOPER_MODE = false;
+const VERSION = '1.0.6';//Gets set to version in build script
+const UPDATE_URL = 'https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-standard.user.js';//Gets set from build script
 
 let modsConfig = {
   moreMenu: {
     displayName: 'More Menu Mod',
     hasUrl: true,
-    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/main/modloadercode.js'
+    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/main/modloadercode.js',
+    modDescription: {
+      descriptionName: 'More Menu Mod',
+      author: 'Fizhes',
+      authorUrl: 'https://www.youtube.com/@Fizhes',
+      description: 'The most popular mod. Adds options to the menu for more speeds, apple counts and map sizes.'
+    }
   },
   levelEditorMod: {
     displayName: 'Level Editor Mod',
     hasUrl: true,
-    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js'
+    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js',
+    modDescription: {
+      descriptionName: 'Level Editor Mod',
+      author: 'TF2Llama',
+      authorUrl: 'https://www.youtube.com/@TF2Llama',
+      description: 'Click on the board to place walls/fruit etc. Play pre-made levels. Make your own levels. Try the challenge levels.'
+    }
   },
   mouseMode: {
     displayName: 'Mouse Mode',
     hasUrl: true,
-    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js'
-  },
-  mouseMode: {
-    displayName: 'Mouse Mode',
-    hasUrl: true,
-    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js'
+    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js',
+    modDescription: {
+      descriptionName: 'Mouse Mode',
+      author: 'TF2Llama',
+      authorUrl: 'https://www.youtube.com/@TF2Llama',
+      description: 'Control the snake with your mouse. Slightly buggy.'
+    }
   },
   PuddingMod: {
     displayName: 'Pudding Mod',
     hasUrl: true,
     url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js',
-    startHidden: true
+    modDescription: {
+      descriptionName: 'Pudding Mod',
+      author: 'Yarmiplay',
+      authorUrl: 'https://twitch.tv/yarmiplay',
+      description: 'A fairly small mod. Adds a pudding fruit after the fruit bowl option. Shows the speed and count in the top bar.'
+    }
   }
 }
 
 if(IS_DEVELOPER_MODE) {
   modsConfig.testMod = {
     displayName: 'Test Mod',
-    hasUrl: false
+    hasUrl: false,
+    modDescription: {
+      descriptionName: 'Test Mod',
+      author: 'N/A',
+      description: 'For mod developers only. Edit window.testMod in the userscript code.'
+    }
   };
   modsConfig.customUrl = {
-    displayName: 'Load from url (see advanced options)',
+    displayName: 'Load from url',
     customModName: JSON.parse(localStorage.getItem('snakeAdvancedSettings'))?.customModName ?? 'PLEASE_CHOOSE_CUSTOM_NAME_FROM_ADVANCED_SETTINGS',
     url: JSON.parse(localStorage.getItem('snakeAdvancedSettings'))?.customUrl ?? 'PLEASE_CHOOSE_URL_FROM_ADVANCED_SETTINGS',
-    hasUrl: true
+    hasUrl: true,
+    modDescription: {
+      descriptionName: 'Load from url',
+      author: 'N/A',
+      description: 'For mod developers only. Enter details of a mod in the advanced options.'
+    }
   }
 }
+
+//Prevent someone from running more than one copy of mod loader at once.
+if(window.isModLoaderRunning) {
+  alert('It appears that you have more than one copy of the snake mod loader trying to run at the same time. Please disable/remove the extra copy from the tampermonkey settings.');
+  throw Error('Multiple copies of the mod loader trying to run at once.');
+}
+
+window.isModLoaderRunning = true;
 
 //Replace appendChild so we can intercept it
 document.body.appendChildOld = document.body.appendChild;
@@ -478,6 +516,7 @@ document.body.appendChild = function(el) {
     if(!(modsConfig.hasOwnProperty(currentlySelectedMod) || currentlySelectedMod === 'none' || currentlySelectedMod === null)) {
       const errMessage = `Bad value of snakeChosenMod: ${currentlySelectedMod}. The current allowed values are ${Object.keys(modsConfig)}. Changing this to the "None" setting for next time.`;
       localStorage.setItem('snakeChosenMod', 'none');
+      if(confirm('Disallowed choice of mod. Changing this to none. Refresh the page?')) {location.reload();}
       throw new Error(errMessage);
     } 
 
@@ -503,7 +542,14 @@ document.body.appendChild = function(el) {
     }
 
     //Mod specific code to run before running google snake script
-    if(window[modObjectName].runCodeBefore) window[modObjectName].runCodeBefore();
+    if(window[modObjectName].runCodeBefore) {
+      try {
+        window[modObjectName].runCodeBefore();
+      } catch(err) {
+        console.error(err);
+        alert(`Error occurred before running snake code. Attempting to continue, but the mod may be broken. Error message logged to console.`);
+      }
+    }
 
     let newSnakeCode;
     //Alter google snake code and then run it
@@ -523,7 +569,14 @@ document.body.appendChild = function(el) {
     (0,eval)(newSnakeCode);
 
     //Mod specific code to run after running google snake script
-    if(window[modObjectName].runCodeAfter) window[modObjectName].runCodeAfter();
+    if(window[modObjectName].runCodeAfter) {
+      try {
+        window[modObjectName].runCodeAfter();
+      } catch {
+        console.error(err);
+        alert(`Error occurred after running snake code. The mod may be partly broken. Error message logged to console.`);
+      }
+    }
   
   };
 
@@ -594,7 +647,7 @@ let addModSelectorPopup = function() {
       <div id="snake-error-message" style="font-family: helvetica, sans-serif;color: #f44336;margin-top: 2px;display: ${window.showSnakeErrMessage ? 'block' : 'none'};">
         Error changing snake code.
         <br>
-        <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/mod_errors.md" target="_blank">Why does this happen?</a>
+        <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/mod_errors.md" target="_blank" style="color: var(--mod-loader-link-font-col);">Why does this happen?</a>
       </div>
   `;
 
@@ -609,9 +662,24 @@ let addModSelectorPopup = function() {
   });
 
   let modSelectorRadioOptions = '';
+  let modDescriptions = '';
   for(const [key, value] of Object.entries(modsConfig)) {
     let optionalHiddenClass = value.startHidden ? 'class="start-hidden"' : '';
     modSelectorRadioOptions += `<label ${optionalHiddenClass} style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="${key}">${value.displayName}<br></label>`;
+
+    if(value.modDescription) {
+      let authorString = value.modDescription.authorUrl ? `<a href="${value.modDescription.authorUrl}" target="_blank" style="color: var(--mod-loader-link-font-col);">${value.modDescription.author}</a>` : value.modDescription.author;
+
+      modDescriptions += `
+      <div id="mod-descriptions" style="flex: 50%;">
+        <div data-linked-option="${key}" class="mod-description" style="display:none">
+        <span style="font-weight: bold;color:var(--mod-loader-font-col) !important">${value.modDescription.descriptionName}</span><br>
+        <span style="font-weight: bold;color:var(--mod-loader-font-col) !important">Author: ${authorString}</span><br>
+        <span style="color:var(--mod-loader-font-col) !important">${value.modDescription.description}</span>
+        </div>
+      </div>
+      `;
+    }
   }
   modSelectorRadioOptions += `<label style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="none">None</label>`;
 
@@ -622,37 +690,68 @@ let addModSelectorPopup = function() {
   }
 
   const modSelectorModal = `
-  <div id="mod-selector-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:316.4px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;">
+  <div id="mod-selector-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:550px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;">
   <!-- <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 2px 2px 3px #a2a2a2;">Snake Mod Loader</h1> -->
   <!-- <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 1px 1px 1px #000000, 1px 1px 1px #000000, 1px 1px 5px #000000;color: #4674e9;">Snake Mod Loader</h1> -->
   <!-- <div style="background-color: #aad751;height: 17px;position: relative;top: -31px;transform: skewX(-21deg);z-index: 5;"></div> -->
   <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 1px 1px 1px #000000, 1px 1px 1px #000000, 1px 1px 5px #000000;color: #4674e9;border: 5px inset var(--mod-loader-title-border);background-color: var(--mod-loader-title-bg);">Snake Mod Loader</h1>
-    ${modSelectorRadioOptions}
+    <div id="main-panel" style="display: flex;justify-content: start;">
+      <div id="mod-options" style="flex: 50%;min-height: 92px;">
+        ${modSelectorRadioOptions}
+      </div>
+      <div id="mod-descriptions" style="flex: 50%;">
+        ${modDescriptions}
+      </div>
+    </div>
+
     <div id="advanced-options" style="display:none">
       <hr>
-      <label style="color:var(--mod-loader-font-col) !important"><input id="fbx-centered-checkbox" type="checkbox">Make fbx centered</label><br>
-      <label style="color:var(--mod-loader-font-col) !important"><input id="timer-starts-on" type="checkbox">Timer starts on</label><br>
-      <label style="color:var(--mod-loader-font-col) !important"><input id="muted-starts-on" type="checkbox">Mute at start</label><br>
-      <label style="color:var(--mod-loader-font-col) !important"><input id="hide-indicator" type="checkbox">Auto-hide mod indicator (h to toggle)</label><br>
-      <label style="color:var(--mod-loader-font-col) !important"><input id="dark-mod-theme" type="checkbox">Dark mod loader theme</label><br>
-      <label style="color:var(--mod-loader-font-col) !important"><input id="hidden-mod-toggle" type="checkbox">Show early access mods</label><br>
-      <label style="color:var(--mod-loader-font-col) !important"><input id="background-color-picker" type="color" value="#FFFFFF"> Background color on fbx</label><br>
-      <label style="color:var(--mod-loader-font-col) !important"><input id="use-custom-theme" type="checkbox">Use custom theme</label><br>
-      <div id="custom-theme-pickers">
-        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col1" type="color" value="#1D1D1D"> Light Tiles</label><br>
-        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col2" type="color" value="#161616"> Dark Tiles</label><br>
-        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col3" type="color" value="#111111"> Shadow</label><br>
-        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col4" type="color" value="#000000"> Border</label><br>
-        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col5" type="color" value="#1D1D1D"> Lock Sign</label><br>
-        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col6" type="color" value="#111111"> Top Bar</label><br>
-        <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col7" type="color" value="#000000"> Endscreen background</label><br>
+      <div id="advanced-settings" style="display: flex;justify-content: space-between;">
+        <div id="settings-wrapper-1">
+          <label style="color:var(--mod-loader-font-col) !important"><input id="fbx-centered-checkbox" type="checkbox">Make fbx centered</label><br>
+          <label style="color:var(--mod-loader-font-col) !important"><input id="timer-starts-on" type="checkbox">Timer starts on</label><br>
+          <label style="color:var(--mod-loader-font-col) !important"><input id="muted-starts-on" type="checkbox">Mute at start</label><br>
+          <label style="color:var(--mod-loader-font-col) !important"><input id="hide-indicator" type="checkbox">Auto-hide mod indicator (h to toggle)</label><br>
+          <!--<label style="color:var(--mod-loader-font-col) !important"><input id="hidden-mod-toggle" type="checkbox">Show early access mods</label><br>-->
+          <label style="color:var(--mod-loader-font-col) !important"><input id="dark-mod-theme" type="checkbox">Dark mod loader theme</label><br>
+          ${customUrlOptions}
+        </div>
+        <div id="settings-wrapper-2">
+          <label style="color:var(--mod-loader-font-col) !important"><input id="background-color-picker" type="color" value="#FFFFFF"> Background color on fbx</label><br>
+          <label style="color:var(--mod-loader-font-col) !important"><input id="use-custom-theme" type="checkbox">Use custom theme</label><br>
+          <div id="custom-theme-pickers" style="display: none;">
+            <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col1" type="color" value="#1D1D1D"> Light Tiles</label><br>
+            <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col2" type="color" value="#161616"> Dark Tiles</label><br>
+            <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col3" type="color" value="#111111"> Shadow</label><br>
+            <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col4" type="color" value="#000000"> Border</label><br>
+            <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col5" type="color" value="#1D1D1D"> Lock Sign</label><br>
+            <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col6" type="color" value="#111111"> Top Bar</label><br>
+            <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col7" type="color" value="#000000"> Endscreen background</label><br>
+          </div>
+        </div>
       </div>
-      ${customUrlOptions}
     </div>
-    <br>
-    <div style="display:inline-block;padding-top: 15px;margin-bottom: 4px;text-align: center;font-family: arial, sans-serif;color: var(--mod-loader-link-font-col);text-decoration: underline;cursor: pointer;user-select:none" id="advanced-options-toggle">Advanced options</div>
-    <div id="apply-mod" class="mod-sel-btn" style="display:inline-block;background-color: var(--mod-loader-button-bg);padding: 4px;margin-top: 7px;border-radius: 3px;border: 2px solid var(--mod-loader-button-apply-col);color: var(--mod-loader-button-apply-col);font-weight: bold;user-select: none;float:right;cursor: pointer;">Apply</div>
-    <div id="close-mod-selector" class="mod-sel-btn" style="display:inline-block;background-color: var(--mod-loader-button-bg);padding: 4px;margin-top: 7px;margin-right:10px;border-radius: 3px;border: 2px solid var(--mod-loader-button-close-col);color: var(--mod-loader-button-close-col);font-weight: bold;user-select: none;cursor: pointer;float:right">Close</div>
+
+    <div id="bottom-buttons-wrapper" style="display: flex;justify-content: space-between;">
+      <div style="display:inline-block;padding-top: 15px;margin-bottom: 4px;text-align: center;font-family: arial, sans-serif;color: var(--mod-loader-link-font-col);text-decoration: underline;cursor: pointer;user-select:none" id="advanced-options-toggle">
+        Advanced options
+      </div>
+      <div id="version-info" style="color:var(--mod-loader-font-col) !important;padding-top: 15px;">
+        Version ${VERSION} 
+        <span id="update-link" style="display:none">
+          <a id="update-link-text" href="${UPDATE_URL}" style="color: var(--mod-loader-link-font-col);">(update to vNext)</a>
+        </span>
+      </div>
+
+      <div id="right-buttons">
+        <div id="close-mod-selector" class="mod-sel-btn" style="display:inline-block;background-color: var(--mod-loader-button-bg);padding: 4px;margin-top: 7px;margin-right:10px;border-radius: 3px;border: 2px solid var(--mod-loader-button-close-col);color: var(--mod-loader-button-close-col);font-weight: bold;user-select: none;cursor: pointer;">
+          Close
+        </div>
+        <div id="apply-mod" class="mod-sel-btn" style="display:inline-block;background-color: var(--mod-loader-button-bg);padding: 4px;margin-top: 7px;border-radius: 3px;border: 2px solid var(--mod-loader-button-apply-col);color: var(--mod-loader-button-apply-col);font-weight: bold;user-select: none;cursor: pointer;">
+          Apply
+        </div>
+      </div>
+    </div>
   </div>
   `;
 
@@ -702,15 +801,23 @@ let addModSelectorPopup = function() {
   if(modsConfig.hasOwnProperty(currentlySelectedMod) && currentlySelectedMod !== null && currentlySelectedMod !== 'none') {
     document.querySelector(`input[name="mod-selector"][value="${currentlySelectedMod}"]`).checked = true;
     document.getElementById('mod-name-span').textContent = modsConfig[currentlySelectedMod].displayName;
+    let descriptionEl = document.querySelector(`div.mod-description[data-linked-option="${currentlySelectedMod}"]`);
+    if(descriptionEl) {descriptionEl.style.display = 'block';}
   } else {
     document.querySelector('input[name="mod-selector"][value="none"]').checked = true;
     document.getElementById('mod-name-span').textContent = 'None';
   }
 
-  //save the mod selected when clicking on any of the radio buttons
+  //Update the checked/ticked mod when clicking on any of the radio buttons. Also show the description for it.
   [...document.querySelectorAll('input[type="radio"][name="mod-selector"]')].forEach(radioEl=>{
     radioEl.addEventListener('click', function(){
+      //Mark mod as selected for when we hit apply
       newlySelectedMod = this.value;
+      [...document.getElementsByClassName('mod-description')].forEach(el=>{
+        el.style.display = 'none';
+        let descriptionEl = document.querySelector(`div.mod-description[data-linked-option="${this.value}"]`);
+        if(descriptionEl) {descriptionEl.style.display = 'block';}
+      });
     });
   });
 
@@ -736,9 +843,9 @@ let addModSelectorPopup = function() {
   document.getElementById('timer-starts-on').addEventListener('change', function() {
     updateAdvancedSetting('timerStartsOn', this.checked);
   });
-  document.getElementById('hidden-mod-toggle').addEventListener('change', function() {
+  /*document.getElementById('hidden-mod-toggle').addEventListener('change', function() {
     updateAdvancedSetting('showHiddenMods', this.checked);
-  });
+  });*/
   document.getElementById('muted-starts-on').addEventListener('change', function() {
     updateAdvancedSetting('mutedStartsOn', this.checked);
   });
@@ -783,13 +890,13 @@ let addModSelectorPopup = function() {
   }
 
   //Event listener for toggling the early access/hidden mods
-  document.getElementById('hidden-mod-toggle').addEventListener('change', function() {
+  /*document.getElementById('hidden-mod-toggle').addEventListener('change', function() {
     if(this.checked) {
       [...document.getElementsByClassName('start-hidden')].forEach(el=>el.classList.add('show-hidden'));
     } else {
       [...document.getElementsByClassName('start-hidden')].forEach(el=>el.classList.remove('show-hidden'));
     }
-  })
+  });*/
 
   //Hide mod selector dialogue when clicking close button
   document.getElementById('close-mod-selector').addEventListener('click', function() {
@@ -830,6 +937,8 @@ let addModSelectorPopup = function() {
     }
   });
 
+  showUpdateLinkIfNeeded();
+
   function updateAdvancedSettingInputs() {
     if(advancedSettings.hasOwnProperty('fbxCentered')) {
       document.getElementById('fbx-centered-checkbox').checked = advancedSettings.fbxCentered;
@@ -837,9 +946,9 @@ let addModSelectorPopup = function() {
     if(advancedSettings.hasOwnProperty('timerStartsOn')) {
       document.getElementById('timer-starts-on').checked = advancedSettings.timerStartsOn;
     }
-    if(advancedSettings.hasOwnProperty('showHiddenMods')) {
+    /*if(advancedSettings.hasOwnProperty('showHiddenMods')) {
       document.getElementById('hidden-mod-toggle').checked = advancedSettings.showHiddenMods;
-    }
+    }*/
     if(advancedSettings.hasOwnProperty('mutedStartsOn')) {
       document.getElementById('muted-starts-on').checked = advancedSettings.mutedStartsOn;
     }
@@ -977,6 +1086,25 @@ let addModSelectorPopup = function() {
       let muteButton = document.querySelector('img[alt="Mute"][src*="up"]');
       if(muteButton) {muteButton.click();}
     }    
+  }
+
+  //Fetches json file with latest version and shows the update link if it is different to our version
+  function showUpdateLinkIfNeeded() {
+    fetch('https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeModLoader/main/build/mod-info.json').then(
+      function(response) {
+        return response.text();
+      }
+    ).then(function(responseText) {
+      try {
+        let latestVersion = JSON.parse(responseText).version;
+        if(latestVersion !== VERSION) {
+          document.getElementById('update-link').style.display = 'inline';
+          document.getElementById('update-link-text').textContent = `(update to ${latestVersion})`;
+        }
+      } catch(err) {
+        console.error(err);
+      }
+    });
   }
 }
 

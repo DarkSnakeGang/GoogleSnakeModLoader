@@ -75,7 +75,7 @@ function processModInfoJson(version) {
   if(!/%VERSION%/.test(modInfoBody)) {
     throw new Error("Couldn't find %VERSION% in mod-info.json");
   }
-  modInfoBody.replace('%VERSION%', version);
+  modInfoBody = modInfoBody.replace('%VERSION%', version);
 
   //Write json file
   fs.writeFile(__dirname + '/../build/mod-info.json', modInfoBody, function(err) {
