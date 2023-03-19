@@ -405,7 +405,7 @@ let modsConfig = {
       descriptionName: 'More Menu Mod',
       author: 'Fizhes',
       authorUrl: 'https://www.youtube.com/@Fizhes',
-      description: 'The most popular mod. Adds options to the menu for more speeds, apple counts and map sizes.'
+      description: 'The most popular mod. Adds options to the menu for more speeds, apple counts and map sizes. Other contributors: ScienceCrafter, BrightyLighty, CarL'
     }
   },
   levelEditorMod: {
@@ -671,13 +671,11 @@ let addModSelectorPopup = function() {
       let authorString = value.modDescription.authorUrl ? `<a href="${value.modDescription.authorUrl}" target="_blank" style="color: var(--mod-loader-link-font-col);">${value.modDescription.author}</a>` : value.modDescription.author;
 
       modDescriptions += `
-      <div id="mod-descriptions" style="flex: 50%;">
         <div data-linked-option="${key}" class="mod-description" style="display:none">
-        <span style="font-weight: bold;color:var(--mod-loader-font-col) !important">${value.modDescription.descriptionName}</span><br>
-        <span style="font-weight: bold;color:var(--mod-loader-font-col) !important">Author: ${authorString}</span><br>
-        <span style="color:var(--mod-loader-font-col) !important">${value.modDescription.description}</span>
+          <span style="font-weight: bold;color:var(--mod-loader-font-col) !important">${value.modDescription.descriptionName}</span><br>
+          <span style="font-weight: bold;color:var(--mod-loader-font-col) !important">Author: ${authorString}</span><br>
+          <span style="color:var(--mod-loader-font-col) !important">${value.modDescription.description}</span>
         </div>
-      </div>
       `;
     }
   }
@@ -696,10 +694,10 @@ let addModSelectorPopup = function() {
   <!-- <div style="background-color: #aad751;height: 17px;position: relative;top: -31px;transform: skewX(-21deg);z-index: 5;"></div> -->
   <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 1px 1px 1px #000000, 1px 1px 1px #000000, 1px 1px 5px #000000;color: #4674e9;border: 5px inset var(--mod-loader-title-border);background-color: var(--mod-loader-title-bg);">Snake Mod Loader</h1>
     <div id="main-panel" style="display: flex;justify-content: start;">
-      <div id="mod-options" style="flex: 50%;min-height: 92px;">
+      <div id="mod-options" style="flex: 45%;min-height: 115px;">
         ${modSelectorRadioOptions}
       </div>
-      <div id="mod-descriptions" style="flex: 50%;">
+      <div id="mod-descriptions" style="flex: 55%;">
         ${modDescriptions}
       </div>
     </div>
