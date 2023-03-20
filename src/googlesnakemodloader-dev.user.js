@@ -1091,7 +1091,7 @@ let addModSelectorPopup = function() {
     ).then(function(responseText) {
       try {
         let latestVersion = JSON.parse(responseText).version;
-        if(latestVersion !== VERSION) {
+        if(latestVersion !== VERSION && !IS_DEVELOPER_MODE) {
           document.getElementById('update-link').style.display = 'inline';
           document.getElementById('update-link-text').textContent = `(update to ${latestVersion})`;
         }
