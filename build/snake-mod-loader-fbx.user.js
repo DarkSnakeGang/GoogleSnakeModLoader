@@ -381,7 +381,7 @@ document.body.appendChild = function(el) {
     if(window[modObjectName].runCodeAfter) {
       try {
         window[modObjectName].runCodeAfter();
-      } catch {
+      } catch (err) {
         console.error(err);
         alert(`Error occurred after running snake code. The mod may be partly broken. Error message logged to console.`);
       }
