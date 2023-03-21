@@ -1066,7 +1066,7 @@ let addModSelectorPopup = function() {
     //On fbx we can mute right way. On search, we need to wait until the game is visible.
     if(window.location.href.includes('fbx?fbx=snake_arcade')) {
       //Match mute button, but only if it's on (i.e. the image url includes the word up instead of the word off)
-      let muteButton = document.querySelector('img[alt="Mute"]:not([src*="off"])');
+      let muteButton = document.querySelector('img.oGdex.JWsmhb:not([src*="off"])');
       if(muteButton) {muteButton.click();}
       return;
     }
@@ -1095,7 +1095,7 @@ let addModSelectorPopup = function() {
     ).then(function(responseText) {
       try {
         let latestVersion = JSON.parse(responseText).version;
-        if(latestVersion !== VERSION) {
+        if(latestVersion !== VERSION && !IS_DEVELOPER_MODE) {
           document.getElementById('update-link').style.display = 'inline';
           document.getElementById('update-link-text').textContent = `(update to ${latestVersion})`;
         }
@@ -1129,7 +1129,7 @@ function loadAndRunCodeSynchronous(url) {
       console.log(`Loading selected mod returned non-200 status. Received: ${this.status}`);
     }
   };
-  req.error = function(event) {
+  req.onerror = function(event) {
     console.error(`Error when attempting to retrieve mod code from ${url}`);
     console.log(event);
   };
