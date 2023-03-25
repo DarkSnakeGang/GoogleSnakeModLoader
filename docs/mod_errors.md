@@ -7,7 +7,3 @@ We will try to fix the snake mods whenever this happens.
 This typically can take a few days depending on how busy we are and how broken the mods are.
 
 Please be patient when this happens.
-
-March 2023 note: [Enabling the mod in incognito mode](https://www.howtogeek.com/702123/how-to-enable-an-extension-in-chromes-incognito-mode/) and then running the mod in incognito mode (ctrl+shift+n on chrome) will fix these errors for some users. This is because google are running an A/B test and the mods only work for the "control" group. Installing the mod in a different chrome profile or browser may also work. (Edit: March 23rd - it looks like this experiment has stopped)
-
-March 23rd note: It appears that there was a small snake update around this time, which affected some of the mods, but not all.
