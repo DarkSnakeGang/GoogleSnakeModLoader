@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (Intl)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.6
+// @version      1.0.7
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
@@ -392,7 +392,7 @@
 // ==/UserScript==
 
 const IS_DEVELOPER_MODE = false;
-const VERSION = '1.0.6';//Gets set to version in build script
+const VERSION = '1.0.7';//Gets set to version in build script
 const UPDATE_URL = 'https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-intl.user.js';//Gets set from build script
 
 let modsConfig = {
@@ -438,6 +438,17 @@ let modsConfig = {
       author: 'Yarmiplay',
       authorUrl: 'https://twitch.tv/yarmiplay',
       description: 'A fairly small mod. Adds a pudding fruit after the fruit bowl option. Shows the speed and count in the top bar.'
+    }
+  },
+  DiceMod: {
+    displayName: 'Dice Mod',
+    hasUrl: true,
+    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/DiceMod.js',
+    modDescription: {
+      descriptionName: 'Dice Mod',
+      author: 'Yarmiplay',
+      authorUrl: 'https://twitch.tv/yarmiplay',
+      description: 'Adds new apple count "Dice", which spawns between 1 and 6 apples when the last available apple is eaten. Has PuddingMod built in.'
     }
   }
 }
