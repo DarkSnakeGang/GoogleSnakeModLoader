@@ -1,9 +1,9 @@
 # Different Version of snake
 
-If you are reading this, and the google snake mods aren't working, then you'll need to do one of the following workarounds:
+If you are reading this, and the google snake mods aren't working, then you'll need to do one of the following workarounds (there is a chance that these fixes may not solve the issue):
 
 1. Run the mods in incognito mode. You'll need to first allow tampermonkey to run in incognito mode - [see here for how to do this](https://www.howtogeek.com/702123/how-to-enable-an-extension-in-chromes-incognito-mode/).
-Then go to incognito mode (ctrl+shift+n on chrome) and play snake there. 
+Then go to incognito mode (ctrl+shift+n on chrome) and play snake there.
 3. Download and run the mods in another browser.
 4. Download and run the mods in a different chrome profile.
 
