@@ -1,6 +1,6 @@
 # Google Snake Mod Loader
 
-New way to get snake mods since bookmarks broke.
+A new way to get snake mods since bookmarks broke.
 
 Featured mods (may change):
 - More Menu Mod
@@ -10,7 +10,7 @@ Featured mods (may change):
 
 # How to install
 
-1) Install a userscript manager. We recommend the **Tampermonkey** browser extension for this. Note that greasemonkey won't work.
+1) Install a user script manager. We recommend the **Tampermonkey** browser extension for this. Note that Greasemonkey won't work.
 
 Use the relevant link for your browser.
 
@@ -22,13 +22,13 @@ Use the relevant link for your browser.
 | Microsoft Edge  | [Tampermonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)  |
 | Opera  | [Tampermonkey](https://addons.opera.com/extensions/details/tampermonkey-beta/) | You must [enable it on search page results](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/opera_extra_steps.md) otherwise it won't work. |
 
-2) Click one of the install links below to get the snake mod and confirm it. The version will depend on what you search for to play google snake or whether you play it on the standalone fbx page (https://www.google.com/fbx?fbx=snake_arcade)<br>
+2) Click one of the install links below to get the snaking mod and confirm it. The version will depend on what you search for to play google snake or whether you play it on the standalone fbx page (https://www.google.com/fbx?fbx=snake_arcade)<br>
 
 | Where do you play snake  | Description | Install |
 | ------------- | ------------- |------------- |
 | standalone [fbx](https://www.google.com/fbx?fbx=snake_arcade) page only  | Recommended if you only play on the fbx page | [INSTALL (fbx-only)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-fbx.user.js) |
 | I google the word **snake** or a phrase containing it (google *snake*, *snake* game etc). We also support other languages: serpiente, serpent, slange, [full list](#Search-terms-for-standard-version) | Works for common search terms and on the fbx page. | [INSTALL (standard)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-standard.user.js) |
-| anywhere | This version will run on every google search page, so only use it if the other versions don't run for you | [INSTALL (international)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-intl.user.js) |
+| anywhere | This version will run on every Google search page, so only use it if the other versions don't run for you | [INSTALL (international)](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-intl.user.js) |
 
 3) Play Google Snake. The mod will run automatically. A panel will show up in the bottom right that lets you choose which mod to run.
 
@@ -51,9 +51,9 @@ Use the relevant link for your browser.
 ## Pudding Mod
 ![image](https://user-images.githubusercontent.com/69080709/227233548-5b206072-7705-4102-9e70-95bc692ebdc5.png)
 
-# Search terms for standard version
+# Search terms for the standard version
 
-The standard version will work for search terms including any of the below words/phrases. It must have the full word (i.e. "google snaking" or "google snaek" won't work, since they don't contain the word snake)
+The standard version will work for search terms, including any of the below words/phrases. It must have the complete word (i.e. "google snaking" or "google snaek" won't work since they don't contain the word snake)
 
 snake  
 serpiente  
