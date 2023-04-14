@@ -200,96 +200,96 @@
 // @match        https://*.google.co.zw/fbx?fbx=snake_arcade
 // @match        https://*.google.cat/fbx?fbx=snake_arcade
 // ==/UserScript==
-
 const IS_DEVELOPER_MODE = false;
-const VERSION = '1.0.7';//Gets set to version in build script
-const UPDATE_URL = 'https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-fbx.user.js';//Gets set from build script
+//Gets set to version in build script
+const VERSION = '1.0.7';
+const UPDATE_URL = 'https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-fbx.user.js'; //Gets set from build script
 
 let modsConfig = {
-  moreMenu: {
-    displayName: 'More Menu Mod',
-    hasUrl: true,
-    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/main/modloadercode.js',
-    modDescription: {
-      descriptionName: 'More Menu Mod',
-      author: 'Fizhes',
-      authorUrl: 'https://www.youtube.com/@Fizhes',
-      description: 'The most popular mod. Adds options to the menu for more speeds, apple counts and map sizes. Other contributors: ScienceCrafter, BrightyLighty, CarL'
-    }
-  },
-  levelEditorMod: {
-    displayName: 'Level Editor Mod',
-    hasUrl: true,
-    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js',
-    modDescription: {
-      descriptionName: 'Level Editor Mod',
-      author: 'TF2Llama',
-      authorUrl: 'https://www.youtube.com/@TF2Llama',
-      description: 'Click on the board to place walls/fruit etc. Play pre-made levels. Make your own levels. Try the challenge levels.'
-    }
-  },
-  mouseMode: {
-    displayName: 'Mouse Mode',
-    hasUrl: true,
-    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js',
-    modDescription: {
-      descriptionName: 'Mouse Mode',
-      author: 'TF2Llama',
-      authorUrl: 'https://www.youtube.com/@TF2Llama',
-      description: 'Control the snake with your mouse. Slightly buggy.'
-    }
-  },
-  PuddingMod: {
-    displayName: 'Pudding Mod',
-    hasUrl: true,
-    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js',
-    modDescription: {
-      descriptionName: 'Pudding Mod',
-      author: 'Yarmiplay',
-      authorUrl: 'https://twitch.tv/yarmiplay',
-      description: 'A fairly small mod. Adds a pudding fruit after the fruit bowl option. Shows the speed and count in the top bar.'
-    }
-  },
-  DiceMod: {
-    displayName: 'Dice Mod',
-    hasUrl: true,
-    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/DiceMod.js',
-    modDescription: {
-      descriptionName: 'Dice Mod',
-      author: 'Yarmiplay',
-      authorUrl: 'https://twitch.tv/yarmiplay',
-      description: 'Adds new apple count "Dice", which spawns between 1 and 6 apples when the last available apple is eaten. Has PuddingMod built in.'
-    }
-  }
-}
+	moreMenu: {
+		displayName: 'More Menu Mod',
+		hasUrl: true,
+		url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/main/modloadercode.js',
+		modDescription: {
+			descriptionName: 'More Menu Mod',
+			author: 'Fizhes',
+			authorUrl: 'https://www.youtube.com/@Fizhes',
+			description: 'The most popular mod. Adds options to the menu for more speeds, apple counts and map sizes. Other contributors: ScienceCrafter, BrightyLighty, CarL'
+		}
+	},
+	levelEditorMod: {
+		displayName: 'Level Editor Mod',
+		hasUrl: true,
+		url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js',
+		modDescription: {
+			descriptionName: 'Level Editor Mod',
+			author: 'TF2Llama',
+			authorUrl: 'https://www.youtube.com/@TF2Llama',
+			description: 'Click on the board to place walls/fruit etc. Play pre-made levels. Make your own levels. Try the challenge levels.'
+		}
+	},
+	mouseMode: {
+		displayName: 'Mouse Mode',
+		hasUrl: true,
+		url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js',
+		modDescription: {
+			descriptionName: 'Mouse Mode',
+			author: 'TF2Llama',
+			authorUrl: 'https://www.youtube.com/@TF2Llama',
+			description: 'Control the snake with your mouse. Slightly buggy.'
+		}
+	},
+	PuddingMod: {
+		displayName: 'Pudding Mod',
+		hasUrl: true,
+		url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js',
+		modDescription: {
+			descriptionName: 'Pudding Mod',
+			author: 'Yarmiplay',
+			authorUrl: 'https://twitch.tv/yarmiplay',
+			description: 'A fairly small mod. Adds a pudding fruit after the fruit bowl option. Shows the speed and count in the top bar.'
+		}
+	},
+	DiceMod: {
+		displayName: 'Dice Mod',
+		hasUrl: true,
+		url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/DiceMod.js',
+		modDescription: {
+			descriptionName: 'Dice Mod',
+			author: 'Yarmiplay',
+			authorUrl: 'https://twitch.tv/yarmiplay',
+			description: 'Adds new apple count "Dice", which spawns between 1 and 6 apples when the last available apple is eaten. Has PuddingMod built in.'
+		}
+	}
+};
 
-if(IS_DEVELOPER_MODE) {
-  modsConfig.testMod = {
-    displayName: 'Test Mod',
-    hasUrl: false,
-    modDescription: {
-      descriptionName: 'Test Mod',
-      author: 'N/A',
-      description: 'For mod developers only. Edit window.testMod in the userscript code.'
-    }
-  };
-  modsConfig.customUrl = {
-    displayName: 'Load from url',
-    customModName: JSON.parse(localStorage.getItem('snakeAdvancedSettings'))?.customModName ?? 'PLEASE_CHOOSE_CUSTOM_NAME_FROM_ADVANCED_SETTINGS',
-    url: JSON.parse(localStorage.getItem('snakeAdvancedSettings'))?.customUrl ?? 'PLEASE_CHOOSE_URL_FROM_ADVANCED_SETTINGS',
-    hasUrl: true,
-    modDescription: {
-      descriptionName: 'Load from url',
-      author: 'N/A',
-      description: 'For mod developers only. Enter details of a mod in the advanced options.'
-    }
-  }
+if (IS_DEVELOPER_MODE) {
+	modsConfig.testMod = {
+		displayName: 'Test Mod',
+		hasUrl: false,
+		modDescription: {
+			descriptionName: 'Test Mod',
+			author: 'N/A',
+			description: 'For mod developers only. Edit window.testMod in the userscript code.'
+		}
+	};
+	modsConfig.customUrl = {
+		displayName: 'Load from url',
+		customModName: JSON.parse(localStorage.getItem('snakeAdvancedSettings')) ? .customModName ? ? 'PLEASE_CHOOSE_CUSTOM_NAME_FROM_ADVANCED_SETTINGS',
+		url: JSON.parse(localStorage.getItem('snakeAdvancedSettings')) ? .customUrl ? ? 'PLEASE_CHOOSE_URL_FROM_ADVANCED_SETTINGS',
+		hasUrl: true,
+		modDescription: {
+			descriptionName: 'Load from url',
+			author: 'N/A',
+			description: 'For mod developers only. Enter details of a mod in the advanced options.'
+		}
+	}
 }
 
 //Prevent someone from running more than one copy of mod loader at once.
-if(window.isModLoaderRunning) {
-  alert('It appears that you have more than one copy of the snake mod loader trying to run at the same time. Please disable/remove the extra copy from the tampermonkey settings.');
-  throw Error('Multiple copies of the mod loader trying to run at once.');
+if (window.isModLoaderRunning) {
+	alert('It appears that you have more than one copy of the snake mod loader trying to run at the same time. Please disable/remove the extra copy from the tampermonkey settings.');
+	throw Error('Multiple copies of the mod loader trying to run at once.');
 }
 
 window.isModLoaderRunning = true;
@@ -298,117 +298,121 @@ window.isModLoaderRunning = true;
 document.body.appendChildOld = document.body.appendChild;
 
 document.body.appendChild = function(el) {
-  if(el.tagName !== 'SCRIPT') return document.body.appendChildOld(el);
-  if(el.src === '' || el.src.includes('apis.google.com')) return document.body.appendChildOld(el);
+	if (el.tagName !== 'SCRIPT') return document.body.appendChildOld(el);
+	if (el.src === '' || el.src.includes('apis.google.com')) return document.body.appendChildOld(el);
 
-  const currentlySelectedMod = localStorage.getItem('snakeChosenMod');
+	const currentlySelectedMod = localStorage.getItem('snakeChosenMod');
 
-  //Just do default behaviour if it isn't the snake script or we don't have a mod to run
-  const regexForScriptSrc = window.location.href.includes('fbx?fbx=snake_arcade') ? /xjs=s1$/ : /xjs=s2$/;
-  let isSrcCorrectFormat = regexForScriptSrc.test(el.src) || el.src.includes('funbox');
-  if(!isSrcCorrectFormat || currentlySelectedMod === null || currentlySelectedMod === 'none') return document.body.appendChildOld(el);
+	//Just do default behaviour if it isn't the snake script or we don't have a mod to run
+	const regexForScriptSrc = window.location.href.includes('fbx?fbx=snake_arcade') ? /xjs=s1$/ : /xjs=s2$/;
+	let isSrcCorrectFormat = regexForScriptSrc.test(el.src) || el.src.includes('funbox');
+	if (!isSrcCorrectFormat || currentlySelectedMod === null || currentlySelectedMod === 'none') return document.body.appendChildOld(el);
 
-  //default behaviour if we can't find any snake images on the webpage
-  if(document.body.querySelector('img[src^="//www.google.com/logos/fnbx/snake_arcade"]') === null) return document.body.appendChildOld(el);
+	//default behaviour if we can't find any snake images on the webpage
+	if (document.body.querySelector('img[src^="//www.google.com/logos/fnbx/snake_arcade"]') === null) return document.body.appendChildOld(el);
 
-  //Make sure to return the correct thing that appendChild would normally return
-  let returnVal = el instanceof DocumentFragment ? new DocumentFragment : el;
+	//Make sure to return the correct thing that appendChild would normally return
+	let returnVal = el instanceof DocumentFragment ? new DocumentFragment : el;
 
-  /*
-    Run some code depending on what google snake mod was chosen
-    Request the text contents of the google snake code.
-    Alter the contents of the google snake code (depending on the selected mod) and then eval
-    Run some code afterwards depending on what google snake mod was chosen
-  */
-  const req = new XMLHttpRequest();
-  req.open('GET', el.src, false);
+	/*
+	  Run some code depending on what google snake mod was chosen
+	  Request the text contents of the google snake code.
+	  Alter the contents of the google snake code (depending on the selected mod) and then eval
+	  Run some code afterwards depending on what google snake mod was chosen
+	*/
+	const req = new XMLHttpRequest();
+	req.open('GET', el.src, false);
 
-  req.onload = function() {
-    //Do default behaviour if the source code doesn't look like the google snake code.
-    //Set returnVal so it returns the correct thing for document.body.appendChild.
-    if(this.responseText.indexOf('trophy') === -1 || this.responseText.indexOf('apple') === -1 || this.responseText.indexOf('snake_arcade') === -1) {
-      returnVal = document.body.appendChildOld(el);
-      return;
-    }
+	req.onload = function() {
+		//Do default behaviour if the source code doesn't look like the google snake code.
+		//Set returnVal so it returns the correct thing for document.body.appendChild.
+		if (this.responseText.indexOf('trophy') === -1 || this.responseText.indexOf('apple') === -1 || this.responseText.indexOf('snake_arcade') === -1) {
+			returnVal = document.body.appendChildOld(el);
+			return;
+		}
 
-    console.log(`Selected mod: ${currentlySelectedMod}`);
-    //Make sure currentlySelectedMod is an allowed value
-    if(!(modsConfig.hasOwnProperty(currentlySelectedMod) || currentlySelectedMod === 'none' || currentlySelectedMod === null)) {
-      const errMessage = `Bad value of snakeChosenMod: ${currentlySelectedMod}. The current allowed values are ${Object.keys(modsConfig)}. Changing this to the "None" setting for next time.`;
-      localStorage.setItem('snakeChosenMod', 'none');
-      if(confirm('Disallowed choice of mod. Changing this to none. Refresh the page?')) {location.reload();}
-      throw new Error(errMessage);
-    } 
+		console.log(`Selected mod: ${currentlySelectedMod}`);
+		//Make sure currentlySelectedMod is an allowed value
+		if (!(modsConfig.hasOwnProperty(currentlySelectedMod) || currentlySelectedMod === 'none' || currentlySelectedMod === null)) {
+			const errMessage = `Bad value of snakeChosenMod: ${currentlySelectedMod}. The current allowed values are ${Object.keys(modsConfig)}. Changing this to the "None" setting for next time.`;
+			localStorage.setItem('snakeChosenMod', 'none');
+			if (confirm('Disallowed choice of mod. Changing this to none. Refresh the page?')) {
+				location.reload();
+			}
+			throw new Error(errMessage);
+		}
 
-    if(modsConfig[currentlySelectedMod].hasUrl) {
-      const modUrl = modsConfig[currentlySelectedMod].url;
+		if (modsConfig[currentlySelectedMod].hasUrl) {
+			const modUrl = modsConfig[currentlySelectedMod].url;
 
-      //Load and run the code for this mod.
-      console.log(`Retrieving code for this mod from ${modUrl}`);
+			//Load and run the code for this mod.
+			console.log(`Retrieving code for this mod from ${modUrl}`);
 
-      loadAndRunCodeSynchronous(modUrl);
-    }
+			loadAndRunCodeSynchronous(modUrl);
+		}
 
-    //Name of the object that contains runCodeBefore/alterSnakeCode/runCodeAfter methods
-    let modObjectName = currentlySelectedMod;
-    if(IS_DEVELOPER_MODE && modsConfig[currentlySelectedMod].customModName) {
-      modObjectName = modsConfig[currentlySelectedMod].customModName;
-    }
+		//Name of the object that contains runCodeBefore/alterSnakeCode/runCodeAfter methods
+		let modObjectName = currentlySelectedMod;
+		if (IS_DEVELOPER_MODE && modsConfig[currentlySelectedMod].customModName) {
+			modObjectName = modsConfig[currentlySelectedMod].customModName;
+		}
 
-    //Skip below if either the code didn't load, or it has the wrong variable
-    if(!window[modObjectName]) {
-      (0,eval)(this.responseText);
-      throw new Error(`We were expecting to find a global variable called window.${modObjectName} but this is missing. Running snake without the mod.`);
-    }
+		//Skip below if either the code didn't load, or it has the wrong variable
+		if (!window[modObjectName]) {
+			(0, eval)(this.responseText);
+			throw new Error(`We were expecting to find a global variable called window.${modObjectName} but this is missing. Running snake without the mod.`);
+		}
 
-    //Mod specific code to run before running google snake script
-    if(window[modObjectName].runCodeBefore) {
-      try {
-        window[modObjectName].runCodeBefore();
-      } catch(err) {
-        console.error(err);
-        alert(`Error occurred before running snake code. Attempting to continue, but the mod may be broken. Error message logged to console.`);
-      }
-    }
+		//Mod specific code to run before running google snake script
+		if (window[modObjectName].runCodeBefore) {
+			try {
+				window[modObjectName].runCodeBefore();
+			} catch (err) {
+				console.error(err);
+				alert(`Error occurred before running snake code. Attempting to continue, but the mod may be broken. Error message logged to console.`);
+			}
+		}
 
-    let newSnakeCode;
-    //Alter google snake code and then run it
-    if(window[modObjectName].alterSnakeCode) {
-      try {
-        newSnakeCode = window[modObjectName].alterSnakeCode(this.responseText);
-      } catch (err) {
-        let snakeErrEl = document.getElementById('snake-error-message')
-        if(snakeErrEl) {snakeErrEl.style.display = 'block';}
-        window.showSnakeErrMessage = true;
-        console.log('Displaying message to user and then running the google snake script and then throwing the original error that occurred in "alterSnakeCode"');
-        (0,eval)(this.responseText);
-        throw err;
-      }
-    }
+		let newSnakeCode;
+		//Alter google snake code and then run it
+		if (window[modObjectName].alterSnakeCode) {
+			try {
+				newSnakeCode = window[modObjectName].alterSnakeCode(this.responseText);
+			} catch (err) {
+				let snakeErrEl = document.getElementById('snake-error-message')
+				if (snakeErrEl) {
+					snakeErrEl.style.display = 'block';
+				}
+				window.showSnakeErrMessage = true;
+				console.log('Displaying message to user and then running the google snake script and then throwing the original error that occurred in "alterSnakeCode"');
+				(0, eval)(this.responseText);
+				throw err;
+			}
+		}
 
-    (0,eval)(newSnakeCode);
+		(0, eval)(newSnakeCode);
 
-    //Mod specific code to run after running google snake script
-    if(window[modObjectName].runCodeAfter) {
-      try {
-        window[modObjectName].runCodeAfter();
-      } catch (err) {
-        console.error(err);
-        alert(`Error occurred after running snake code. The mod may be partly broken. Error message logged to console.`);
-      }
-    }
-  
-  };
+		//Mod specific code to run after running google snake script
+		if (window[modObjectName].runCodeAfter) {
+			try {
+				window[modObjectName].runCodeAfter();
+			} catch (err) {
+				console.error(err);
+				alert(`Error occurred after running snake code. The mod may be partly broken. Error message logged to console.`);
+			}
+		}
 
-  req.send();
+	};
 
-  return returnVal;
+	req.send();
+
+	return returnVal;
 }
 
 //Setup Modal box that lets the user choose which mod to run
 let addModSelectorPopup = function() {
-  //Set up CSS
-  const css = `
+	//Set up CSS
+	const css = `
   .mod-sel-btn:hover {
     background-color: #fefcfb !important;
   }
@@ -454,14 +458,14 @@ let addModSelectorPopup = function() {
   }
   `;
 
-  document.getElementsByTagName('style')[0].innerHTML = document.getElementsByTagName('style')[0].innerHTML + css;
+	document.getElementsByTagName('style')[0].innerHTML = document.getElementsByTagName('style')[0].innerHTML + css;
 
-  if(document.body.querySelector('img[src^="//www.google.com/logos/fnbx/snake_arcade"]') === null) {
-    //We aren't on a page with google snake. Don't show the mod selector dialogue. Exit early.
-    return;
-  }
+	if (document.body.querySelector('img[src^="//www.google.com/logos/fnbx/snake_arcade"]') === null) {
+		//We aren't on a page with google snake. Don't show the mod selector dialogue. Exit early.
+		return;
+	}
 
-  const modCornerIndicatorHTML = `
+	const modCornerIndicatorHTML = `
       <span style="color:var(--mod-loader-font-col) !important">Current mod: </span><span id="mod-name-span" style="background-color: var(--mod-loader-indicator-display-bg);padding: 2px;border-radius: 3px;font-family: consolas, monospace; color:var(--mod-loader-font-col) !important"></span>
       <div id="change-mod-button" style="text-align: center;font-size: 0.84em;font-family: arial, sans-serif;color: var(--mod-loader-link-font-col);text-decoration: underline;cursor: pointer;margin-top: 3px;">Change mod</div>
       <div id="snake-error-message" style="font-family: helvetica, sans-serif;color: #f44336;margin-top: 2px;display: ${window.showSnakeErrMessage ? 'block' : 'none'};">
@@ -471,43 +475,43 @@ let addModSelectorPopup = function() {
       </div>
   `;
 
-  let modIndicatorEl = document.createElement('div');
-  modIndicatorEl.id = 'mod-indicator';
-  modIndicatorEl.style = 'z-index: 9999999;background-color: var(--mod-loader-main-bg) !important;position: fixed;bottom: 0;right: 0;border-top: 1px solid var(--mod-loader-thin-border);border-left: 1px solid var(--mod-loader-thin-border);font-size: 1.2em;border-top-left-radius: 5px;padding: 5px;-webkit-box-shadow: 0px 0px 7px 1px hwb(0deg 0% 100% / 12%);box-shadow: 0px 0px 7px 1px rgb(0 0 0 / 12%);font-family: helvetica, sans-serif;height: initial;user-select:none;display:block';
-  modIndicatorEl.innerHTML = modCornerIndicatorHTML;
-  document.body.appendChild(modIndicatorEl);
+	let modIndicatorEl = document.createElement('div');
+	modIndicatorEl.id = 'mod-indicator';
+	modIndicatorEl.style = 'z-index: 9999999;background-color: var(--mod-loader-main-bg) !important;position: fixed;bottom: 0;right: 0;border-top: 1px solid var(--mod-loader-thin-border);border-left: 1px solid var(--mod-loader-thin-border);font-size: 1.2em;border-top-left-radius: 5px;padding: 5px;-webkit-box-shadow: 0px 0px 7px 1px hwb(0deg 0% 100% / 12%);box-shadow: 0px 0px 7px 1px rgb(0 0 0 / 12%);font-family: helvetica, sans-serif;height: initial;user-select:none;display:block';
+	modIndicatorEl.innerHTML = modCornerIndicatorHTML;
+	document.body.appendChild(modIndicatorEl);
 
-  document.getElementById('change-mod-button').addEventListener('click', ()=>{
-    document.getElementById('mod-selector-dialogue-container').style.display = document.getElementById('mod-selector-dialogue-container').style.display === 'none' ? 'block' : 'none';
-  });
+	document.getElementById('change-mod-button').addEventListener('click', () => {
+		document.getElementById('mod-selector-dialogue-container').style.display = document.getElementById('mod-selector-dialogue-container').style.display === 'none' ? 'block' : 'none';
+	});
 
-  let modSelectorRadioOptions = '';
-  let modDescriptions = '';
-  for(const [key, value] of Object.entries(modsConfig)) {
-    let optionalHiddenClass = value.startHidden ? 'class="start-hidden"' : '';
-    modSelectorRadioOptions += `<label ${optionalHiddenClass} style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="${key}">${value.displayName}<br></label>`;
+	let modSelectorRadioOptions = '';
+	let modDescriptions = '';
+	for (const [key, value] of Object.entries(modsConfig)) {
+		let optionalHiddenClass = value.startHidden ? 'class="start-hidden"' : '';
+		modSelectorRadioOptions += `<label ${optionalHiddenClass} style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="${key}">${value.displayName}<br></label>`;
 
-    if(value.modDescription) {
-      let authorString = value.modDescription.authorUrl ? `<a href="${value.modDescription.authorUrl}" target="_blank" style="color: var(--mod-loader-link-font-col);">${value.modDescription.author}</a>` : value.modDescription.author;
+		if (value.modDescription) {
+			let authorString = value.modDescription.authorUrl ? `<a href="${value.modDescription.authorUrl}" target="_blank" style="color: var(--mod-loader-link-font-col);">${value.modDescription.author}</a>` : value.modDescription.author;
 
-      modDescriptions += `
+			modDescriptions += `
         <div data-linked-option="${key}" class="mod-description" style="display:none">
           <span style="font-weight: bold;color:var(--mod-loader-font-col) !important">${value.modDescription.descriptionName}</span><br>
           <span style="font-weight: bold;color:var(--mod-loader-font-col) !important">Author: ${authorString}</span><br>
           <span style="color:var(--mod-loader-font-col) !important">${value.modDescription.description}</span>
         </div>
       `;
-    }
-  }
-  modSelectorRadioOptions += `<label style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="none">None</label>`;
+		}
+	}
+	modSelectorRadioOptions += `<label style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="none">None</label>`;
 
-  let customUrlOptions = '';
-  if(IS_DEVELOPER_MODE) {
-    customUrlOptions = `<label style="color:var(--mod-loader-font-col) !important"><input id="custom-mod-name" type="text"> Custom Mod Name</label><br>
+	let customUrlOptions = '';
+	if (IS_DEVELOPER_MODE) {
+		customUrlOptions = `<label style="color:var(--mod-loader-font-col) !important"><input id="custom-mod-name" type="text"> Custom Mod Name</label><br>
                         <label style="color:var(--mod-loader-font-col) !important"><input id="custom-url" type="text"> Custom Mod Url</label><br>`;
-  }
+	}
 
-  const modSelectorModal = `
+	const modSelectorModal = `
   <div id="mod-selector-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:550px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;">
   <!-- <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 2px 2px 3px #a2a2a2;">Snake Mod Loader</h1> -->
   <!-- <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;margin: 7px 0px 15px 0px;text-align: center;text-shadow: 1px 1px 1px #000000, 1px 1px 1px #000000, 1px 1px 5px #000000;color: #4674e9;">Snake Mod Loader</h1> -->
@@ -573,387 +577,398 @@ let addModSelectorPopup = function() {
   </div>
   `;
 
-  //Insert html for custom preset export dialogue box.
-  let modSelectorModalContainer = document.createElement('div');
-  modSelectorModalContainer.innerHTML = modSelectorModal;
-  modSelectorModalContainer.id = 'mod-selector-dialogue-container';
-  modSelectorModalContainer.style = 'display:none; position:fixed; width:100%; height:100%; z-index: 999999; left:0; top:0';
-  document.body.appendChild(modSelectorModalContainer);
+	//Insert html for custom preset export dialogue box.
+	let modSelectorModalContainer = document.createElement('div');
+	modSelectorModalContainer.innerHTML = modSelectorModal;
+	modSelectorModalContainer.id = 'mod-selector-dialogue-container';
+	modSelectorModalContainer.style = 'display:none; position:fixed; width:100%; height:100%; z-index: 999999; left:0; top:0';
+	document.body.appendChild(modSelectorModalContainer);
 
-  let hideEndScreenImg = document.createElement('img');
-  hideEndScreenImg.style = "position: absolute;left: 10px;top: 10px;cursor: pointer; height:20px; width:auto;";
-  hideEndScreenImg.src = "https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/ToggleDeathscreen/EyeIcon.png?raw=true";
-  hideEndScreenImg.title = "Click to hide. Click anywhere to bring back";
-  hideEndScreenImg.id = "death-screen-toggle";
-  let firstMenuScreen = document.getElementsByClassName('T7SB3d')[0];
-  if(firstMenuScreen) {
-    firstMenuScreen.appendChild(hideEndScreenImg);
-  }
+	let hideEndScreenImg = document.createElement('img');
+	hideEndScreenImg.style = "position: absolute;left: 10px;top: 10px;cursor: pointer; height:20px; width:auto;";
+	hideEndScreenImg.src = "https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/ToggleDeathscreen/EyeIcon.png?raw=true";
+	hideEndScreenImg.title = "Click to hide. Click anywhere to bring back";
+	hideEndScreenImg.id = "death-screen-toggle";
+	let firstMenuScreen = document.getElementsByClassName('T7SB3d')[0];
+	if (firstMenuScreen) {
+		firstMenuScreen.appendChild(hideEndScreenImg);
+	}
 
-  let showEndScreenCover = document.createElement('div');
-  showEndScreenCover.style = "display:none; background-color:transparent; position: fixed; top:0;left:0; width:100vw; height:100vh;box-shadow: cyan 0px 0px 10px inset; box-sizing: border-box;z-index: 1000000;"
-  document.body.appendChild(showEndScreenCover);
+	let showEndScreenCover = document.createElement('div');
+	showEndScreenCover.style = "display:none; background-color:transparent; position: fixed; top:0;left:0; width:100vw; height:100vh;box-shadow: cyan 0px 0px 10px inset; box-sizing: border-box;z-index: 1000000;"
+	document.body.appendChild(showEndScreenCover);
 
-  hideEndScreenImg.addEventListener('click', function() {
-    let endScreenContainer = document.getElementsByClassName('wjOYOd')[0];
-    if(endScreenContainer) {
-      endScreenContainer.style.visibility = 'hidden';
-    }
+	hideEndScreenImg.addEventListener('click', function() {
+		let endScreenContainer = document.getElementsByClassName('wjOYOd')[0];
+		if (endScreenContainer) {
+			endScreenContainer.style.visibility = 'hidden';
+		}
 
-    showEndScreenCover.style.display = 'block';
-  });
+		showEndScreenCover.style.display = 'block';
+	});
 
-  showEndScreenCover.addEventListener('click', function() {
-    let endScreenContainer = document.getElementsByClassName('wjOYOd')[0];
-    if(endScreenContainer) {
-      endScreenContainer.style.visibility = 'visible';
-    }
+	showEndScreenCover.addEventListener('click', function() {
+		let endScreenContainer = document.getElementsByClassName('wjOYOd')[0];
+		if (endScreenContainer) {
+			endScreenContainer.style.visibility = 'visible';
+		}
 
-    showEndScreenCover.style.display = 'none';
-  });
+		showEndScreenCover.style.display = 'none';
+	});
 
-  //Tick the currently selected mod choice according to localStorage. Also, set the mod name in the indicator
-  const currentlySelectedMod = localStorage.getItem('snakeChosenMod');
-  let newlySelectedMod = currentlySelectedMod;
+	//Tick the currently selected mod choice according to localStorage. Also, set the mod name in the indicator
+	const currentlySelectedMod = localStorage.getItem('snakeChosenMod');
+	let newlySelectedMod = currentlySelectedMod;
 
-  if(modsConfig.hasOwnProperty(currentlySelectedMod) && currentlySelectedMod !== null && currentlySelectedMod !== 'none') {
-    document.querySelector(`input[name="mod-selector"][value="${currentlySelectedMod}"]`).checked = true;
-    document.getElementById('mod-name-span').textContent = modsConfig[currentlySelectedMod].displayName;
-    let descriptionEl = document.querySelector(`div.mod-description[data-linked-option="${currentlySelectedMod}"]`);
-    if(descriptionEl) {descriptionEl.style.display = 'block';}
-  } else {
-    document.querySelector('input[name="mod-selector"][value="none"]').checked = true;
-    document.getElementById('mod-name-span').textContent = 'None';
-  }
+	if (modsConfig.hasOwnProperty(currentlySelectedMod) && currentlySelectedMod !== null && currentlySelectedMod !== 'none') {
+		document.querySelector(`input[name="mod-selector"][value="${currentlySelectedMod}"]`).checked = true;
+		document.getElementById('mod-name-span').textContent = modsConfig[currentlySelectedMod].displayName;
+		let descriptionEl = document.querySelector(`div.mod-description[data-linked-option="${currentlySelectedMod}"]`);
+		if (descriptionEl) {
+			descriptionEl.style.display = 'block';
+		}
+	} else {
+		document.querySelector('input[name="mod-selector"][value="none"]').checked = true;
+		document.getElementById('mod-name-span').textContent = 'None';
+	}
 
-  //Update the checked/ticked mod when clicking on any of the radio buttons. Also show the description for it.
-  [...document.querySelectorAll('input[type="radio"][name="mod-selector"]')].forEach(radioEl=>{
-    radioEl.addEventListener('click', function(){
-      //Mark mod as selected for when we hit apply
-      newlySelectedMod = this.value;
-      [...document.getElementsByClassName('mod-description')].forEach(el=>{
-        el.style.display = 'none';
-        let descriptionEl = document.querySelector(`div.mod-description[data-linked-option="${this.value}"]`);
-        if(descriptionEl) {descriptionEl.style.display = 'block';}
-      });
-    });
-  });
+	//Update the checked/ticked mod when clicking on any of the radio buttons. Also show the description for it.
+	[...document.querySelectorAll('input[type="radio"][name="mod-selector"]')].forEach(radioEl => {
+		radioEl.addEventListener('click', function() {
+			//Mark mod as selected for when we hit apply
+			newlySelectedMod = this.value;
+			[...document.getElementsByClassName('mod-description')].forEach(el => {
+				el.style.display = 'none';
+				let descriptionEl = document.querySelector(`div.mod-description[data-linked-option="${this.value}"]`);
+				if (descriptionEl) {
+					descriptionEl.style.display = 'block';
+				}
+			});
+		});
+	});
 
-  //Load advanced settings
-  let advancedSettings = JSON.parse(localStorage.getItem('snakeAdvancedSettings')) ?? {};
-  let advancedSettingsOriginal = {...advancedSettings};//Shallow copy, but it's ok as nothing is nested.
+	//Load advanced settings
+	let advancedSettings = JSON.parse(localStorage.getItem('snakeAdvancedSettings')) ? ? {};
+	let advancedSettingsOriginal = {...advancedSettings
+	}; //Shallow copy, but it's ok as nothing is nested.
 
-  //Make sure the inputs are set the right values when starting up the mod
-  updateAdvancedSettingInputs();
+	//Make sure the inputs are set the right values when starting up the mod
+	updateAdvancedSettingInputs();
 
-  //Event listeners for advanced settings
-  document.getElementById('advanced-options-toggle').addEventListener('click', (event)=>{
-    document.getElementById('advanced-options').style.display = (document.getElementById('advanced-options').style.display === 'none' ? 'block':'none');
-    event.preventDefault();
-  });
-  document.getElementById('use-custom-theme').addEventListener('change', function() {
-    document.getElementById('custom-theme-pickers').style.display = (this.checked ? 'block' : 'none');
-    updateAdvancedSetting('useCustomTheme', this.checked);
-  });
-  document.getElementById('fbx-centered-checkbox').addEventListener('change', function() {
-    updateAdvancedSetting('fbxCentered', this.checked);
-  });
-  document.getElementById('timer-starts-on').addEventListener('change', function() {
-    updateAdvancedSetting('timerStartsOn', this.checked);
-  });
-  /*document.getElementById('hidden-mod-toggle').addEventListener('change', function() {
-    updateAdvancedSetting('showHiddenMods', this.checked);
-  });*/
-  document.getElementById('muted-starts-on').addEventListener('change', function() {
-    updateAdvancedSetting('mutedStartsOn', this.checked);
-  });
-  document.getElementById('background-color-picker').addEventListener('input', function() {
-    updateAdvancedSetting('backgroundColor', this.value);
-  });
-  document.getElementById('custom-theme-col1').addEventListener('input', function() {
-    updateAdvancedSetting('themeCol1', this.value);
-  });
-  document.getElementById('custom-theme-col2').addEventListener('input', function() {
-    updateAdvancedSetting('themeCol2', this.value);
-  });
-  document.getElementById('custom-theme-col3').addEventListener('input', function() {
-    updateAdvancedSetting('themeCol3', this.value);
-  });
-  document.getElementById('custom-theme-col4').addEventListener('input', function() {
-    updateAdvancedSetting('themeCol4', this.value);
-  });
-  document.getElementById('custom-theme-col5').addEventListener('input', function() {
-    updateAdvancedSetting('themeCol5', this.value);
-  });
-  document.getElementById('custom-theme-col6').addEventListener('input', function() {
-    updateAdvancedSetting('themeCol6', this.value);
-  });
-  document.getElementById('custom-theme-col7').addEventListener('input', function() {
-    updateAdvancedSetting('themeCol7', this.value);
-  });
-  document.getElementById('hide-indicator').addEventListener('change', function() {
-    updateAdvancedSetting('hideIndicator', this.checked);
-  });
-  document.getElementById('dark-mod-theme').addEventListener('change', function() {
-    updateAdvancedSetting('darkModTheme', this.checked);
-  });
+	//Event listeners for advanced settings
+	document.getElementById('advanced-options-toggle').addEventListener('click', (event) => {
+		document.getElementById('advanced-options').style.display = (document.getElementById('advanced-options').style.display === 'none' ? 'block' : 'none');
+		event.preventDefault();
+	});
+	document.getElementById('use-custom-theme').addEventListener('change', function() {
+		document.getElementById('custom-theme-pickers').style.display = (this.checked ? 'block' : 'none');
+		updateAdvancedSetting('useCustomTheme', this.checked);
+	});
+	document.getElementById('fbx-centered-checkbox').addEventListener('change', function() {
+		updateAdvancedSetting('fbxCentered', this.checked);
+	});
+	document.getElementById('timer-starts-on').addEventListener('change', function() {
+		updateAdvancedSetting('timerStartsOn', this.checked);
+	});
+	/*document.getElementById('hidden-mod-toggle').addEventListener('change', function() {
+	  updateAdvancedSetting('showHiddenMods', this.checked);
+	});*/
+	document.getElementById('muted-starts-on').addEventListener('change', function() {
+		updateAdvancedSetting('mutedStartsOn', this.checked);
+	});
+	document.getElementById('background-color-picker').addEventListener('input', function() {
+		updateAdvancedSetting('backgroundColor', this.value);
+	});
+	document.getElementById('custom-theme-col1').addEventListener('input', function() {
+		updateAdvancedSetting('themeCol1', this.value);
+	});
+	document.getElementById('custom-theme-col2').addEventListener('input', function() {
+		updateAdvancedSetting('themeCol2', this.value);
+	});
+	document.getElementById('custom-theme-col3').addEventListener('input', function() {
+		updateAdvancedSetting('themeCol3', this.value);
+	});
+	document.getElementById('custom-theme-col4').addEventListener('input', function() {
+		updateAdvancedSetting('themeCol4', this.value);
+	});
+	document.getElementById('custom-theme-col5').addEventListener('input', function() {
+		updateAdvancedSetting('themeCol5', this.value);
+	});
+	document.getElementById('custom-theme-col6').addEventListener('input', function() {
+		updateAdvancedSetting('themeCol6', this.value);
+	});
+	document.getElementById('custom-theme-col7').addEventListener('input', function() {
+		updateAdvancedSetting('themeCol7', this.value);
+	});
+	document.getElementById('hide-indicator').addEventListener('change', function() {
+		updateAdvancedSetting('hideIndicator', this.checked);
+	});
+	document.getElementById('dark-mod-theme').addEventListener('change', function() {
+		updateAdvancedSetting('darkModTheme', this.checked);
+	});
 
-  if(IS_DEVELOPER_MODE) {
-    document.getElementById('custom-mod-name').addEventListener('input', function() {
-      updateAdvancedSetting('customModName', this.value);
-    });
-    document.getElementById('custom-url').addEventListener('input', function() {
-      updateAdvancedSetting('customUrl', this.value);
-    });
-  }
+	if (IS_DEVELOPER_MODE) {
+		document.getElementById('custom-mod-name').addEventListener('input', function() {
+			updateAdvancedSetting('customModName', this.value);
+		});
+		document.getElementById('custom-url').addEventListener('input', function() {
+			updateAdvancedSetting('customUrl', this.value);
+		});
+	}
 
-  //Event listener for toggling the early access/hidden mods
-  /*document.getElementById('hidden-mod-toggle').addEventListener('change', function() {
-    if(this.checked) {
-      [...document.getElementsByClassName('start-hidden')].forEach(el=>el.classList.add('show-hidden'));
-    } else {
-      [...document.getElementsByClassName('start-hidden')].forEach(el=>el.classList.remove('show-hidden'));
-    }
-  });*/
+	//Event listener for toggling the early access/hidden mods
+	/*document.getElementById('hidden-mod-toggle').addEventListener('change', function() {
+	  if(this.checked) {
+	    [...document.getElementsByClassName('start-hidden')].forEach(el=>el.classList.add('show-hidden'));
+	  } else {
+	    [...document.getElementsByClassName('start-hidden')].forEach(el=>el.classList.remove('show-hidden'));
+	  }
+	});*/
 
-  //Hide mod selector dialogue when clicking close button
-  document.getElementById('close-mod-selector').addEventListener('click', function() {
-    document.getElementById('mod-selector-dialogue-container').style.display = 'none';
-  });
+	//Hide mod selector dialogue when clicking close button
+	document.getElementById('close-mod-selector').addEventListener('click', function() {
+		document.getElementById('mod-selector-dialogue-container').style.display = 'none';
+	});
 
-  //Apply button should save settings and refresh page
-  document.getElementById('apply-mod').addEventListener('click', function(event) {
-    //Figure out if advanced settings have been changed.
-    let shallowEquality = true;
-    for(let setting in advancedSettings) {
-      if(advancedSettings[setting] !== advancedSettingsOriginal?.[setting]) {
-        shallowEquality = false;
-        break;
-      }
-    }
+	//Apply button should save settings and refresh page
+	document.getElementById('apply-mod').addEventListener('click', function(event) {
+		//Figure out if advanced settings have been changed.
+		let shallowEquality = true;
+		for (let setting in advancedSettings) {
+			if (advancedSettings[setting] !== advancedSettingsOriginal ? .[setting]) {
+				shallowEquality = false;
+				break;
+			}
+		}
 
-    //Skip if settings/mod chosen are the same as before.
-    if(shallowEquality && newlySelectedMod === currentlySelectedMod) {
-      alert('Settings are the same as before!')
-      return;
-    }
+		//Skip if settings/mod chosen are the same as before.
+		if (shallowEquality && newlySelectedMod === currentlySelectedMod) {
+			alert('Settings are the same as before!')
+			return;
+		}
 
-    //Save new settings and refresh to run with the new settings
-    localStorage.setItem('snakeChosenMod', newlySelectedMod);
-    localStorage.setItem('snakeAdvancedSettings',JSON.stringify(advancedSettings));
-    location.reload();
-  });
+		//Save new settings and refresh to run with the new settings
+		localStorage.setItem('snakeChosenMod', newlySelectedMod);
+		localStorage.setItem('snakeAdvancedSettings', JSON.stringify(advancedSettings));
+		location.reload();
+	});
 
-  let attemptsApplyingAdvancedSettings = 0;
-  setTimeout(applyAdvancedSnakeSettingsToGame, 300);//Small delay to give the game more time to load.
-  setTimeout(applyAdvancedNonSnakeSettingsToGame,300);
+	let attemptsApplyingAdvancedSettings = 0;
+	setTimeout(applyAdvancedSnakeSettingsToGame, 300); //Small delay to give the game more time to load.
+	setTimeout(applyAdvancedNonSnakeSettingsToGame, 300);
 
-  document.body.addEventListener('keydown',function(event) {
-    if(event.key === 'h') {
-      let modIndicatorEl = document.getElementById('mod-indicator');
-      modIndicatorEl.style.display = (modIndicatorEl.style.display === 'block' ? 'none' : 'block');
-    }
-  });
+	document.body.addEventListener('keydown', function(event) {
+		if (event.key === 'h') {
+			let modIndicatorEl = document.getElementById('mod-indicator');
+			modIndicatorEl.style.display = (modIndicatorEl.style.display === 'block' ? 'none' : 'block');
+		}
+	});
 
-  showUpdateLinkIfNeeded();
+	showUpdateLinkIfNeeded();
 
-  function updateAdvancedSettingInputs() {
-    if(advancedSettings.hasOwnProperty('fbxCentered')) {
-      document.getElementById('fbx-centered-checkbox').checked = advancedSettings.fbxCentered;
-    }
-    if(advancedSettings.hasOwnProperty('timerStartsOn')) {
-      document.getElementById('timer-starts-on').checked = advancedSettings.timerStartsOn;
-    }
-    /*if(advancedSettings.hasOwnProperty('showHiddenMods')) {
-      document.getElementById('hidden-mod-toggle').checked = advancedSettings.showHiddenMods;
-    }*/
-    if(advancedSettings.hasOwnProperty('mutedStartsOn')) {
-      document.getElementById('muted-starts-on').checked = advancedSettings.mutedStartsOn;
-    }
-    if(advancedSettings.hasOwnProperty('darkModTheme')) {
-      document.getElementById('dark-mod-theme').checked = advancedSettings.darkModTheme;
-    }
-    if(advancedSettings.hasOwnProperty('hideIndicator')) {
-      document.getElementById('hide-indicator').checked = advancedSettings.hideIndicator;
-    }
-    if(advancedSettings.hasOwnProperty('useCustomTheme')) {
-      document.getElementById('use-custom-theme').checked = advancedSettings.useCustomTheme;
-      document.getElementById('custom-theme-pickers').style.display = (advancedSettings.useCustomTheme ? 'block' : 'none');
-    } else {
-      document.getElementById('custom-theme-pickers').style.display = 'none';
-    }
-    if(advancedSettings.hasOwnProperty('backgroundColor')) {
-      document.getElementById('background-color-picker').value = advancedSettings.backgroundColor;
-    }
-    if(advancedSettings.hasOwnProperty('themeCol1')) {
-      document.getElementById('custom-theme-col1').value = advancedSettings.themeCol1;
-    }
-    if(advancedSettings.hasOwnProperty('themeCol2')) {
-      document.getElementById('custom-theme-col2').value = advancedSettings.themeCol2;
-    }
-    if(advancedSettings.hasOwnProperty('themeCol3')) {
-      document.getElementById('custom-theme-col3').value = advancedSettings.themeCol3;
-    }
-    if(advancedSettings.hasOwnProperty('themeCol4')) {
-      document.getElementById('custom-theme-col4').value = advancedSettings.themeCol4;
-    }
-    if(advancedSettings.hasOwnProperty('themeCol5')) {
-      document.getElementById('custom-theme-col5').value = advancedSettings.themeCol5;
-    }
-    if(advancedSettings.hasOwnProperty('themeCol6')) {
-      document.getElementById('custom-theme-col6').value = advancedSettings.themeCol6;
-    }
-    if(advancedSettings.hasOwnProperty('themeCol7')) {
-      document.getElementById('custom-theme-col7').value = advancedSettings.themeCol7;
-    }
+	function updateAdvancedSettingInputs() {
+		if (advancedSettings.hasOwnProperty('fbxCentered')) {
+			document.getElementById('fbx-centered-checkbox').checked = advancedSettings.fbxCentered;
+		}
+		if (advancedSettings.hasOwnProperty('timerStartsOn')) {
+			document.getElementById('timer-starts-on').checked = advancedSettings.timerStartsOn;
+		}
+		/*if(advancedSettings.hasOwnProperty('showHiddenMods')) {
+		  document.getElementById('hidden-mod-toggle').checked = advancedSettings.showHiddenMods;
+		}*/
+		if (advancedSettings.hasOwnProperty('mutedStartsOn')) {
+			document.getElementById('muted-starts-on').checked = advancedSettings.mutedStartsOn;
+		}
+		if (advancedSettings.hasOwnProperty('darkModTheme')) {
+			document.getElementById('dark-mod-theme').checked = advancedSettings.darkModTheme;
+		}
+		if (advancedSettings.hasOwnProperty('hideIndicator')) {
+			document.getElementById('hide-indicator').checked = advancedSettings.hideIndicator;
+		}
+		if (advancedSettings.hasOwnProperty('useCustomTheme')) {
+			document.getElementById('use-custom-theme').checked = advancedSettings.useCustomTheme;
+			document.getElementById('custom-theme-pickers').style.display = (advancedSettings.useCustomTheme ? 'block' : 'none');
+		} else {
+			document.getElementById('custom-theme-pickers').style.display = 'none';
+		}
+		if (advancedSettings.hasOwnProperty('backgroundColor')) {
+			document.getElementById('background-color-picker').value = advancedSettings.backgroundColor;
+		}
+		if (advancedSettings.hasOwnProperty('themeCol1')) {
+			document.getElementById('custom-theme-col1').value = advancedSettings.themeCol1;
+		}
+		if (advancedSettings.hasOwnProperty('themeCol2')) {
+			document.getElementById('custom-theme-col2').value = advancedSettings.themeCol2;
+		}
+		if (advancedSettings.hasOwnProperty('themeCol3')) {
+			document.getElementById('custom-theme-col3').value = advancedSettings.themeCol3;
+		}
+		if (advancedSettings.hasOwnProperty('themeCol4')) {
+			document.getElementById('custom-theme-col4').value = advancedSettings.themeCol4;
+		}
+		if (advancedSettings.hasOwnProperty('themeCol5')) {
+			document.getElementById('custom-theme-col5').value = advancedSettings.themeCol5;
+		}
+		if (advancedSettings.hasOwnProperty('themeCol6')) {
+			document.getElementById('custom-theme-col6').value = advancedSettings.themeCol6;
+		}
+		if (advancedSettings.hasOwnProperty('themeCol7')) {
+			document.getElementById('custom-theme-col7').value = advancedSettings.themeCol7;
+		}
 
-    if(IS_DEVELOPER_MODE) {
-      if(advancedSettings.hasOwnProperty('customModName')) {
-        document.getElementById('custom-mod-name').value = advancedSettings.customModName;
-      }
-      if(advancedSettings.hasOwnProperty('customUrl')) {
-        document.getElementById('custom-url').value = advancedSettings.customUrl;
-      }
-    }
-  }
+		if (IS_DEVELOPER_MODE) {
+			if (advancedSettings.hasOwnProperty('customModName')) {
+				document.getElementById('custom-mod-name').value = advancedSettings.customModName;
+			}
+			if (advancedSettings.hasOwnProperty('customUrl')) {
+				document.getElementById('custom-url').value = advancedSettings.customUrl;
+			}
+		}
+	}
 
-  function updateAdvancedSetting(settingName, settingValue) {
-    advancedSettings[settingName] = settingValue;
-  }
+	function updateAdvancedSetting(settingName, settingValue) {
+		advancedSettings[settingName] = settingValue;
+	}
 
-  //Advanced settings that need to wait for window.snake
-  function applyAdvancedSnakeSettingsToGame() {
-    if(attemptsApplyingAdvancedSettings > 10) {
-      //Stop trying to apply advanced setting if we've tried this much and the game still isn't ready
-      console.log('window.snake is still not available after retrying many times. Skipping applying advanced snake settings');
-    } else if(!window.snake) {
-      //Game not ready. Wait a bit and then try again.
-      console.log('window.snake not ready for when we apply advanced settings. Will retry again after waiting.');
-      attemptsApplyingAdvancedSettings++;
-      setTimeout(applyAdvancedSnakeSettingsToGame, 300);
-    } else {
-      if(advancedSettings.timerStartsOn) {
-        window.snake.speedrun();
-      }
-      if(advancedSettings.useCustomTheme) {
-        window.snake.setCustomTheme(
-          advancedSettings.themeCol1 ?? '#1D1D1D',
-          advancedSettings.themeCol2 ?? '#161616',
-          advancedSettings.themeCol3 ?? '#111111',
-          advancedSettings.themeCol4 ?? '#000000',
-          advancedSettings.themeCol5 ?? '#1D1D1D',
-          advancedSettings.themeCol6 ?? '#111111',
-          advancedSettings.themeCol7 ?? '#000000'
-        );
-      }
-    }
-  }
+	//Advanced settings that need to wait for window.snake
+	function applyAdvancedSnakeSettingsToGame() {
+		if (attemptsApplyingAdvancedSettings > 10) {
+			//Stop trying to apply advanced setting if we've tried this much and the game still isn't ready
+			console.log('window.snake is still not available after retrying many times. Skipping applying advanced snake settings');
+		} else if (!window.snake) {
+			//Game not ready. Wait a bit and then try again.
+			console.log('window.snake not ready for when we apply advanced settings. Will retry again after waiting.');
+			attemptsApplyingAdvancedSettings++;
+			setTimeout(applyAdvancedSnakeSettingsToGame, 300);
+		} else {
+			if (advancedSettings.timerStartsOn) {
+				window.snake.speedrun();
+			}
+			if (advancedSettings.useCustomTheme) {
+				window.snake.setCustomTheme(
+					advancedSettings.themeCol1 ? ? '#1D1D1D',
+					advancedSettings.themeCol2 ? ? '#161616',
+					advancedSettings.themeCol3 ? ? '#111111',
+					advancedSettings.themeCol4 ? ? '#000000',
+					advancedSettings.themeCol5 ? ? '#1D1D1D',
+					advancedSettings.themeCol6 ? ? '#111111',
+					advancedSettings.themeCol7 ? ? '#000000'
+				);
+			}
+		}
+	}
 
-  function applyAdvancedNonSnakeSettingsToGame() {
-    if(advancedSettings.fbxCentered && window.location.href.includes('fbx?fbx=snake_arcade')) {
-      //Copied from GoogleSnakeCenteredFBX mod
-      let snakeCanvasAncestor = document.querySelector('div[data-is-standalone]');
-      if(snakeCanvasAncestor) {
-        snakeCanvasAncestor.style = 'position:relative;top:50%;transform:translate(0%,-50%);margin:auto;';
-      }
-    }
-    if(advancedSettings.mutedStartsOn) {
-      applyMuteToGame();
-    }
-    if(advancedSettings.showHiddenMods) {
-      [...document.getElementsByClassName('start-hidden')].forEach(el=>el.classList.add('show-hidden'));
-    }
-    if(advancedSettings.darkModTheme) {
-      document.getElementById('mod-indicator').classList.add('dark-mod-theme');
-      document.getElementById('mod-selector-dialogue-container').classList.add('dark-mod-theme');
-    }
-    if(advancedSettings.hideIndicator) {
-      setTimeout(function() {
-        if(window.showSnakeErrMessage) {return;}
+	function applyAdvancedNonSnakeSettingsToGame() {
+		if (advancedSettings.fbxCentered && window.location.href.includes('fbx?fbx=snake_arcade')) {
+			//Copied from GoogleSnakeCenteredFBX mod
+			let snakeCanvasAncestor = document.querySelector('div[data-is-standalone]');
+			if (snakeCanvasAncestor) {
+				snakeCanvasAncestor.style = 'position:relative;top:50%;transform:translate(0%,-50%);margin:auto;';
+			}
+		}
+		if (advancedSettings.mutedStartsOn) {
+			applyMuteToGame();
+		}
+		if (advancedSettings.showHiddenMods) {
+			[...document.getElementsByClassName('start-hidden')].forEach(el => el.classList.add('show-hidden'));
+		}
+		if (advancedSettings.darkModTheme) {
+			document.getElementById('mod-indicator').classList.add('dark-mod-theme');
+			document.getElementById('mod-selector-dialogue-container').classList.add('dark-mod-theme');
+		}
+		if (advancedSettings.hideIndicator) {
+			setTimeout(function() {
+				if (window.showSnakeErrMessage) {
+					return;
+				}
 
-        let modIndicatorEl = document.getElementById('mod-indicator');
-        if(modIndicatorEl.style.display === 'block') {
-          modIndicatorEl.style.display = 'none';
-        }
-      }, 5000);
-    }
-    if(window.location.href.includes('fbx?fbx=snake_arcade')) {
-      document.body.style.backgroundColor = advancedSettings.backgroundColor;
-    }
-  }
+				let modIndicatorEl = document.getElementById('mod-indicator');
+				if (modIndicatorEl.style.display === 'block') {
+					modIndicatorEl.style.display = 'none';
+				}
+			}, 5000);
+		}
+		if (window.location.href.includes('fbx?fbx=snake_arcade')) {
+			document.body.style.backgroundColor = advancedSettings.backgroundColor;
+		}
+	}
 
-  function applyMuteToGame() {
-    //On fbx we can mute right way. On search, we need to wait until the game is visible.
-    if(window.location.href.includes('fbx?fbx=snake_arcade')) {
-      //Match mute button, but only if it's on (i.e. the image url includes the word up instead of the word off)
-      let muteButton = document.querySelector('img.oGdex.JWsmhb:not([src*="off"])');
-      if(muteButton) {muteButton.click();}
-      return;
-    }
+	function applyMuteToGame() {
+		//On fbx we can mute right way. On search, we need to wait until the game is visible.
+		if (window.location.href.includes('fbx?fbx=snake_arcade')) {
+			//Match mute button, but only if it's on (i.e. the image url includes the word up instead of the word off)
+			let muteButton = document.querySelector('img.oGdex.JWsmhb:not([src*="off"])');
+			if (muteButton) {
+				muteButton.click();
+			}
+			return;
+		}
 
-    //Only true if we can find the invis el and it has style "None"
-    let someRandomGameContainer = document.getElementsByClassName('ynlwjd')[0];
-    let isGameInvis = someRandomGameContainer && someRandomGameContainer.style.display === 'none';
+		//Only true if we can find the invis el and it has style "None"
+		let someRandomGameContainer = document.getElementsByClassName('ynlwjd')[0];
+		let isGameInvis = someRandomGameContainer && someRandomGameContainer.style.display === 'none';
 
-    //Handle search snake here.
-    if(isGameInvis) {
-      console.log('Game not visible yet. Waiting to apply mute.');
-      setTimeout(applyMuteToGame, 400);
-    } else {
-      //Game is visible so safe to mute.
-      let muteButton = document.querySelector('img[alt="Mute"][src*="up"]');
-      if(muteButton) {muteButton.click();}
-    }    
-  }
+		//Handle search snake here.
+		if (isGameInvis) {
+			console.log('Game not visible yet. Waiting to apply mute.');
+			setTimeout(applyMuteToGame, 400);
+		} else {
+			//Game is visible so safe to mute.
+			let muteButton = document.querySelector('img[alt="Mute"][src*="up"]');
+			if (muteButton) {
+				muteButton.click();
+			}
+		}
+	}
 
-  //Fetches json file with latest version and shows the update link if it is different to our version
-  function showUpdateLinkIfNeeded() {
-    fetch('https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeModLoader/main/build/mod-info.json').then(
-      function(response) {
-        return response.text();
-      }
-    ).then(function(responseText) {
-      try {
-        let latestVersion = JSON.parse(responseText).version;
-        if(latestVersion !== VERSION && !IS_DEVELOPER_MODE) {
-          document.getElementById('update-link').style.display = 'inline';
-          document.getElementById('update-link-text').textContent = `(update to ${latestVersion})`;
-        }
-      } catch(err) {
-        console.error(err);
-      }
-    });
-  }
+	//Fetches json file with latest version and shows the update link if it is different to our version
+	function showUpdateLinkIfNeeded() {
+		fetch('https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeModLoader/main/build/mod-info.json').then(
+			function(response) {
+				return response.text();
+			}
+		).then(function(responseText) {
+			try {
+				let latestVersion = JSON.parse(responseText).version;
+				if (latestVersion !== VERSION && !IS_DEVELOPER_MODE) {
+					document.getElementById('update-link').style.display = 'inline';
+					document.getElementById('update-link-text').textContent = `(update to ${latestVersion})`;
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		});
+	}
 }
 
 window.testMod = {};
 window.testMod.runCodeBefore = function() {
-  
+
 }
 window.testMod.alterSnakeCode = function(code) {
-  code = code.replaceAll('.66','.36')
+	code = code.replaceAll('.66', '.36')
 
-  return code;
+	return code;
 }
 window.testMod.runCodeAfter = function() {
 
 }
 
 function loadAndRunCodeSynchronous(url) {
-  let req = new XMLHttpRequest();
-  req.open('GET', url, false);
-  req.onload = function() {
-    if(this.status === 200) {
-      (1,eval)(this.responseText);
-    } else {
-      console.log(`Loading selected mod returned non-200 status. Received: ${this.status}`);
-    }
-  };
-  req.onerror = function(event) {
-    console.error(`Error when attempting to retrieve mod code from ${url}`);
-    console.log(event);
-  };
-  req.send();
+	let req = new XMLHttpRequest();
+	req.open('GET', url, false);
+	req.onload = function() {
+		if (this.status === 200) {
+			(1, eval)(this.responseText);
+		} else {
+			console.log(`Loading selected mod returned non-200 status. Received: ${this.status}`);
+		}
+	};
+	req.onerror = function(event) {
+		console.error(`Error when attempting to retrieve mod code from ${url}`);
+		console.log(event);
+	};
+	req.send();
 }
 
 window.addEventListener('load', addModSelectorPopup);
@@ -963,11 +978,11 @@ window.addEventListener('load', addModSelectorPopup);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 window.swapInMainClassPrototype = function(mainClass, functionText) {
-  if(/^[$a-zA-Z0-9_]{0,6}=function/.test(functionText)) {
-    throw new Error("Error, function is of form abc=function(), but this only works for stuff like s_.abc=function()");
-  }
-  functionText = assertReplace(functionText, /^[$a-zA-Z0-9_]{0,6}/,`${mainClass}.prototype`);
-  return functionText;
+	if (/^[$a-zA-Z0-9_]{0,6}=function/.test(functionText)) {
+		throw new Error("Error, function is of form abc=function(), but this only works for stuff like s_.abc=function()");
+	}
+	functionText = assertReplace(functionText, /^[$a-zA-Z0-9_]{0,6}/, `${mainClass}.prototype`);
+	return functionText;
 }
 
 /*
@@ -984,192 +999,192 @@ for example if we are trying to find a function like s_xD = function(a, b, c, d,
 then put somethingInsideFunction = /a\.[$a-zA-Z0-9_]{0,6}&&10!==a\.[$a-zA-Z0-9_]{0,6}/
 */
 window.findFunctionInCode = function(code, functionSignature, somethingInsideFunction, logging = false) {
-  let functionSignatureSource = functionSignature.source;
-  let functionSignatureFlags = functionSignature.flags;//Probably empty string
+	let functionSignatureSource = functionSignature.source;
+	let functionSignatureFlags = functionSignature.flags; //Probably empty string
 
-  /*Check functionSignature ends in $*/
-  if (functionSignatureSource[functionSignatureSource.length - 1] !== "$") {
-    throw new Error("functionSignature regex should end in $");
-  }
+	/*Check functionSignature ends in $*/
+	if (functionSignatureSource[functionSignatureSource.length - 1] !== "$") {
+		throw new Error("functionSignature regex should end in $");
+	}
 
-  /*Allow line breaks after commas or =. This is bit sketchy, but should be ok as findFunctionInCode is used in a quite limited way*/
-  functionSignatureSource.replaceAll(/,|=/g,'$&\\n?');
-  functionSignature = new RegExp(functionSignatureSource, functionSignatureFlags);
+	/*Allow line breaks after commas or =. This is bit sketchy, but should be ok as findFunctionInCode is used in a quite limited way*/
+	functionSignatureSource.replaceAll(/,|=/g, '$&\\n?');
+	functionSignature = new RegExp(functionSignatureSource, functionSignatureFlags);
 
-  /*get the position of somethingInsideFunction*/
-  let indexWithinFunction = code.search(somethingInsideFunction);
-  if (indexWithinFunction == -1) {
-    console.log("%cCouldn't find a match for somethingInsideFunction", "color:red;");
-    diagnoseRegexError(code, somethingInsideFunction);
-  }
+	/*get the position of somethingInsideFunction*/
+	let indexWithinFunction = code.search(somethingInsideFunction);
+	if (indexWithinFunction == -1) {
+		console.log("%cCouldn't find a match for somethingInsideFunction", "color:red;");
+		diagnoseRegexError(code, somethingInsideFunction);
+	}
 
-  /*expand outwards from somethingInsideFunction until we get to the function signature, then count brackets
-  to find the end of the function*/
-  let startIndex = 0;
-  for (let i = indexWithinFunction; i >= 0; i--) {
-    let startOfCode = code.substring(0, i);
-    startIndex = startOfCode.search(functionSignature);
-    if (startIndex !== -1) {
-      break;
-    }
-    if (i == 0) {
-      throw new Error("Couldn't find function signature");
-    }
-  }
+	/*expand outwards from somethingInsideFunction until we get to the function signature, then count brackets
+	to find the end of the function*/
+	let startIndex = 0;
+	for (let i = indexWithinFunction; i >= 0; i--) {
+		let startOfCode = code.substring(0, i);
+		startIndex = startOfCode.search(functionSignature);
+		if (startIndex !== -1) {
+			break;
+		}
+		if (i == 0) {
+			throw new Error("Couldn't find function signature");
+		}
+	}
 
-  let bracketCount = 0;
-  let foundFirstBracket = false;
-  let endIndex = 0;
-  /*Use bracket counting to find the whole function*/
-  let codeLength = code.length;
-  for (let i = startIndex; i <= codeLength; i++) {
-    if (!foundFirstBracket && code[i] == "{") {
-      foundFirstBracket = true;
-    }
+	let bracketCount = 0;
+	let foundFirstBracket = false;
+	let endIndex = 0;
+	/*Use bracket counting to find the whole function*/
+	let codeLength = code.length;
+	for (let i = startIndex; i <= codeLength; i++) {
+		if (!foundFirstBracket && code[i] == "{") {
+			foundFirstBracket = true;
+		}
 
-    if (code[i] == "{") {
-      bracketCount++;
-    }
-    if (code[i] == "}") {
-      bracketCount--;
-    }
-    if (foundFirstBracket && bracketCount == 0) {
-      endIndex = i;
-      break;
-    }
+		if (code[i] == "{") {
+			bracketCount++;
+		}
+		if (code[i] == "}") {
+			bracketCount--;
+		}
+		if (foundFirstBracket && bracketCount == 0) {
+			endIndex = i;
+			break;
+		}
 
-    if (i == codeLength) {
-      throw new Error("Couldn't pair up brackets");
-    }
-  }
+		if (i == codeLength) {
+			throw new Error("Couldn't pair up brackets");
+		}
+	}
 
-  let fullFunction = code.substring(startIndex, endIndex + 1);
+	let fullFunction = code.substring(startIndex, endIndex + 1);
 
-  /*throw error if fullFunction doesn't contain something inside function - i.e. function signature was wrong*/
-  if (fullFunction.search(somethingInsideFunction) === -1) {
-    throw new Error("Function signature does not belong to the same function as somethingInsideFunction");
-  }
+	/*throw error if fullFunction doesn't contain something inside function - i.e. function signature was wrong*/
+	if (fullFunction.search(somethingInsideFunction) === -1) {
+		throw new Error("Function signature does not belong to the same function as somethingInsideFunction");
+	}
 
-  if (logging) {
-    console.log(fullFunction);
-  }
+	if (logging) {
+		console.log(fullFunction);
+	}
 
-  return fullFunction;
+	return fullFunction;
 }
 
 /*
 Same as replace, but throws an error if nothing is changed
 */
 window.assertReplace = function(baseText, regex, replacement) {
-  if (typeof baseText !== 'string') {
-    throw new Error('String argument expected for assertReplace');
-  }
-  let outputText = baseText.replace(regex, replacement);
+	if (typeof baseText !== 'string') {
+		throw new Error('String argument expected for assertReplace');
+	}
+	let outputText = baseText.replace(regex, replacement);
 
-  //Throw warning if nothing is replaced
-  if (baseText === outputText) {
-    diagnoseRegexError(baseText, regex);
-  }
+	//Throw warning if nothing is replaced
+	if (baseText === outputText) {
+		diagnoseRegexError(baseText, regex);
+	}
 
-  return outputText;
+	return outputText;
 }
 
 /*
 Same as replaceAll, but throws an error if nothing is changed
 */
 window.assertReplaceAll = function(baseText, regex, replacement) {
-  if (typeof baseText !== 'string') {
-    throw new Error('String argument expected for assertReplace');
-  }
-  let outputText = baseText.replaceAll(regex, replacement);
+	if (typeof baseText !== 'string') {
+		throw new Error('String argument expected for assertReplace');
+	}
+	let outputText = baseText.replaceAll(regex, replacement);
 
-  //Throw warning if nothing is replaced
-  if (baseText === outputText) {
-    diagnoseRegexError(baseText, regex);
-  }
+	//Throw warning if nothing is replaced
+	if (baseText === outputText) {
+		diagnoseRegexError(baseText, regex);
+	}
 
-  return outputText;
+	return outputText;
 }
 
 //Alternate way to use assertReplace. Example: code = code.assertReplace('Thing to change', 'New thing');
 String.prototype.assertReplace = function(regex, replacement) {
-  return assertReplace(this.toString(), regex, replacement);
+	return assertReplace(this.toString(), regex, replacement);
 };
 
 //Same as above for assertReplaceAll.
 String.prototype.assertReplaceAll = function(regex, replacement) {
-  return assertReplaceAll(this.toString(), regex, replacement);
+	return assertReplaceAll(this.toString(), regex, replacement);
 };
 
 //Also do this for assertMatch (We just have the prototype version for this).
 //Same as match, but throws an error if it's null.
 String.prototype.assertMatch = function(regex) {
-  let output = this.match(regex);
+	let output = this.match(regex);
 
-  //Throw error if nothing was found
-  if(output === null) {
-    diagnoseRegexError(this, regex)
-  }
-  return output;
+	//Throw error if nothing was found
+	if (output === null) {
+		diagnoseRegexError(this, regex)
+	}
+	return output;
 }
 
-window.diagnoseRegexError = function(baseText, regex) {  
-  if(!(regex instanceof RegExp)) {
-    throw new Error('Failed to find match using string argument. No more details available');
-  }
+window.diagnoseRegexError = function(baseText, regex) {
+	if (!(regex instanceof RegExp)) {
+		throw new Error('Failed to find match using string argument. No more details available');
+	}
 
-  //see if removing line breaks works - in that case we can give a more useful error message
-  let oneLineText = baseText.replaceAll(/\n/g,'');
-  let res = regex.test(oneLineText);
+	//see if removing line breaks works - in that case we can give a more useful error message
+	let oneLineText = baseText.replaceAll(/\n/g, '');
+	let res = regex.test(oneLineText);
 
-  //If line breaks don't solve the issue then throw a general error
-  if (!res) {
-    throw new Error('Failed to find match for regex.');
-  }
+	//If line breaks don't solve the issue then throw a general error
+	if (!res) {
+		throw new Error('Failed to find match for regex.');
+	}
 
-  //Try to suggest correct regex to use for searching
-  let regexSource = regex.source;
-  let regexFlags = regex.flags;
+	//Try to suggest correct regex to use for searching
+	let regexSource = regex.source;
+	let regexFlags = regex.flags;
 
-  //Look at all the spots where line breaks might occur and try adding \n? there to see if it makes a difference
-  //It might be easier to just crudely brute force putting \n? at each possible index?
-  for(let breakableChar of ["%","&","\\*","\\+",",","-","\\/",":",";","<","=",">","\\?","{","\\|","}"]) {
-    for(let pos = regexSource.indexOf(breakableChar); pos !== -1; pos = regexSource.indexOf(breakableChar, pos + 1)) {
-      //Remake the regex with a new line at the candidate position
-      let candidateRegexSource = `${regexSource.slice(0,pos + breakableChar.length)}\\n?${regexSource.slice(pos + breakableChar.length)}`;
-      let candidateRegex;
-      
-      try{
-        candidateRegex = new RegExp(candidateRegexSource, regexFlags);
-      } catch(err) {
-        continue;
-      }
+	//Look at all the spots where line breaks might occur and try adding \n? there to see if it makes a difference
+	//It might be easier to just crudely brute force putting \n? at each possible index?
+	for (let breakableChar of["%", "&", "\\*", "\\+", ",", "-", "\\/", ":", ";", "<", "=", ">", "\\?", "{", "\\|", "}"]) {
+		for (let pos = regexSource.indexOf(breakableChar); pos !== -1; pos = regexSource.indexOf(breakableChar, pos + 1)) {
+			//Remake the regex with a new line at the candidate position
+			let candidateRegexSource = `${regexSource.slice(0,pos + breakableChar.length)}\\n?${regexSource.slice(pos + breakableChar.length)}`;
+			let candidateRegex;
 
-      //See if the new regex works
-      let testReplaceResult = candidateRegex.test(baseText);
-      if(testReplaceResult) {
-        //Success we found the working regex! Give descriptive error message to user and log suggested regex with new line in correct place
-        console.log(`Suggested regex improvement:
+			try {
+				candidateRegex = new RegExp(candidateRegexSource, regexFlags);
+			} catch (err) {
+				continue;
+			}
+
+			//See if the new regex works
+			let testReplaceResult = candidateRegex.test(baseText);
+			if (testReplaceResult) {
+				//Success we found the working regex! Give descriptive error message to user and log suggested regex with new line in correct place
+				console.log(`Suggested regex improvement:
 ${candidateRegex}`);
-        throw new Error('Suggested improvement found! Error with line break, failed to find match for regex. See logged output for regex to use instead that should hopefully fix this.');
-      }
-    }
-  }
+				throw new Error('Suggested improvement found! Error with line break, failed to find match for regex. See logged output for regex to use instead that should hopefully fix this.');
+			}
+		}
+	}
 
-  throw new Error('Line break error! Failed to failed to find match for regex - most likely caused by a new line break. No suggestions provided');
+	throw new Error('Line break error! Failed to failed to find match for regex - most likely caused by a new line break. No suggestions provided');
 }
 
 window.appendCodeWithinSnakeModule = function(snakeCode, codeToAdd, addSemicolonAfter) {
-  if(addSemicolonAfter) {
-    codeToAdd += ';';
-  }
+	if (addSemicolonAfter) {
+		codeToAdd += ';';
+	}
 
-  //We could remove the first bit before the pipe symbol in the future. This is just to handle before + after a snake update.
-  var newSnakeCode = snakeCode.replace(/}\)\(this\._s\);\n\/\/ Google Inc\.|}\);\n\/\/ Google Inc\./, codeToAdd + '$&');
-  return newSnakeCode;
+	//We could remove the first bit before the pipe symbol in the future. This is just to handle before + after a snake update.
+	var newSnakeCode = snakeCode.replace(/}\)\(this\._s\);\n\/\/ Google Inc\.|}\);\n\/\/ Google Inc\./, codeToAdd + '$&');
+	return newSnakeCode;
 }
 
 //Turns _.abc into _s.abc
 window.swapInSnakeGlobal = function(text) {
-  return assertReplace(text, /^_\./, '_s.');
+	return assertReplace(text, /^_\./, '_s.');
 }
