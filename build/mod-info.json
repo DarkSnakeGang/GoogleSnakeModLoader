@@ -1,3 +1,11 @@
 {
-  "version": "1.0.7"
+  "version": "1.0.7",
+  "startMessage": {
+    "showToEveryone":false,
+    "showIfUpdateNeeded":false,
+    "showUpdatePrompt":true,
+    "explanatoryText":"Message from devs...",
+    "showMoreInfoLink":false,
+    "moreInfoLink":"about_update.md"
+  }
 }
