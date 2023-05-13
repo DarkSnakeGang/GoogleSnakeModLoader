@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (Dev)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.7
+// @version      1.0.8
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
-// @run-at       document-start
+// @icon         https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/Extras/snake_logo.png?raw=true
+// @run-at       document-body
 // @grant        none
 // @match        https://*.google.com/fbx?fbx=snake_arcade*
 // @match        https://*.google.ad/fbx?fbx=snake_arcade*
@@ -447,6 +447,16 @@ let modsConfig = {
       authorUrl: 'https://twitch.tv/yarmiplay',
       description: 'Adds new apple count "Dice", which spawns between 1 and 6 apples when the last available apple is eaten. Has PuddingMod built in.'
     }
+  },
+  MorePudding: {
+    displayName: 'More Pudding Mod',
+    hasUrl: true,
+    url: 'https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js',
+    modDescription: {
+      descriptionName: 'More Pudding Mod',
+      author: 'Fizhes+Yarmiplay',
+      description: 'This is a combination of More Menu Mod (By Fizhes) and Pudding Mod (By Yarmiplay).'
+    }
   }
 }
 
@@ -496,7 +506,7 @@ document.body.appendChild = function(el) {
   if(!isSrcCorrectFormat || currentlySelectedMod === null || currentlySelectedMod === 'none') return document.body.appendChildOld(el);
 
   //default behaviour if we can't find any snake images on the webpage
-  if(document.body.querySelector('img[src^="//www.google.com/logos/fnbx/snake_arcade"]') === null) return document.body.appendChildOld(el);
+  if(document.body.querySelector('img[src*="snake_arcade"]') === null && !window.location.href.includes('fbx?fbx=snake_arcade')) return document.body.appendChildOld(el);
 
   //Make sure to return the correct thing that appendChild would normally return
   let returnVal = el instanceof DocumentFragment ? new DocumentFragment : el;
@@ -594,6 +604,11 @@ document.body.appendChild = function(el) {
 
 //Setup Modal box that lets the user choose which mod to run
 let addModSelectorPopup = function() {
+  if(document.body.querySelector('img[src*="snake_arcade"]') === null && !window.location.href.includes('fbx?fbx=snake_arcade')) {
+    //We aren't on a page with google snake. Don't show the mod selector dialogue. Exit early.
+    return;
+  }
+
   //Set up CSS
   const css = `
   .mod-sel-btn:hover {
@@ -605,7 +620,7 @@ let addModSelectorPopup = function() {
   }
 
   /*light theme*/
-  #mod-indicator, #mod-selector-dialogue-container {
+  #mod-indicator, #mod-selector-dialogue-container, #start-message-dialogue-container {
     --mod-loader-font-col: #000000;
     --mod-loader-main-bg: #fffce0;
     --mod-loader-title-bg: #ece9d4;
@@ -619,7 +634,7 @@ let addModSelectorPopup = function() {
   }
 
   /*dark theme*/
-  #mod-indicator.dark-mod-theme, #mod-selector-dialogue-container.dark-mod-theme {
+  #mod-indicator.dark-mod-theme, #mod-selector-dialogue-container.dark-mod-theme, #start-message-dialogue-container.dark-mod-theme {
     --mod-loader-font-col: #ffffff;
     --mod-loader-main-bg: #343542;
     --mod-loader-title-bg: #66636f;
@@ -642,11 +657,6 @@ let addModSelectorPopup = function() {
   `;
 
   document.getElementsByTagName('style')[0].innerHTML = document.getElementsByTagName('style')[0].innerHTML + css;
-
-  if(document.body.querySelector('img[src^="//www.google.com/logos/fnbx/snake_arcade"]') === null) {
-    //We aren't on a page with google snake. Don't show the mod selector dialogue. Exit early.
-    return;
-  }
 
   const modCornerIndicatorHTML = `
       <span style="color:var(--mod-loader-font-col) !important">Current mod: </span><span id="mod-name-span" style="background-color: var(--mod-loader-indicator-display-bg);padding: 2px;border-radius: 3px;font-family: consolas, monospace; color:var(--mod-loader-font-col) !important"></span>
@@ -719,6 +729,7 @@ let addModSelectorPopup = function() {
           <label style="color:var(--mod-loader-font-col) !important"><input id="hide-indicator" type="checkbox">Auto-hide mod indicator (h to toggle)</label><br>
           <!--<label style="color:var(--mod-loader-font-col) !important"><input id="hidden-mod-toggle" type="checkbox">Show early access mods</label><br>-->
           <label style="color:var(--mod-loader-font-col) !important"><input id="dark-mod-theme" type="checkbox">Dark mod loader theme</label><br>
+          <span><img src="https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/Extras/Discord.png?raw=true" width="16px" style="margin-left: 3px; margin-right: 5px; position: relative; top: 2px;"><a target="_blank" href="https://discord.gg/NA6vHg62An" style="color:var(--mod-loader-link-font-col)">Discord</a></span><br>
           ${customUrlOptions}
         </div>
         <div id="settings-wrapper-2">
@@ -766,6 +777,8 @@ let addModSelectorPopup = function() {
   modSelectorModalContainer.id = 'mod-selector-dialogue-container';
   modSelectorModalContainer.style = 'display:none; position:fixed; width:100%; height:100%; z-index: 999999; left:0; top:0';
   document.body.appendChild(modSelectorModalContainer);
+
+  showUpdateLinkIfNeeded();
 
   let hideEndScreenImg = document.createElement('img');
   hideEndScreenImg.style = "position: absolute;left: 10px;top: 10px;cursor: pointer; height:20px; width:auto;";
@@ -818,6 +831,7 @@ let addModSelectorPopup = function() {
     radioEl.addEventListener('click', function(){
       //Mark mod as selected for when we hit apply
       newlySelectedMod = this.value;
+      showSettingChanged();
       [...document.getElementsByClassName('mod-description')].forEach(el=>{
         el.style.display = 'none';
         let descriptionEl = document.querySelector(`div.mod-description[data-linked-option="${this.value}"]`);
@@ -913,7 +927,7 @@ let addModSelectorPopup = function() {
     //Figure out if advanced settings have been changed.
     let shallowEquality = true;
     for(let setting in advancedSettings) {
-      if(advancedSettings[setting] !== advancedSettingsOriginal?.[setting]) {
+      if(advancedSettings[setting] !== advancedSettingsOriginal[setting]) {
         shallowEquality = false;
         break;
       }
@@ -925,10 +939,69 @@ let addModSelectorPopup = function() {
       return;
     }
 
-    //Save new settings and refresh to run with the new settings
+    //Save new settings
     localStorage.setItem('snakeChosenMod', newlySelectedMod);
     localStorage.setItem('snakeAdvancedSettings',JSON.stringify(advancedSettings));
-    location.reload();
+
+    //Refresh if the mod has changed or "is fbx centered" has been changed, or the developer settings (custom mod name/url) have been changed
+    //otherwise apply the settings to the "live" game
+    if(
+        newlySelectedMod !== currentlySelectedMod || 
+        (advancedSettings.hasOwnProperty('fbxCentered') && advancedSettings.fbxCentered !== advancedSettingsOriginal.fbxCentered && window.location.href.includes('fbx?fbx=snake_arcade')) ||
+        (advancedSettings.hasOwnProperty('customModName') && advancedSettings.customModName !== advancedSettingsOriginal.customModName) ||
+        (advancedSettings.hasOwnProperty('customUrl') && advancedSettings.customUrl !== advancedSettingsOriginal.customUrl)
+      ) {
+      location.reload();
+    } else {
+      //Apply dark mod theme setting if toggled.
+      if(advancedSettings.darkModTheme) {
+        document.getElementById('mod-indicator').classList.add('dark-mod-theme');
+        document.getElementById('mod-selector-dialogue-container').classList.add('dark-mod-theme');
+      } else {
+        document.getElementById('mod-indicator').classList.remove('dark-mod-theme');
+        document.getElementById('mod-selector-dialogue-container').classList.remove('dark-mod-theme');
+      }
+
+      //Apply background colour on fbx
+      if(window.location.href.includes('fbx?fbx=snake_arcade') && typeof advancedSettings.backgroundColor === 'string') {
+        document.body.style.backgroundColor = advancedSettings.backgroundColor;
+      }
+
+      //Apply custom theme setting
+      if(advancedSettings.useCustomTheme) {
+        //Only update this if the colours have been changed or the theme was turned off.
+        let hasThemeChanged = advancedSettings.themeCol1 !== advancedSettingsOriginal.themeCol1 ||
+        advancedSettings.themeCol2 !== advancedSettingsOriginal.themeCol2 ||
+        advancedSettings.themeCol3 !== advancedSettingsOriginal.themeCol3 ||
+        advancedSettings.themeCol4 !== advancedSettingsOriginal.themeCol4 ||
+        advancedSettings.themeCol5 !== advancedSettingsOriginal.themeCol5 ||
+        advancedSettings.themeCol6 !== advancedSettingsOriginal.themeCol6 ||
+        advancedSettings.themeCol7 !== advancedSettingsOriginal.themeCol7 ||
+        (!advancedSettingsOriginal.useCustomTheme && advancedSettings.useCustomTheme);
+
+        if(hasThemeChanged) {
+          window.snake && window.snake.setCustomTheme(
+            advancedSettings.themeCol1 ?? '#1D1D1D',
+            advancedSettings.themeCol2 ?? '#161616',
+            advancedSettings.themeCol3 ?? '#111111',
+            advancedSettings.themeCol4 ?? '#000000',
+            advancedSettings.themeCol5 ?? '#1D1D1D',
+            advancedSettings.themeCol6 ?? '#111111',
+            advancedSettings.themeCol7 ?? '#000000'
+          );
+        }
+
+      }
+
+      //Clear the theme if useCustomTheme was just unchecked
+      if(advancedSettingsOriginal.useCustomTheme && !advancedSettings.useCustomTheme) {
+        window.snake && window.snake.clearCustomTheme();
+      }
+
+      //Make note of the new settings in-case the user decides to change them again.
+      advancedSettingsOriginal = {...advancedSettings};//Shallow copy, but it's ok as nothing is nested.
+      document.getElementById('apply-mod').textContent = 'Applied!'
+    }
   });
 
   let attemptsApplyingAdvancedSettings = 0;
@@ -941,8 +1014,6 @@ let addModSelectorPopup = function() {
       modIndicatorEl.style.display = (modIndicatorEl.style.display === 'block' ? 'none' : 'block');
     }
   });
-
-  showUpdateLinkIfNeeded();
 
   function updateAdvancedSettingInputs() {
     if(advancedSettings.hasOwnProperty('fbxCentered')) {
@@ -1006,6 +1077,7 @@ let addModSelectorPopup = function() {
 
   function updateAdvancedSetting(settingName, settingValue) {
     advancedSettings[settingName] = settingValue;
+    showSettingChanged();
   }
 
   //Advanced settings that need to wait for window.snake
@@ -1064,7 +1136,7 @@ let addModSelectorPopup = function() {
         }
       }, 5000);
     }
-    if(window.location.href.includes('fbx?fbx=snake_arcade')) {
+    if(window.location.href.includes('fbx?fbx=snake_arcade') && typeof advancedSettings.backgroundColor === 'string') {
       document.body.style.backgroundColor = advancedSettings.backgroundColor;
     }
   }
@@ -1088,7 +1160,7 @@ let addModSelectorPopup = function() {
       setTimeout(applyMuteToGame, 400);
     } else {
       //Game is visible so safe to mute.
-      let muteButton = document.querySelector('img[alt="Mute"][src*="up"]');
+      let muteButton = document.querySelector('img.oGdex.JWsmhb:not([src*="off"])');
       if(muteButton) {muteButton.click();}
     }    
   }
@@ -1101,15 +1173,68 @@ let addModSelectorPopup = function() {
       }
     ).then(function(responseText) {
       try {
-        let latestVersion = JSON.parse(responseText).version;
-        if(latestVersion !== VERSION && !IS_DEVELOPER_MODE) {
+        let modInfo = JSON.parse(responseText);
+        let latestVersion = modInfo.version;
+        let updateNeeded = latestVersion !== VERSION;
+        if(updateNeeded && !IS_DEVELOPER_MODE) {
           document.getElementById('update-link').style.display = 'inline';
           document.getElementById('update-link-text').textContent = `(update to ${latestVersion})`;
+        }
+
+        if(modInfo.startMessage.showToEveryone || (modInfo.startMessage.showIfUpdateNeeded && updateNeeded)) {
+          showStartMessagePopup(modInfo);
         }
       } catch(err) {
         console.error(err);
       }
     });
+  }
+
+  function showStartMessagePopup(modInfo) {
+
+    const messageHeading = `<h1 style="font-size: 3em;font-weight: bold;margin: 7px 0px 15px 0px;text-align: center;color: var(--mod-loader-font-col);">Message</h1>`;
+    const updateAvailableHeading = `<h1 style="font-size: 3em;font-weight: bold;margin: 7px 0px 15px 0px;text-align: center;color: var(--mod-loader-font-col);">Update Available</h1>
+    <a href="${UPDATE_URL}" class="mod-sel-btn" style="display:inline-block;background-color: var(--mod-loader-button-bg);padding: 4px;margin-top: 7px;border-radius: 3px;border: 2px solid var(--mod-loader-button-apply-col);color: var(--mod-loader-button-apply-col);font-weight: bold;user-select: none;cursor: pointer;font-size: 1.5em;text-decoration: none;">Update to ${modInfo.version}</a>
+    `;
+
+    const moreInfo = `<p><a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/${modInfo.startMessage.moreInfoLink}" target="_blank" style="color: var(--mod-loader-link-font-col);font-size:1.5em">More info here</a></p>`
+
+    const startMessagePopup = `
+      <div id="start-message-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:550px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;text-align:center">
+        ${modInfo.startMessage.showUpdatePrompt ? updateAvailableHeading : messageHeading}
+
+        <p id="start-message-explanatory-text" style="font-size:1.5em;color: var(--mod-loader-font-col);"></p>
+
+        ${(modInfo.startMessage.showMoreInfoLink && /^[a-zA-Z_0-9\-\/]+\.md$/.test(modInfo.startMessage.moreInfoLink)) ? moreInfo : ''}
+
+        <div id="close-start-message" class="mod-sel-btn" style="display:inline-block;background-color: var(--mod-loader-button-bg);padding: 4px;margin-top: 7px;margin-right:10px;border-radius: 3px;border: 2px solid var(--mod-loader-button-close-col);color: var(--mod-loader-button-close-col);font-weight: bold;user-select: none;cursor: pointer;">
+          Close
+        </div>
+      </div>
+      `;
+
+    //Insert html for custom preset export dialogue box.
+    let startMessageModalContainer = document.createElement('div');
+    startMessageModalContainer.innerHTML = startMessagePopup;
+    startMessageModalContainer.id = 'start-message-dialogue-container';
+    startMessageModalContainer.style = 'position:fixed; width:100%; height:100%; z-index: 9999999; left:0; top:0';
+    document.body.appendChild(startMessageModalContainer);
+
+    document.getElementById('start-message-explanatory-text').textContent = modInfo.startMessage.explanatoryText;
+
+    if(advancedSettings && advancedSettings.darkModTheme) {
+      document.getElementById('start-message-dialogue-container').classList.add('dark-mod-theme');
+    }
+
+    document.getElementById('close-start-message').addEventListener('click', function() {
+      document.getElementById('start-message-dialogue-container').remove();
+    });
+  }
+
+  //Currently, we just ensure that the apply button doesn't have the "Applied!" text
+  //In the future, we may make is more obvious that clicking apply is needed.
+  function showSettingChanged() {
+    document.getElementById('apply-mod').textContent = 'Apply';
   }
 }
 
@@ -1150,10 +1275,10 @@ window.addEventListener('load', addModSelectorPopup);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 window.swapInMainClassPrototype = function(mainClass, functionText) {
-  if(/^[$a-zA-Z0-9_]{0,6}=function/.test(functionText)) {
+  if(/^[$a-zA-Z0-9_]{0,8}=function/.test(functionText)) {
     throw new Error("Error, function is of form abc=function(), but this only works for stuff like s_.abc=function()");
   }
-  functionText = assertReplace(functionText, /^[$a-zA-Z0-9_]{0,6}/,`${mainClass}.prototype`);
+  functionText = assertReplace(functionText, /^[$a-zA-Z0-9_]{0,8}/,`${mainClass}.prototype`);
   return functionText;
 }
 
@@ -1164,11 +1289,11 @@ code will usually be the snake source code
 
 functionSignature will be regex matching the beginning of the function/method (must end in $),
 for example if we are trying to find a function like s_xD = function(a, b, c, d, e) {......}
-then put functionSignature = /[$a-zA-Z0-9_]{0,6}=function\(a,b,c,d,e\)$/
+then put functionSignature = /[$a-zA-Z0-9_]{0,8}=function\(a,b,c,d,e\)$/
 
 somethingInsideFunction will be regex matching something in the function
 for example if we are trying to find a function like s_xD = function(a, b, c, d, e) {...a.Xa&&10!==a.Qb...}
-then put somethingInsideFunction = /a\.[$a-zA-Z0-9_]{0,6}&&10!==a\.[$a-zA-Z0-9_]{0,6}/
+then put somethingInsideFunction = /a\.[$a-zA-Z0-9_]{0,8}&&10!==a\.[$a-zA-Z0-9_]{0,8}/
 */
 window.findFunctionInCode = function(code, functionSignature, somethingInsideFunction, logging = false) {
   let functionSignatureSource = functionSignature.source;
