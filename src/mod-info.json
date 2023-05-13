@@ -1,3 +1,11 @@
 {
-  "version": "%VERSION%"
+  "version": "%VERSION%",
+  "startMessage": {
+    "showToEveryone":false,
+    "showIfUpdateNeeded":false,
+    "showUpdatePrompt":true,
+    "explanatoryText":"Message from devs...",
+    "showMoreInfoLink":false,
+    "moreInfoLink":"about_update.md"
+  }
 }
