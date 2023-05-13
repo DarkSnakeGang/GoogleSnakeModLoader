@@ -3,6 +3,8 @@
   "startMessage": {
     "showToEveryone":false,
     "showIfUpdateNeeded":false,
+    "excludeFbx":false,
+    "excludeSearch":false,
     "showUpdatePrompt":true,
     "explanatoryText":"Message from devs...",
     "showMoreInfoLink":false,

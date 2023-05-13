@@ -493,20 +493,24 @@ if(window.isModLoaderRunning) {
 }
 
 window.isModLoaderRunning = true;
+window.hasFoundSnakeCodeYet = false;
 
 //Replace appendChild so we can intercept it
 document.body.appendChildOld = document.body.appendChild;
 
 document.body.appendChild = function(el) {
   if(el.tagName !== 'SCRIPT') return document.body.appendChildOld(el);
-  if(el.src === '' || el.src.includes('apis.google.com')) return document.body.appendChildOld(el);
 
+  //Basic checks to filter out scripts which can't be the snake script
+  if(el.src === '' || el.src.includes('apis.google.com') || !el.src.includes('www.google')) return document.body.appendChildOld(el);
+
+  //Check if the script is either the funbox experiment one, or has xjs=s1 (for fbx link), or has just xjs folder (for search snake)
+  let isSrcCorrectFormat = el.src.includes('funbox') || el.src.includes('xjs=s1') || (!window.location.href.includes('fbx?fbx=snake_arcade') && el.src.includes('/xjs/'));
+  if(!isSrcCorrectFormat) return document.body.appendChildOld(el);
+
+  //Check if we're actually running a mod
   const currentlySelectedMod = localStorage.getItem('snakeChosenMod');
-
-  //Just do default behaviour if it isn't the snake script or we don't have a mod to run
-  const regexForScriptSrc = window.location.href.includes('fbx?fbx=snake_arcade') ? /xjs=s1$/ : /xjs=s2$/;
-  let isSrcCorrectFormat = regexForScriptSrc.test(el.src) || el.src.includes('funbox');
-  if(!isSrcCorrectFormat || currentlySelectedMod === null || currentlySelectedMod === 'none') return document.body.appendChildOld(el);
+  if(currentlySelectedMod === null || currentlySelectedMod === 'none') return document.body.appendChildOld(el);
 
   //default behaviour if we can't find any snake images on the webpage
   if(document.body.querySelector('img[src*="snake_arcade"]') === null && !window.location.href.includes('fbx?fbx=snake_arcade')) return document.body.appendChildOld(el);
@@ -529,6 +533,13 @@ document.body.appendChild = function(el) {
     if(this.responseText.indexOf('trophy') === -1 || this.responseText.indexOf('apple') === -1 || this.responseText.indexOf('snake_arcade') === -1) {
       returnVal = document.body.appendChildOld(el);
       return;
+    }
+
+    //Code for catching the case where the snake code has changed URL.
+    window.hasFoundSnakeCodeYet = true;
+    let codeNotFoundMessage = document.getElementById('code-not-found-message');
+    if(codeNotFoundMessage) {
+      codeNotFoundMessage.style.display = 'none';
     }
 
     console.log(`Selected mod: ${currentlySelectedMod}`);
@@ -612,6 +623,8 @@ let addModSelectorPopup = function() {
     return;
   }
 
+  setTimeout(checkFoundSnakeCode, 4000);
+
   //Set up CSS
   const css = `
   .mod-sel-btn:hover {
@@ -668,6 +681,11 @@ let addModSelectorPopup = function() {
         Error changing snake code.
         <br>
         <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/mod_errors.md" target="_blank" style="color: var(--mod-loader-link-font-col);">Why does this happen?</a>
+      </div>
+      <div id="code-not-found-message" style="font-family: helvetica, sans-serif;color: #f44336;margin-top: 2px;display: none;">
+        Code not found after 4 seconds.
+        <br>
+        <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/code_not_found_yet.md" target="_blank" style="color: var(--mod-loader-link-font-col);">Is it not working?</a>
       </div>
   `;
 
@@ -1184,6 +1202,11 @@ let addModSelectorPopup = function() {
           document.getElementById('update-link-text').textContent = `(update to ${latestVersion})`;
         }
 
+        //Have an option to not show the popup on either fbx or search snake (e.g. if only one of them is broken)
+        if(window.location.href.includes('fbx?fbx=snake_arcade') ? modInfo.startMessage.excludeFbx : modInfo.startMessage.excludeSearch) {
+          return;
+        }
+
         if(modInfo.startMessage.showToEveryone || (modInfo.startMessage.showIfUpdateNeeded && updateNeeded)) {
           showStartMessagePopup(modInfo);
         }
@@ -1238,6 +1261,34 @@ let addModSelectorPopup = function() {
   //In the future, we may make is more obvious that clicking apply is needed.
   function showSettingChanged() {
     document.getElementById('apply-mod').textContent = 'Apply';
+  }
+
+  //It's possible that the snake code has changed URL or changed in some other way and we weren't able to alter it. If so then show an indicator.
+  function checkFoundSnakeCode() {
+    const currentlySelectedMod = localStorage.getItem('snakeChosenMod');
+    if(currentlySelectedMod === null || currentlySelectedMod === 'none') {
+      //Don't worry about whether or not we've found the snake code since we're not running a mod.
+      return;
+    }
+
+    if(window.hasFoundSnakeCodeYet) {
+      //We're good, we've found the snake code so it hasn't changed location
+      return;
+    }
+
+    //Otherwise show a message to the user.
+    let codeNotFoundMessage = document.getElementById('code-not-found-message');
+    if(codeNotFoundMessage) {
+      codeNotFoundMessage.style.display = 'block';
+    }
+
+    //Make sure that the indicator is actually visible
+    let modIndicatorEl = document.getElementById('mod-indicator');
+    if(modIndicatorEl) {
+      modIndicatorEl.style.display = 'block';
+    }
+
+    window.showSnakeErrMessage = true;//Used to prevent the indicator being auto-hidden
   }
 }
 
