@@ -17,8 +17,12 @@
       "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/main/modloadercode.js",
       "modDescription": {
         "descriptionName": "More Menu Mod",
-        "author": "Fizhes",
-        "authorUrl": "https://www.youtube.com/@Fizhes",
+        "authors": [
+          {
+            "name": "Fizhes",
+            "url": "https://www.youtube.com/@Fizhes"
+          }
+        ],
         "description": "The most popular mod. Adds options to the menu for more speeds, apple counts and map sizes. Other contributors: ScienceCrafter, BrightyLighty, CarL"
       }
     },
@@ -28,8 +32,12 @@
       "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js",
       "modDescription": {
         "descriptionName": "Level Editor Mod",
-        "author": "TF2Llama",
-        "authorUrl": "https://www.youtube.com/@TF2Llama",
+        "authors": [
+          {
+            "name": "TF2Llama",
+            "url": "https://www.youtube.com/@TF2Llama"
+          }
+        ],
         "description": "Click on the board to place walls/fruit etc. Play pre-made levels. Make your own levels. Try the challenge levels."
       }
     },
@@ -39,8 +47,12 @@
       "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js",
       "modDescription": {
         "descriptionName": "Mouse Mode",
-        "author": "TF2Llama",
-        "authorUrl": "https://www.youtube.com/@TF2Llama",
+        "authors": [
+          {
+            "name": "TF2Llama",
+            "url": "https://www.youtube.com/@TF2Llama"
+          }
+        ],
         "description": "Control the snake with your mouse. Slightly buggy."
       }
     },
@@ -50,8 +62,12 @@
       "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js",
       "modDescription": {
         "descriptionName": "Pudding Mod",
-        "author": "Yarmiplay",
-        "authorUrl": "https://twitch.tv/yarmiplay",
+        "authors": [
+          {
+            "name": "Yarmiplay",
+            "url": "https://twitch.tv/yarmiplay"
+          }
+        ],
         "description": "A fairly small mod. Adds a pudding fruit after the fruit bowl option. Shows the speed and count in the top bar."
       }
     },
@@ -61,7 +77,16 @@
       "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js",
       "modDescription": {
         "descriptionName": "More Pudding Mod",
-        "author": "Fizhes+Yarmiplay",
+        "authors": [
+          {
+            "name": "Fizhes",
+            "url": "https://www.youtube.com/@Fizhes"
+          },
+          {
+            "name": "Yarmiplay",
+            "url": "https://twitch.tv/yarmiplay"
+          }
+        ],
         "description": "This is a combination of More Menu Mod (By Fizhes) and Pudding Mod (By Yarmiplay)."
       }
     }
