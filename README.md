@@ -32,6 +32,8 @@ Use the relevant link for your browser.
 
 3) Play Google Snake. The mod will run automatically. A panel will show up in the bottom right that lets you choose which mod to run.
 
+4) (Optional) Join the [Discord](https://discord.gg/NA6vHg62An) :)
+
 # Screenshots
 
 ## Mod loader Menu
