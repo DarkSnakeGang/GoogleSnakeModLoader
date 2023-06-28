@@ -37,7 +37,7 @@ Use the relevant link for your browser.
 # Screenshots
 
 ## Mod loader Menu
-![image](https://user-images.githubusercontent.com/69080709/220425503-39107cba-4275-428d-8fbd-8f16f249154c.png)
+![image](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/assets/69080709/a091b80a-16e3-457f-adc8-4c7e3257e892)
 
 ## More Menu Mod
 ![image](https://user-images.githubusercontent.com/69080709/220422804-b19527a2-e52b-4cbc-8c3a-df9135c8215e.png)
