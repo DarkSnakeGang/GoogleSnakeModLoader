@@ -9,5 +9,86 @@
     "explanatoryText":"Message from devs...",
     "showMoreInfoLink":false,
     "moreInfoLink":"about_update.md"
-  }
+  },
+  "modsConfig": {
+    "moreMenu": {
+      "displayName": "More Menu Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/main/modloadercode.js",
+      "modDescription": {
+        "descriptionName": "More Menu Mod",
+        "authors": [
+          {
+            "name": "Fizhes",
+            "url": "https://www.youtube.com/@Fizhes"
+          }
+        ],
+        "description": "The most popular mod. Adds options to the menu for more speeds, apple counts and map sizes. Other contributors: ScienceCrafter, BrightyLighty, CarL"
+      }
+    },
+    "levelEditorMod": {
+      "displayName": "Level Editor Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js",
+      "modDescription": {
+        "descriptionName": "Level Editor Mod",
+        "authors": [
+          {
+            "name": "TF2Llama",
+            "url": "https://www.youtube.com/@TF2Llama"
+          }
+        ],
+        "description": "Click on the board to place walls/fruit etc. Play pre-made levels. Make your own levels. Try the challenge levels."
+      }
+    },
+    "mouseMode": {
+      "displayName": "Mouse Mode",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js",
+      "modDescription": {
+        "descriptionName": "Mouse Mode",
+        "authors": [
+          {
+            "name": "TF2Llama",
+            "url": "https://www.youtube.com/@TF2Llama"
+          }
+        ],
+        "description": "Control the snake with your mouse. Slightly buggy."
+      }
+    },
+    "PuddingMod": {
+      "displayName": "Pudding Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js",
+      "modDescription": {
+        "descriptionName": "Pudding Mod",
+        "authors": [
+          {
+            "name": "Yarmiplay",
+            "url": "https://twitch.tv/yarmiplay"
+          }
+        ],
+        "description": "Adds more fruit types, snake skins and game themes. Tracks PBs and other stats. Has a 1 in a million chance of spawning a Golden Apple. And does a lot more!"
+      }
+    },
+    "MorePudding": {
+      "displayName": "More Pudding Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js",
+      "modDescription": {
+        "descriptionName": "More Pudding Mod",
+        "authors": [
+          {
+            "name": "Fizhes",
+            "url": "https://www.youtube.com/@Fizhes"
+          },
+          {
+            "name": "Yarmiplay",
+            "url": "https://twitch.tv/yarmiplay"
+          }
+        ],
+        "description": "This is a combination of More Menu Mod (By Fizhes) and Pudding Mod (By Yarmiplay)."
+      }
+    }
+  }	
 }
