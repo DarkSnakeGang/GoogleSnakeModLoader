@@ -51,7 +51,7 @@ Use the relevant link for your browser.
 ![image](https://user-images.githubusercontent.com/69080709/164514052-4990128c-f1df-4a41-b646-a32ec1322d4d.png)
 
 ## Pudding Mod
-![image](https://user-images.githubusercontent.com/69080709/227233548-5b206072-7705-4102-9e70-95bc692ebdc5.png)
+![image](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/assets/69080709/57d51a32-3a69-4677-924f-3003e377fd9d)
 
 # Search terms for standard version
 
