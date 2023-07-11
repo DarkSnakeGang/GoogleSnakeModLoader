@@ -7,6 +7,8 @@ Featured mods (may change):
 - Level Editor Mod
 - Mouse Mode
 - Pudding Mod
+- More Pudding Mod
+- Visibility Mod
 
 # How to install
 
