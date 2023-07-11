@@ -90,12 +90,12 @@
         "description": "This is a combination of More Menu Mod (By Fizhes) and Pudding Mod (By Yarmiplay)."
       }
     },
-    "StealthMod": {
-      "displayName": "Stealth Mod",
+    "VisibilityMod": {
+      "displayName": "Visibility Mod",
       "hasUrl": true,
-      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/StealthMod.js",
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/VisibilityMod.js",
       "modDescription": {
-        "descriptionName": "Stealth Mod",
+        "descriptionName": "Visibility Mod",
         "authors": [
           {
             "name": "TF2Llama",
