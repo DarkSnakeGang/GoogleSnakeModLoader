@@ -1,5 +1,5 @@
 {
-  "version": "1.0.9",
+  "version": "%VERSION%",
   "startMessage": {
     "showToEveryone":false,
     "showIfUpdateNeeded":false,
@@ -65,7 +65,7 @@
         "authors": [
           {
             "name": "Yarmiplay",
-            "url": "https://twitch.tv/yarmiplay"
+            "url": "https://www.youtube.com/@Yarmiplay"
           }
         ],
         "description": "Adds more fruit types, snake skins and game themes. Tracks PBs and other stats. Has a 1 in a million chance of spawning a Golden Apple. And does a lot more!"
@@ -84,10 +84,29 @@
           },
           {
             "name": "Yarmiplay",
-            "url": "https://twitch.tv/yarmiplay"
+            "url": "https://www.youtube.com/@Yarmiplay"
           }
         ],
         "description": "This is a combination of More Menu Mod (By Fizhes) and Pudding Mod (By Yarmiplay)."
+      }
+    },
+    "StealthMod": {
+      "displayName": "Stealth Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/StealthMod.js",
+      "modDescription": {
+        "descriptionName": "Stealth Mod",
+        "authors": [
+          {
+            "name": "TF2Llama",
+            "url": "https://www.youtube.com/@TF2Llama"
+          },
+          {
+            "name": "Yarmiplay",
+            "url": "https://www.youtube.com/@Yarmiplay"
+          }
+        ],
+        "description": "This mod lets you delete different parts of the snake, game elements, and the background. Comes with Pudding Mod."
       }
     }
   }	
