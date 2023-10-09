@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (fbx)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.10
+// @version      1.0.11
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/Extras/snake_logo.png?raw=true
@@ -202,7 +202,7 @@
 // ==/UserScript==
 
 const IS_DEVELOPER_MODE = false;
-const VERSION = '1.0.10';//Gets set to version in build script
+const VERSION = '1.0.11';//Gets set to version in build script
 const UPDATE_URL = 'https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-fbx.user.js';//Gets set from build script
 
 //External config that determines which mods the modloader has

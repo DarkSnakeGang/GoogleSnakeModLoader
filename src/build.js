@@ -58,7 +58,7 @@ function buildUserscript(metaSrc, userOutname, version, userscriptBody) {
     let updateUrl = `https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/${userOutname}`
     userscriptBody = userscriptBody.replace('%UPDATE_URL%', updateUrl);
 
-    data += '\n' + userscriptBody;
+    data += '\r\n' + userscriptBody;
 
     //Write user file
     fs.writeFile(__dirname + '/../build/' + userOutname, data, function(err) {
