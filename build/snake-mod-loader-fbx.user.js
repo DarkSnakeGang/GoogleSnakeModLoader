@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (fbx)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.9
+// @version      1.0.10
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/Extras/snake_logo.png?raw=true
@@ -202,7 +202,7 @@
 // ==/UserScript==
 
 const IS_DEVELOPER_MODE = false;
-const VERSION = '1.0.9';//Gets set to version in build script
+const VERSION = '1.0.10';//Gets set to version in build script
 const UPDATE_URL = 'https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-fbx.user.js';//Gets set from build script
 
 //External config that determines which mods the modloader has
@@ -570,7 +570,7 @@ let addModSelectorPopup = function() {
 
   const modSelectorModal = `
   <div id="mod-selector-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:550px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;">
-    <div style="display: flex;justify-content: space-between;align-items: center;margin: 7px 0px 15px 0px;border: 2px solid var(--mod-loader-title-border);background-color: var(--mod-loader-title-bg);border-radius: 2px;">
+    <div style="display: flex;justify-content: space-between;align-items: center;margin: 0px 0px 15px 0px;border: 2px solid var(--mod-loader-title-border);background-color: var(--mod-loader-title-bg);border-radius: 2px;">
       <span><a target="_blank" href="https://github.com/DarkSnakeGang"><img title="DarkSnakeGang github" style="margin-left:3px; margin-top:2px" src="/logos/fnbx/snake_arcade/v3/speed_00.png" alt="" height="34"></a></span>
       <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;text-align: center;color: #4674e9;margin-top: 0;margin-bottom: 0;">Snake Mod Loader</h1>
       <span><a target="_blank" href="https://discord.gg/NA6vHg62An"><img title="Discord server" src="https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/Extras/Discord.png?raw=true" width="35px" style="margin-left: 3px; margin-right: 5px; position: relative; top: 2px;"></a></span>
@@ -588,7 +588,7 @@ let addModSelectorPopup = function() {
       <hr style="margin-block-start: 0.5em; margin-block-end: 0.5em;">
       <div id="advanced-settings" style="display: flex;justify-content: space-between;">
         <div id="settings-wrapper-1">
-          <label style="color:var(--mod-loader-font-col) !important"><input id="fbx-centered-checkbox" type="checkbox">Make fbx centered</label><br>
+          <label style="color:var(--mod-loader-font-col) !important"><input id="fullscreen-at-start" type="checkbox">Fullscreen at start</label><br>
           <label style="color:var(--mod-loader-font-col) !important"><input id="timer-starts-on" type="checkbox">Timer starts on</label><br>
           <label style="color:var(--mod-loader-font-col) !important"><input id="muted-starts-on" type="checkbox">Mute at start</label><br>
           <label style="color:var(--mod-loader-font-col) !important"><input id="hide-indicator" type="checkbox">Auto-hide mod indicator (h to toggle)</label><br>
@@ -710,7 +710,8 @@ let addModSelectorPopup = function() {
 
   //Load advanced settings
   let advancedSettings = JSON.parse(localStorage.getItem('snakeAdvancedSettings')) ?? {};
-  let advancedSettingsOriginal = {...advancedSettings};//Shallow copy, but it's ok as nothing is nested.
+  delete advancedSettings.fbxCentered; //Remove the fbx centered property as it's no longer needed
+  let advancedSettingsOriginal = {...advancedSettings}; //Shallow copy, but it's ok as nothing is nested.
 
   //Make sure the inputs are set the right values when starting up the mod
   updateAdvancedSettingInputs();
@@ -726,8 +727,8 @@ let addModSelectorPopup = function() {
     document.getElementById('custom-theme-pickers').style.display = (this.checked ? 'block' : 'none');
     updateAdvancedSetting('useCustomTheme', this.checked);
   });
-  document.getElementById('fbx-centered-checkbox').addEventListener('change', function() {
-    updateAdvancedSetting('fbxCentered', this.checked);
+  document.getElementById('fullscreen-at-start').addEventListener('change', function() {
+    updateAdvancedSetting('fullscreenStartsOn', this.checked);
   });
   document.getElementById('timer-starts-on').addEventListener('change', function() {
     updateAdvancedSetting('timerStartsOn', this.checked);
@@ -820,11 +821,10 @@ let addModSelectorPopup = function() {
     localStorage.setItem('snakeChosenMod', newlySelectedMod);
     localStorage.setItem('snakeAdvancedSettings',JSON.stringify(advancedSettings));
 
-    //Refresh if the mod has changed or "is fbx centered" has been changed, or the developer settings (custom mod name/url) have been changed
+    //Refresh if the mod has changed or the developer settings (custom mod name/url) have been changed
     //otherwise apply the settings to the "live" game
     if(
         newlySelectedMod !== currentlySelectedMod || 
-        (advancedSettings.hasOwnProperty('fbxCentered') && advancedSettings.fbxCentered !== advancedSettingsOriginal.fbxCentered && window.location.href.includes('fbx?fbx=snake_arcade')) ||
         (advancedSettings.hasOwnProperty('customModName') && advancedSettings.customModName !== advancedSettingsOriginal.customModName) ||
         (advancedSettings.hasOwnProperty('customUrl') && advancedSettings.customUrl !== advancedSettingsOriginal.customUrl)
       ) {
@@ -893,8 +893,8 @@ let addModSelectorPopup = function() {
   });
 
   function updateAdvancedSettingInputs() {
-    if(advancedSettings.hasOwnProperty('fbxCentered')) {
-      document.getElementById('fbx-centered-checkbox').checked = advancedSettings.fbxCentered;
+    if(advancedSettings.hasOwnProperty('fullscreenStartsOn')) {
+      document.getElementById('fullscreen-at-start').checked = advancedSettings.fullscreenStartsOn;
     }
     if(advancedSettings.hasOwnProperty('timerStartsOn')) {
       document.getElementById('timer-starts-on').checked = advancedSettings.timerStartsOn;
@@ -986,12 +986,8 @@ let addModSelectorPopup = function() {
   }
 
   function applyAdvancedNonSnakeSettingsToGame() {
-    if(advancedSettings.fbxCentered && window.location.href.includes('fbx?fbx=snake_arcade')) {
-      //Copied from GoogleSnakeCenteredFBX mod
-      let snakeCanvasAncestor = document.querySelector('div[data-is-standalone]');
-      if(snakeCanvasAncestor) {
-        snakeCanvasAncestor.style = 'position:relative;top:50%;transform:translate(0%,-50%);margin:auto;';
-      }
+    if(advancedSettings.fullscreenStartsOn) {
+      applyFullscreenToGame();
     }
     if(advancedSettings.mutedStartsOn) {
       applyMuteToGame();
@@ -1022,7 +1018,7 @@ let addModSelectorPopup = function() {
     //On fbx we can mute right way. On search, we need to wait until the game is visible.
     if(window.location.href.includes('fbx?fbx=snake_arcade')) {
       //Match mute button, but only if it's on (i.e. the image url includes the word up instead of the word off)
-      let muteButton = document.querySelector('img.oGdex.JWsmhb:not([src*="off"])');
+      let muteButton = document.querySelector('img.EFcTud[jsaction="DGXxE"]:not([src*="off"])');
       if(muteButton) {muteButton.click();}
       return;
     }
@@ -1037,8 +1033,32 @@ let addModSelectorPopup = function() {
       setTimeout(applyMuteToGame, 400);
     } else {
       //Game is visible so safe to mute.
-      let muteButton = document.querySelector('img.oGdex.JWsmhb:not([src*="off"])');
+      let muteButton = document.querySelector('img.EFcTud[jsaction="DGXxE"]:not([src*="off"])');
       if(muteButton) {muteButton.click();}
+    }    
+  }
+
+  function applyFullscreenToGame() {
+    //On fbx we can fullscreen right way. On search, we need to wait until the game is visible.
+    if(window.location.href.includes('fbx?fbx=snake_arcade')) {
+      //Match fullscreen button, but only if it's on (i.e. the image url includes the word up instead of the word off)
+      let fullscreenButton = document.querySelector('img.EFcTud[jsaction="zeJAAd"]:not([src*="exit"])');
+      if(fullscreenButton) {fullscreenButton.click();}
+      return;
+    }
+
+    //Only true if we can find the invis el and it has style "None"
+    let someRandomGameContainer = document.getElementsByClassName('ynlwjd')[0];
+    let isGameInvis = someRandomGameContainer && someRandomGameContainer.style.display === 'none';
+
+    //Handle search snake here.
+    if(isGameInvis) {
+      console.log('Game not visible yet. Waiting to apply fullscreen.');
+      setTimeout(applyFullscreenToGame, 400);
+    } else {
+      //Game is visible so safe to fullscreen.
+      let fullscreenButton = document.querySelector('img.EFcTud[jsaction="zeJAAd"]:not([src*="exit"])');
+      if(fullscreenButton) {fullscreenButton.click();}
     }    
   }
 
