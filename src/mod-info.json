@@ -39,7 +39,17 @@
           }
         ],
         "description": "Click on the board to place walls/fruit etc. Play pre-made levels. Make your own levels. Try the challenge levels."
-      }
+      },
+      "web": [
+        {
+          "version": 1,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js"
+        },
+        {
+          "version": 2,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js"
+        }
+      ]
     },
     "mouseMode": {
       "displayName": "Mouse Mode",
