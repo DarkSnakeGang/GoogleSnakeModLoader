@@ -30,7 +30,11 @@
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/main/modloadercode.js"
         }
-      ]
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Full support"
+      }
     },
     "levelEditorMod": {
       "displayName": "Level Editor Mod",
@@ -55,7 +59,11 @@
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js"
         }
-      ]
+      ],
+      "mobile": {
+        "support": false,
+        "description": "No support for mobile"
+      }
     },
     "mouseMode": {
       "displayName": "Mouse Mode",
@@ -76,7 +84,11 @@
           "version": 1,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js"
         }
-      ]
+      ],
+      "mobile": {
+        "support": false,
+        "description": "No support for mobile"
+      }
     },
     "PuddingMod": {
       "displayName": "Pudding Mod",
@@ -97,7 +109,11 @@
           "version": 1,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js"
         }
-      ]
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Works, but reduced features"
+      }
     },
     "MorePudding": {
       "displayName": "More Pudding Mod",
@@ -126,7 +142,11 @@
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js"
         }
-      ]
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Works, but reduced features"
+      }
     },
     "VisibilityMod": {
       "displayName": "Visibility Mod",
@@ -151,7 +171,11 @@
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/VisibilityMod.js"
         }
-      ]
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Full support"
+      }
     }
   }	
 }
