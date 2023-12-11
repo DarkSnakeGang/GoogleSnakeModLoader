@@ -86,8 +86,8 @@
         }
       ],
       "mobile": {
-        "support": false,
-        "description": "No support for mobile"
+        "support": true,
+        "description": "Full support"
       }
     },
     "PuddingMod": {
