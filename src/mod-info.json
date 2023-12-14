@@ -83,6 +83,10 @@
         {
           "version": 1,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js"
+        },
+        {
+          "version": 2,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js"
         }
       ],
       "mobile": {
@@ -106,7 +110,7 @@
       },
       "web": [
         {
-          "version": 1,
+          "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js"
         }
       ],
@@ -134,10 +138,6 @@
         "description": "This is a combination of More Menu Mod (By Fizhes) and Pudding Mod (By Yarmiplay)."
       },
       "web": [
-        {
-          "version": 1,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js"
-        },
         {
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js"
@@ -167,6 +167,10 @@
         "description": "This mod lets you delete different parts of the snake, game elements, and the background. Comes with Pudding Mod."
       },
       "web": [
+        {
+          "version": 1,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/VisibilityMod.js"
+        },
         {
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/VisibilityMod.js"
