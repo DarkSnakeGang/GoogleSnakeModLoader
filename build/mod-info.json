@@ -81,10 +81,6 @@
       },
       "web": [
         {
-          "version": 1,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js"
-        },
-        {
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js"
         }
