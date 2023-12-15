@@ -52,10 +52,6 @@
       },
       "web": [
         {
-          "version": 1,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js"
-        },
-        {
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/main/modloadercode.js"
         }
