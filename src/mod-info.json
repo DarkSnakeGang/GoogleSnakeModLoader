@@ -102,6 +102,10 @@
       },
       "web": [
         {
+          "version": 1,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/dice_added_version/PuddingMod.js"
+        },
+        {
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js"
         }
