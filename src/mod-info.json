@@ -112,7 +112,7 @@
       ],
       "mobile": {
         "support": true,
-        "description": "Works, but reduced features"
+        "description": "Works, no input display or speedinfo"
       }
     },
     "MorePudding": {
