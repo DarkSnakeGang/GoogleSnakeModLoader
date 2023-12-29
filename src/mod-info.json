@@ -102,13 +102,17 @@
       },
       "web": [
         {
+          "version": 1,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/dice_added_version/PuddingMod.js"
+        },
+        {
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js"
         }
       ],
       "mobile": {
         "support": true,
-        "description": "Works, but reduced features"
+        "description": "Works, no input display or speedinfo"
       }
     },
     "MorePudding": {
