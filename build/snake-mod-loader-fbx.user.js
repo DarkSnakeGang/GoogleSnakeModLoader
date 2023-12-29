@@ -777,6 +777,18 @@ let addModSelectorPopup = function() {
     document.getElementById('custom-url').addEventListener('input', function() {
       updateAdvancedSetting('customUrl', this.value);
     });
+    document.getElementById('custom-mod-name').addEventListener('keypress', function(e) {
+      e.stopPropagation();
+    });
+    document.getElementById('custom-url').addEventListener('keypress', function(e) {
+      e.stopPropagation();
+    });
+    document.getElementById('custom-mod-name').addEventListener('keydown', function(e) {
+      e.stopPropagation();
+    });
+    document.getElementById('custom-url').addEventListener('keydown', function(e) {
+      e.stopPropagation();
+    });
   }
 
   //Event listener for toggling the early access/hidden mods
