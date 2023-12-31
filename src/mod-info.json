@@ -176,6 +176,31 @@
         "support": true,
         "description": "Full support"
       }
+    },
+	"ChessMod": {
+      "displayName": "Chess Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeChess/main/ChessMod.js",
+      "modDescription": {
+        "descriptionName": "Chess Mod",
+        "authors": [
+          {
+            "name": "Yarmiplay",
+            "url": "https://www.youtube.com/@Yarmiplay"
+          }
+        ],
+        "description": "This is mod changes Shield mode to Chess mode."
+      },
+      "web": [
+        {
+          "version": 2,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeChess/main/ChessMod.js"
+        }
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Works"
+      }
     }
   }	
 }
