@@ -9,6 +9,7 @@ Featured mods (may change):
 - Pudding Mod
 - More Pudding Mod
 - Visibility Mod
+- Chess Mod
 
 # How to install
 
