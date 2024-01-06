@@ -1,5 +1,8 @@
 # Google Snake Mod Loader
 
+2024 update - we now have a website with the mods built in! It's a lot easier than the method detailed on this page.
+https://googlesnakemods.com/
+
 New way to get snake mods since bookmarks broke.
 
 Featured mods (may change):
@@ -12,7 +15,14 @@ Featured mods (may change):
 - Chess Mod
 
 # How to install
+## New method (very easy)
 
+1) We have a website with the google snake mods built right in. Go to https://googlesnakemods.com/
+2) Click play, which will take you to a modded version of snake
+3) A panel will show up in the bottom right that lets you choose which mod to run.
+4) (optional) Join the [Discord](https://discord.gg/NA6vHg62An) :)
+
+## Old method (harder)
 1) Install a userscript manager. We recommend the **Tampermonkey** browser extension for this. Note that greasemonkey won't work.
 
 Use the relevant link for your browser.
