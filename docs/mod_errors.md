@@ -1,8 +1,7 @@
 # Why do mods sometimes not work?
 
-June 13th note: Google recently updated snake with a dice option in the apple counts. This has broken some mods, but we hope to fix soon.
-
-April 2023 note: Some people are getting an experimental version of google snake where some mods don't work (More Menu Mod, Dice Mod). Try playing on a different domain instead - https://www.google.ca/fbx?fbx=snake_arcade https://www.google.de/fbx?fbx=snake_arcade https://www.google.it/fbx?fbx=snake_arcade for more info see [here](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/different_version.md).
+2024 note: We now have a site for mods where they will always work.
+https://googlesnakemods.com/
 
 ---
 
@@ -12,4 +11,4 @@ This may affect only some of the google snake mods or it may affect all of them.
 We will try to fix the snake mods whenever this happens.
 This typically can take a few days depending on how busy we are and how broken the mods are.
 
-Please be patient when this happens.
+Note that the mods will still be playable on https://googlesnakemods.com/ which stores older versions of the game.
