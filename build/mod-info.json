@@ -203,6 +203,10 @@
         {
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeChess/main/ChessMod.js"
+        },
+	{
+          "version": 3,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeChess/main/ChessMod.js"
         }
       ],
       "mobile": {
