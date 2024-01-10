@@ -78,6 +78,10 @@
       "web": [
         {
           "version": 2,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/stable_shield/modloadercode.js"
+        },
+        {
+          "version": 3,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js"
         }
       ],
@@ -116,7 +120,7 @@
       ],
       "mobile": {
         "support": true,
-        "description": "Works, but reduced features"
+        "description": "Works, no input display or speedinfo"
       }
     },
     "MorePudding": {
