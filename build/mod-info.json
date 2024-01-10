@@ -169,10 +169,14 @@
       "web": [
         {
           "version": 1,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/VisibilityMod.js"
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/shield/VisibilityMod.js"
         },
         {
           "version": 2,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/shield/VisibilityMod.js"
+        },
+        {
+          "version": 3,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/VisibilityMod.js"
         }
       ],
