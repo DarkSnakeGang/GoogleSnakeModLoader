@@ -27,7 +27,7 @@
       },
       "web": [
         {
-          "version": 2,
+          "version": 3,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/main/modloadercode.js"
         }
       ],
@@ -149,6 +149,10 @@
         {
           "version": 2,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js"
+        },
+        {
+          "version": 3,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js"
         }
       ],
       "mobile": {
@@ -177,11 +181,11 @@
       "web": [
         {
           "version": 1,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/shield/VisibilityMod.js"
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/shield_working/VisibilityMod.js"
         },
         {
           "version": 2,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/shield/VisibilityMod.js"
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/shield_working/VisibilityMod.js"
         },
         {
           "version": 3,
