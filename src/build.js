@@ -19,13 +19,13 @@ function process() {
   }
   userscriptBody = userscriptBody.replace(/\/\/ ==UserScript==[^]*?\/\/ ==\/UserScript==/,'');
   //Change to devmode and update version constant variable
-  if(!/const IS_DEVELOPER_MODE = true;/.test(userscriptBody)) {
+  if(!/let IS_DEVELOPER_MODE = true;/.test(userscriptBody)) {
     throw new Error("Couldn't find meta section in dev version");
   }
   if(!/%VERSION%/.test(userscriptBody)) {
     throw new Error("Couldn't find %VERSION% in dev userscript");
   }
-  userscriptBody = userscriptBody.replace('const IS_DEVELOPER_MODE = true;', 'const IS_DEVELOPER_MODE = false;');
+  userscriptBody = userscriptBody.replace('let IS_DEVELOPER_MODE = true;', 'let IS_DEVELOPER_MODE = false;');
   userscriptBody = userscriptBody.replace('%VERSION%', version);
 
   buildUserscript('snake-mod-loader-fbx.meta.js', 'snake-mod-loader-fbx.user.js', version, userscriptBody);

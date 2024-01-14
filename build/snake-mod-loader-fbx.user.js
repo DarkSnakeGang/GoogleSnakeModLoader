@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (fbx)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.0.11
+// @version      1.1.0
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/Extras/snake_logo.png?raw=true
@@ -201,9 +201,69 @@
 // @match        https://*.google.cat/fbx?fbx=snake_arcade*
 // ==/UserScript==
 
-const IS_DEVELOPER_MODE = false;
-const VERSION = '1.0.11';//Gets set to version in build script
+let IS_DEVELOPER_MODE = false;
+let VERSION = '1.1.0';//Gets set to version in build script
 const UPDATE_URL = 'https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-fbx.user.js';//Gets set from build script
+const WEB_VERSION = false;//web snake
+const IS_FBX_OR_WEB = WEB_VERSION || window.location.href.includes('fbx?fbx=snake_arcade');
+
+//web snake
+if(localStorage.getItem('snakeForceDevMode')) {
+  IS_DEVELOPER_MODE = true;
+}
+
+//web snake
+function snakeSetDevMode(bool) {
+  localStorage.setItem('snakeForceDevMode', bool);
+}
+
+//web snake
+if(WEB_VERSION) {
+  //Alter version displayed
+  VERSION += ' (web)';
+
+  //Allow changing mod based on the "mod" search parameter
+  let currentUrl = new URL(document.location);
+  let params = currentUrl.searchParams;
+  let mod = params.get("mod");
+
+  if(typeof mod === 'string') {
+    localStorage.setItem('snakeChosenMod', mod);
+
+    //Delete the mod parameter
+    params.delete('mod');
+    let newQueryString = params.toString();
+    
+    let newPath;
+    if(newQueryString === '') {
+      newPath = currentUrl.pathname;
+    } else {
+      newPath = currentUrl.pathname + '?' + newQueryString;
+    }
+    
+    //Change url to remove the mod=xyz part
+    //This is useful if the xyz part isn't a proper url, as otherwise we get stuck in a loop of setting a bad mod
+    window.history.replaceState({}, document.title, newPath);
+  }
+
+  //Change site to the mobile version if that setting is on.
+  //This code is here instead of with the other settings since it needs to run very early, before any other snake code has had a chance to run
+  let advancedSettings = JSON.parse(localStorage.getItem('snakeAdvancedSettings')) ?? {};
+  let useMobileWebsite = advancedSettings.useMobileWebsite ?? 'detect';
+  
+  //Lots of ways to detect mobile and not clear how to do it reliably. We could potentially use screen size.
+  //Detecting just "mobile" is conservative with showing mobile as some tablets will still show desktop site. This might be ok.
+  let mobileDetected = /Mobile/i.test(navigator.userAgent) //https://developers.google.com/search/blog/2011/03/mo-better-to-also-detect-mobile-user
+  //let mobileDetected = /Mobile|iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); //https://dev.to/timhuang/a-simple-way-to-detect-if-browser-is-on-a-mobile-device-with-javascript-44j3
+
+  //Publicly expose that it is mobile for mods to refer to
+  window.isSnakeMobileVersion = useMobileWebsite === 'yes' || (useMobileWebsite === 'detect' && mobileDetected);
+
+  //Apply changes for mobile site
+  if(window.isSnakeMobileVersion) {
+    switchToMobile();
+  }
+}
 
 //External config that determines which mods the modloader has
 let externalConfig = {
@@ -297,8 +357,28 @@ document.body.appendChild = function(el) {
   //Basic checks to filter out scripts which can't be the snake script
   if(el.src === '' || el.src.includes('apis.google.com') || !el.src.includes('www.google')) return document.body.appendChildOld(el);
 
+  //web snake
+  if(WEB_VERSION) {
+    //Check if url is one of the ones we redirect (e.g. to avoid cors errors or fix the version)
+    let mapping = window.webSnake.urlMap.find(m=>m.oldUrl === el.src);
+
+    if(mapping && mapping.newUrl) {
+      window.webSnake.logUrlChanges && console.log('Redirecting url: ' + el.src);
+      el.src = mapping.newUrl;
+    }
+
+    //Also check if the url is one of the blocked ones
+    if(window.webSnake.blockedUrls.includes(el.src)) {
+      window.webSnake.logUrlChanges && console.log('Blocking url: ' + el.src);
+      return;
+    }
+  }
+
   //Check if the script is either the funbox experiment one, or has xjs=s1 (for fbx link), or has just xjs folder (for search snake)
   let isSrcCorrectFormat = el.src.includes('funbox') || el.src.includes('xjs=s1') || (!window.location.href.includes('fbx?fbx=snake_arcade') && el.src.includes('/xjs/'));
+  
+  isSrcCorrectFormat = isSrcCorrectFormat || (WEB_VERSION && el.src.includes('snake.js')); //As we apply url re-writes early on, we let snake.js in the web version through here
+
   if(!isSrcCorrectFormat) return document.body.appendChildOld(el);
 
   //Check if we're actually running a mod
@@ -318,6 +398,7 @@ document.body.appendChild = function(el) {
     Run some code afterwards depending on what google snake mod was chosen
   */
   const req = new XMLHttpRequest();
+
   req.open('GET', el.src, false);
 
   req.onload = function() {
@@ -350,9 +431,38 @@ document.body.appendChild = function(el) {
       localStorage.setItem('snakeChosenMod', 'none');
       if(confirm('Disallowed choice of mod. Changing this to none. Refresh the page?')) {location.reload();}
       throw new Error(errMessage);
-    } 
+    }
 
-    if(modsConfig[currentlySelectedMod].hasUrl) {
+    if(window.isSnakeMobileVersion && modsConfig[currentlySelectedMod].mobile && modsConfig[currentlySelectedMod].mobile.support === false) {
+      const errMessage = `This value snakeChosenMod does not support mobile: ${currentlySelectedMod}. Changing this to the "None" setting for next time.`;
+      localStorage.setItem('snakeChosenMod', 'none');
+      if(confirm(`Chosen mod (${currentlySelectedMod}) does not work on mobile. Changing this to none. Refresh the page?`)) {location.reload();}
+      throw new Error(errMessage);
+    }
+
+    //Here we request the code for a particular mod
+    if(!modsConfig[currentlySelectedMod].hasUrl) {
+      //Do nothing (for example, if it's the testMod then we don't need to request it)
+    } else if(WEB_VERSION && Array.isArray(modsConfig[currentlySelectedMod].web) && modsConfig[currentlySelectedMod].web.length > 0) {
+      let gameVersion = getGameVersionFromUrl();
+
+      let webVersion = modsConfig[currentlySelectedMod].web.find(v=>v.version === gameVersion);
+
+      if(typeof webVersion !== 'undefined') {
+        const modUrl = webVersion.url;
+
+        //Load and run the code for this mod.
+        console.log(`Retrieving code for this mod for version ${gameVersion} from ${modUrl}`);
+  
+        loadAndRunCodeSynchronous(modUrl);
+      } else {
+        //We are on a game version that this mod does not support. Redirect to the latest game version that this mod supports.
+        const supportedVersionsArray = modsConfig[currentlySelectedMod].web.map(v=>v.version);
+        const latestSupportedVersion = Math.max.apply(null, supportedVersionsArray);
+
+        redirectToSpecificGameVersion(latestSupportedVersion);
+      }
+    } else {
       const modUrl = modsConfig[currentlySelectedMod].url;
 
       //Load and run the code for this mod.
@@ -450,6 +560,7 @@ let addModSelectorPopup = function() {
     --mod-loader-button-apply-col: #4caf50;
     --mod-loader-button-settings-col: #4c7caf;
     --mod-loader-button-hover: #fefcfb;
+    --mod-loader-desc-mobile-bg: #e9e5c3;
   }
 
   /*dark theme*/
@@ -466,6 +577,7 @@ let addModSelectorPopup = function() {
     --mod-loader-button-apply-col: #5cf062;
     --mod-loader-button-settings-col: #5ba0f0;
     --mod-loader-button-hover: #666666;
+    --mod-loader-desc-mobile-bg: #3a393c;
   }
 
   .start-hidden {
@@ -475,27 +587,131 @@ let addModSelectorPopup = function() {
   .start-hidden.show-hidden {
     display: block;
   }
+
+  /*hiding/showing advanced settings*/
+  #mod-selector-dialogue #advanced-options {
+    display: none;
+  }
+
+  #mod-selector-dialogue.show-settings-page #advanced-options {
+    display: block;
+  }
+  /*end of hiding/showing advanced settings*?
+
+  /*text on show settings button*/
+  #mod-selector-dialogue.show-settings-page #advanced-options-show-settings-text {
+    display:none
+  }
+
+  #mod-selector-dialogue #advanced-options-show-settings-text {
+    display:inline
+  }
+
+  #mod-selector-dialogue.show-settings-page #advanced-options-hide-settings-text {
+    display:inline
+  }
+
+  #mod-selector-dialogue #advanced-options-hide-settings-text {
+    display:none
+  }
+
+  #mod-selector-dialogue #advanced-options-show-mods-text {
+    display:none
+  }
+  /*end of text on show settings button*/
+
+  /*responsive stuff*/
+  @media (max-width: 450px) {
+    /*hide version number at bottom of modloader*/
+    #version-info {
+      display: none;
+    }
+
+    /*Less space above modloader*/
+    #mod-selector-dialogue {
+      margin: 7px auto !important;
+    }
+
+    /*Vertical layout for mods panel*/
+    #mod-selector-dialogue #main-panel {
+      display: block !important;
+    }
+
+    /*Small screen setup for pagination between mods menu and advanced options menu*/
+    #mod-selector-dialogue.show-settings-page #main-panel {
+      display: none !important;
+    }
+
+    #mod-selector-dialogue.show-settings-page #mod-game-verson-div {
+      display: none;
+    }
+
+    #advanced-options-divider {
+      display: none;
+    }
+
+    #advanced-settings {
+      display: block !important
+    }
+
+    .mod-description {
+      background-color: var(--mod-loader-desc-mobile-bg);
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    /*Small should say "Show mods" instead of "Hide settings" for toggling between the different menus*/
+    #mod-selector-dialogue.show-settings-page #advanced-options-hide-settings-text {
+      display:none
+    }
+
+    #mod-selector-dialogue.show-settings-page #advanced-options-show-mods-text {
+      display:inline
+    }
+  }
+
+  /*title takes up less space on very thin screens*/
+  @media (max-width: 350px) {
+    #mod-loader-title > span {
+      display: none;
+    }
+  }
   `;
 
   document.getElementsByTagName('style')[0].innerHTML = document.getElementsByTagName('style')[0].innerHTML + css;
 
-  const modCornerIndicatorHTML = `
+  let mobileCloseButton = '';
+  if(window.isSnakeMobileVersion) {
+    mobileCloseButton = '<div id="mod-indicator-mobile-close" style="color:var(--mod-loader-font-col); position: absolute;bottom: 100%;right: 0px;text-align: center;background-color: var(--mod-loader-main-bg);height: 30px;width: 30px;font-size: 1.5em;border-top: 1px solid var(--mod-loader-thin-border);border-left: 1px solid var(--mod-loader-thin-border);border-top-left-radius: 5px;user-select: none;cursor: pointer;">×</div>';
+  }
+
+  let googlesnakemodscomHref = 'https://googlesnakemods.com/v/current/';
+  let storedMod = localStorage.getItem('snakeChosenMod');
+
+  if(typeof storedMod === 'string' && /^[a-z0-9 ._]*$/i.test(storedMod)) {
+    googlesnakemodscomHref += 'index.html?mod=' + storedMod;
+  }
+
+  let googlesnakemodscomLinkHtml = '';
+
+  if(!WEB_VERSION) {
+    googlesnakemodscomLinkHtml = `<br><a href="${googlesnakemodscomHref}" target="_blank" style="color: var(--mod-loader-link-font-col);">Try googlesnakemods.com instead</a>`;
+  }
+
+  const modCornerIndicatorHTML = `${mobileCloseButton}
       <span style="color:var(--mod-loader-font-col) !important">Current mod: </span><span id="mod-name-span" style="background-color: var(--mod-loader-indicator-display-bg);padding: 2px;border-radius: 3px;font-family: consolas, monospace; color:var(--mod-loader-font-col) !important"></span>
       <div id="change-mod-button" style="text-align: center;font-size: 0.84em;font-family: arial, sans-serif;color: var(--mod-loader-link-font-col);text-decoration: underline;cursor: pointer;margin-top: 3px;">Change mod</div>
       <div id="snake-error-message" style="font-family: helvetica, sans-serif;color: #f44336;margin-top: 2px;display: ${window.showSnakeErrMessage ? 'block' : 'none'};">
-        Error changing snake code.
-        <br>
-        <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/mod_errors.md" target="_blank" style="color: var(--mod-loader-link-font-col);">Why does this happen?</a>
+        Error changing snake code. <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/mod_errors.md" target="_blank" style="color: var(--mod-loader-link-font-col);">Explanation</a>
+        ${googlesnakemodscomLinkHtml}
       </div>
       <div id="code-not-found-message" style="font-family: helvetica, sans-serif;color: #f44336;margin-top: 2px;display: none;">
-        Code not found after 4 seconds.
-        <br>
-        <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/code_not_found_yet.md" target="_blank" style="color: var(--mod-loader-link-font-col);">Is it not working?</a>
+        Code not found after 4 seconds. <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/code_not_found_yet.md" target="_blank" style="color: var(--mod-loader-link-font-col);">Explanation</a>
+        ${googlesnakemodscomLinkHtml}
       </div>
       <div id="config-not-loaded-message" style="font-family: helvetica, sans-serif;color: #f44336;margin-top: 2px;display: none;">
-        Error: Failed to load external configuration.
-        <br>
-        <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/config_not_loaded.md" target="_blank" style="color: var(--mod-loader-link-font-col);">What does this mean?</a>
+        Error: Failed to load external configuration. <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/config_not_loaded.md" target="_blank" style="color: var(--mod-loader-link-font-col);">Explanation</a>
+        ${googlesnakemodscomLinkHtml}
       </div>
   `;
 
@@ -508,6 +724,12 @@ let addModSelectorPopup = function() {
   document.getElementById('change-mod-button').addEventListener('click', ()=>{
     document.getElementById('mod-selector-dialogue-container').style.display = document.getElementById('mod-selector-dialogue-container').style.display === 'none' ? 'block' : 'none';
   });
+
+  if(window.isSnakeMobileVersion) {
+    document.getElementById('mod-indicator-mobile-close').addEventListener('click', ()=>{
+      document.getElementById('mod-indicator').style.display = 'none';
+    });
+  }
 
   //Load the external modloader configuration (contains info about each of the different mods)
   externalConfig.load();
@@ -530,6 +752,11 @@ let addModSelectorPopup = function() {
   let modSelectorRadioOptions = '';
   let modDescriptions = '';
   for(const [key, value] of Object.entries(modsConfig)) {
+    if(window.isSnakeMobileVersion && value.mobile && value.mobile.support === false) {
+      //If we are on mobile then hide mods which don't support mobile
+      continue;
+    }
+
     let optionalHiddenClass = value.startHidden ? 'class="start-hidden"' : '';
     modSelectorRadioOptions += `<label ${optionalHiddenClass} style="color:var(--mod-loader-font-col) !important"><input type="radio" name="mod-selector" value="${key}">${value.displayName}<br></label>`;
 
@@ -550,12 +777,19 @@ let addModSelectorPopup = function() {
         authorString = 'Author: N/A';
       }
 
+      mobileSupport = '';
+      if(window.isSnakeMobileVersion && value.mobile) {
+        mobileSupport = `<br>
+        <span style="font-weight: bold;color:var(--mod-loader-font-col) !important">Mobile Support: </span><span style="color:var(--mod-loader-font-col) !important">${value.mobile.description}</span>`
+      }
+
       //Create html for description section
       modDescriptions += `
         <div data-linked-option="${key}" class="mod-description" style="display:none">
           <span style="font-weight: bold;color:var(--mod-loader-font-col) !important">${value.modDescription.descriptionName}</span><br>
           <span style="font-weight: bold;color:var(--mod-loader-font-col) !important">${authorString}</span><br>
           <span style="color:var(--mod-loader-font-col) !important">${value.modDescription.description}</span>
+          ${mobileSupport}
         </div>
       `;
     }
@@ -568,13 +802,62 @@ let addModSelectorPopup = function() {
                         <label style="color:var(--mod-loader-font-col) !important"><input id="custom-url" type="text"> Custom Mod Url</label><br>`;
   }
 
-  const modSelectorModal = `
-  <div id="mod-selector-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:550px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;">
-    <div style="display: flex;justify-content: space-between;align-items: center;margin: 0px 0px 15px 0px;border: 2px solid var(--mod-loader-title-border);background-color: var(--mod-loader-title-bg);border-radius: 2px;">
-      <span><a target="_blank" href="https://github.com/DarkSnakeGang"><img title="DarkSnakeGang github" style="margin-left:3px; margin-top:2px" src="/logos/fnbx/snake_arcade/v3/speed_00.png" alt="" height="34"></a></span>
-      <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;text-align: center;color: #4674e9;margin-top: 0;margin-bottom: 0;">Snake Mod Loader</h1>
-      <span><a target="_blank" href="https://discord.gg/NA6vHg62An"><img title="Discord server" src="https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/Extras/Discord.png?raw=true" width="35px" style="margin-left: 3px; margin-right: 5px; position: relative; top: 2px;"></a></span>
+  let mobileOption = '';
+  if(WEB_VERSION) {
+    mobileOption = `<label style="color:var(--mod-loader-font-col) !important" for="use-mobile-website">Use mobile website</label>
+      <select name="use-mobile-website" id="use-mobile-website">
+        <option value="detect">detect</option>
+        <option value="no">no</option>
+        <option value="yes">yes</option>
+      </select><br>
+    `;
+  }
+
+  let gameVersion = '';
+  if(WEB_VERSION) {
+    gameVersion = `
+    <div id="mod-game-verson-div" style="margin-top: 5px;">
+      <label for="mod-game-version" style="color:var(--mod-loader-font-col)">Game Version:</label>
+      <select name="mod-game-version" id="mod-game-version">
+        <option value="wait">loading...</option>
+      </select>
+      <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/about_game_versions.md" target="_blank" style="margin-left:10px; color:var(--mod-loader-link-font-col)">about versions</a>
     </div>
+    `;
+  }
+
+  let gsmLink = '';
+  if(!WEB_VERSION) {
+    gsmLink = `<span><a target="_blank" href="https://googlesnakemods.com" style="color:var(--mod-loader-link-font-col)">googlesnakemods.com</a></span><br>`
+  }
+
+  let gsmPromo = '';
+  if(!WEB_VERSION && !localStorage.getItem('snakeGsmPromoDismissed')) {
+    gsmPromo = `
+    <div id="gsm-message" style="background-color: #c7ebff;border-radius: 2px;border: 2px solid hsl(201 100% 77% / 1);padding:2px;margin:2px;font-size: 15px;">
+      We now have <a target="_blank" href="https://googlesnakemods.com" style="color:var(--mod-loader-link-font-col)">googlesnakemods.com</a> for playing mods without tampermonkey.<br>
+      <div style="display:flex;justify-content: space-between;padding-inline: 40px;">
+        <div id="gsm-visit">
+          <a target="_blank" href="https://googlesnakemods.com" style="color: var(--mod-loader-link-font-col);">
+            Visit
+          </a>
+        </div>
+        <div id="gsm-dismiss" style="color: var(--mod-loader-link-font-col);text-decoration: underline;cursor: pointer;">
+          Dismiss forever
+        </div>
+      </div>
+    </div>
+    `;
+  }
+
+  const modSelectorModal = `
+  <div id="mod-selector-dialogue" style="display: block;margin:25px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:550px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;max-width: calc(100vw - 35px);overflow-y: auto;max-height: calc(100vh - 110px);">
+    <div id="mod-loader-title" style="display: flex;justify-content: space-between;align-items: center;margin: 0px 0px 15px 0px;border: 2px solid var(--mod-loader-title-border);background-color: var(--mod-loader-title-bg);border-radius: 2px;">
+      <span><a target="_blank" href="https://github.com/DarkSnakeGang"><img title="DarkSnakeGang github" style="margin-left:3px; margin-top:2px" src="https://www.google.com/logos/fnbx/snake_arcade/v3/speed_00.png" alt="" height="34"></a></span>
+      <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;text-align: center;color: #4674e9;margin-top: 0;margin-bottom: 0;">Snake Mod Loader</h1>
+      <span><a target="_blank" href="https://discord.gg/NA6vHg62An"><img title="Discord server" src="https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeIcons/main/Extras/Discord.png" width="35px" style="margin-left: 3px; margin-right: 5px; position: relative; top: 2px;"></a></span>
+    </div>
+    ${gsmPromo}
     <div id="main-panel" style="display: flex;justify-content: start;">
       <div id="mod-options" style="flex: 45%;min-height: 115px;">
         ${modSelectorRadioOptions}
@@ -583,9 +866,10 @@ let addModSelectorPopup = function() {
         ${modDescriptions}
       </div>
     </div>
+    ${gameVersion}
 
-    <div id="advanced-options" style="display:none">
-      <hr style="margin-block-start: 0.5em; margin-block-end: 0.5em;">
+    <div id="advanced-options">
+      <hr id="advanced-options-divider" style="margin-block-start: 0.5em; margin-block-end: 0.5em;">
       <div id="advanced-settings" style="display: flex;justify-content: space-between;">
         <div id="settings-wrapper-1">
           <label style="color:var(--mod-loader-font-col) !important"><input id="fullscreen-at-start" type="checkbox">Fullscreen at start</label><br>
@@ -594,7 +878,8 @@ let addModSelectorPopup = function() {
           <label style="color:var(--mod-loader-font-col) !important"><input id="hide-indicator" type="checkbox">Auto-hide mod indicator (h to toggle)</label><br>
           <!--<label style="color:var(--mod-loader-font-col) !important"><input id="hidden-mod-toggle" type="checkbox">Show early access mods</label><br>-->
           <label style="color:var(--mod-loader-font-col) !important"><input id="dark-mod-theme" type="checkbox">Dark mod loader theme</label><br>
-          <span><img src="https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/Extras/Discord.png?raw=true" width="16px" style="margin-left: 3px; margin-right: 5px; position: relative; top: 2px;"><a target="_blank" href="https://discord.gg/NA6vHg62An" style="color:var(--mod-loader-link-font-col)">Discord</a></span><br>
+          ${mobileOption}
+          ${gsmLink}
           ${customUrlOptions}
         </div>
         <div id="settings-wrapper-2">
@@ -618,7 +903,9 @@ let addModSelectorPopup = function() {
         Advanced options
       </div>-->
       <div id="advanced-options-toggle" class="mod-sel-btn" style="display:inline-block;background-color: var(--mod-loader-button-bg);padding: 4px;margin-top: 7px;border-radius: 3px;border: 2px solid var(--mod-loader-button-settings-col);color: var(--mod-loader-button-settings-col);font-weight: bold;user-select: none;cursor: pointer;">
-        Show settings
+        <span id="advanced-options-show-settings-text">Show settings</span>
+        <span id="advanced-options-hide-settings-text">Hide settings</span>
+        <span id="advanced-options-show-mods-text">Show mods</span>
       </div>
       <div id="version-info" style="color:var(--mod-loader-font-col) !important;padding-top: 15px;">
         Version ${VERSION} 
@@ -650,7 +937,7 @@ let addModSelectorPopup = function() {
 
   let hideEndScreenImg = document.createElement('img');
   hideEndScreenImg.style = "position: absolute;left: 10px;top: 10px;cursor: pointer; height:20px; width:auto;";
-  hideEndScreenImg.src = "https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/ToggleDeathscreen/EyeIcon.png?raw=true";
+  hideEndScreenImg.src = "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeIcons/main/ToggleDeathscreen/EyeIcon.png";
   hideEndScreenImg.title = "Click to hide. Click anywhere to bring back";
   hideEndScreenImg.id = "death-screen-toggle";
   let firstMenuScreen = document.getElementsByClassName('T7SB3d')[0];
@@ -694,11 +981,14 @@ let addModSelectorPopup = function() {
     document.getElementById('mod-name-span').textContent = 'None';
   }
 
+  attemptRenderGameVersionOptions(currentlySelectedMod, true);
+
   //Update the checked/ticked mod when clicking on any of the radio buttons. Also show the description for it.
   [...document.querySelectorAll('input[type="radio"][name="mod-selector"]')].forEach(radioEl=>{
     radioEl.addEventListener('click', function(){
       //Mark mod as selected for when we hit apply
       newlySelectedMod = this.value;
+      attemptRenderGameVersionOptions(this.value, false);
       showSettingChanged();
       [...document.getElementsByClassName('mod-description')].forEach(el=>{
         el.style.display = 'none';
@@ -707,6 +997,20 @@ let addModSelectorPopup = function() {
       });
     });
   });
+
+  if(WEB_VERSION) {
+    document.getElementById('mod-game-version').addEventListener('change',showSettingChanged);
+  }
+
+  if(!WEB_VERSION && !localStorage.getItem('snakeGsmPromoDismissed')) {
+    document.getElementById('gsm-dismiss').addEventListener('click',()=>{
+      if(confirm('Never show message again? Press OK to confirm or cancel to keep the message.')) {
+        localStorage.setItem('snakeGsmPromoDismissed', 'true');
+        document.getElementById('gsm-message').remove();
+        alert('Successfully dismissed. If you want to visit the standalone mods website in the future, the link can be found in the settings.');
+      }
+    });
+  }
 
   //Load advanced settings
   let advancedSettings = JSON.parse(localStorage.getItem('snakeAdvancedSettings')) ?? {};
@@ -718,9 +1022,8 @@ let addModSelectorPopup = function() {
 
   //Event listeners for advanced settings
   document.getElementById('advanced-options-toggle').addEventListener('click', (event)=>{
-    let shouldShow = document.getElementById('advanced-options').style.display === 'none';
-    document.getElementById('advanced-options').style.display = shouldShow ? 'block':'none';
-    document.getElementById('advanced-options-toggle').textContent = shouldShow ? 'Hide settings' : 'Show settings';
+    let modSelectorEl = document.getElementById('mod-selector-dialogue');
+    modSelectorEl.classList.toggle('show-settings-page');
     event.preventDefault();
   });
   document.getElementById('use-custom-theme').addEventListener('change', function() {
@@ -769,6 +1072,11 @@ let addModSelectorPopup = function() {
   document.getElementById('dark-mod-theme').addEventListener('change', function() {
     updateAdvancedSetting('darkModTheme', this.checked);
   });
+  if(WEB_VERSION) {
+    document.getElementById('use-mobile-website').addEventListener('change', function() {
+      updateAdvancedSetting('useMobileWebsite', this.value);
+    })
+  }
 
   if(IS_DEVELOPER_MODE) {
     document.getElementById('custom-mod-name').addEventListener('input', function() {
@@ -823,8 +1131,19 @@ let addModSelectorPopup = function() {
       }
     }
 
+    let gameVersionChanged = false;
+    if(WEB_VERSION) {
+      const originalGameVersion = getGameVersionFromUrl();
+
+      const newGameVersion = parseInt(document.getElementById('mod-game-version').value);
+
+      if(originalGameVersion !== newGameVersion) {
+        gameVersionChanged = true;
+      }
+    }
+
     //Skip if settings/mod chosen are the same as before.
-    if(shallowEquality && newlySelectedMod === currentlySelectedMod) {
+    if(shallowEquality && newlySelectedMod === currentlySelectedMod && !gameVersionChanged) {
       alert('Settings are the same as before!')
       return;
     }
@@ -835,10 +1154,14 @@ let addModSelectorPopup = function() {
 
     //Refresh if the mod has changed or the developer settings (custom mod name/url) have been changed
     //otherwise apply the settings to the "live" game
-    if(
+    if(WEB_VERSION && gameVersionChanged) {
+      const newGameVersion = parseInt(document.getElementById('mod-game-version').value);
+      redirectToSpecificGameVersion(newGameVersion);
+    } else if(
         newlySelectedMod !== currentlySelectedMod || 
         (advancedSettings.hasOwnProperty('customModName') && advancedSettings.customModName !== advancedSettingsOriginal.customModName) ||
-        (advancedSettings.hasOwnProperty('customUrl') && advancedSettings.customUrl !== advancedSettingsOriginal.customUrl)
+        (advancedSettings.hasOwnProperty('customUrl') && advancedSettings.customUrl !== advancedSettingsOriginal.customUrl) ||
+        (WEB_VERSION && advancedSettings.hasOwnProperty('useMobileWebsite') && advancedSettings.useMobileWebsite !== advancedSettingsOriginal.useMobileWebsite)
       ) {
       location.reload();
     } else {
@@ -852,7 +1175,8 @@ let addModSelectorPopup = function() {
       }
 
       //Apply background colour on fbx
-      if(window.location.href.includes('fbx?fbx=snake_arcade') && typeof advancedSettings.backgroundColor === 'string') {
+      //web snake
+      if (IS_FBX_OR_WEB && typeof advancedSettings.backgroundColor === 'string') {
         document.body.style.backgroundColor = advancedSettings.backgroundColor;
       }
 
@@ -920,6 +1244,9 @@ let addModSelectorPopup = function() {
     if(advancedSettings.hasOwnProperty('darkModTheme')) {
       document.getElementById('dark-mod-theme').checked = advancedSettings.darkModTheme;
     }
+    if(WEB_VERSION && advancedSettings.hasOwnProperty('useMobileWebsite')) {
+      document.getElementById('use-mobile-website').value = advancedSettings.useMobileWebsite;
+    }
     if(advancedSettings.hasOwnProperty('hideIndicator')) {
       document.getElementById('hide-indicator').checked = advancedSettings.hideIndicator;
     }
@@ -981,7 +1308,11 @@ let addModSelectorPopup = function() {
       setTimeout(applyAdvancedSnakeSettingsToGame, 300);
     } else {
       if(advancedSettings.timerStartsOn) {
-        window.snake.speedrun();
+        if(window.isSnakeMobileVersion) {
+          console.log('Skipping turning timer on due to being on mobile version.');
+        } else {
+          window.snake.speedrun();
+        }
       }
       if(advancedSettings.useCustomTheme) {
         window.snake.setCustomTheme(
@@ -1021,14 +1352,14 @@ let addModSelectorPopup = function() {
         }
       }, 5000);
     }
-    if(window.location.href.includes('fbx?fbx=snake_arcade') && typeof advancedSettings.backgroundColor === 'string') {
+    if(IS_FBX_OR_WEB && typeof advancedSettings.backgroundColor === 'string') {
       document.body.style.backgroundColor = advancedSettings.backgroundColor;
     }
   }
 
   function applyMuteToGame() {
     //On fbx we can mute right way. On search, we need to wait until the game is visible.
-    if(window.location.href.includes('fbx?fbx=snake_arcade')) {
+    if(IS_FBX_OR_WEB) {
       //Match mute button, but only if it's on (i.e. the image url includes the word up instead of the word off)
       let muteButton = document.querySelector('img.EFcTud[jsaction="DGXxE"]:not([src*="off"])');
       if(muteButton) {muteButton.click();}
@@ -1052,7 +1383,7 @@ let addModSelectorPopup = function() {
 
   function applyFullscreenToGame() {
     //On fbx we can fullscreen right way. On search, we need to wait until the game is visible.
-    if(window.location.href.includes('fbx?fbx=snake_arcade')) {
+    if(IS_FBX_OR_WEB) {
       //Match fullscreen button, but only if it's on (i.e. the image url includes the word up instead of the word off)
       let fullscreenButton = document.querySelector('img.EFcTud[jsaction="zeJAAd"]:not([src*="exit"])');
       if(fullscreenButton) {fullscreenButton.click();}
@@ -1084,13 +1415,19 @@ let addModSelectorPopup = function() {
       let modInfo = externalConfig.modInfo;
       let latestVersion = modInfo.version;
       let updateNeeded = latestVersion !== VERSION;
+
+      //Web version
+      if(WEB_VERSION) {
+        updateNeeded = false;
+      }
+
       if(updateNeeded && !IS_DEVELOPER_MODE) {
         document.getElementById('update-link').style.display = 'inline';
         document.getElementById('update-link-text').textContent = `(update to ${latestVersion})`;
       }
 
       //Have an option to not show the popup on either fbx or search snake (e.g. if only one of them is broken)
-      if(window.location.href.includes('fbx?fbx=snake_arcade') ? modInfo.startMessage.excludeFbx : modInfo.startMessage.excludeSearch) {
+      if(IS_FBX_OR_WEB ? modInfo.startMessage.excludeFbx : modInfo.startMessage.excludeSearch) {
         return;
       }
 
@@ -1103,6 +1440,10 @@ let addModSelectorPopup = function() {
   }
 
   function showStartMessagePopup(modInfo) {
+    //web snake
+    if(WEB_VERSION) {
+      modInfo.startMessage.showUpdatePrompt = false;
+    }
 
     const messageHeading = `<h1 style="font-size: 3em;font-weight: bold;margin: 7px 0px 15px 0px;text-align: center;color: var(--mod-loader-font-col);">Message</h1>`;
     const updateAvailableHeading = `<h1 style="font-size: 3em;font-weight: bold;margin: 7px 0px 15px 0px;text-align: center;color: var(--mod-loader-font-col);">Update Available</h1>
@@ -1176,6 +1517,96 @@ let addModSelectorPopup = function() {
 
     window.showSnakeErrMessage = true;//Used to prevent the indicator being auto-hidden
   }
+}
+
+//Generate the game versions option dropdown for the mod-game-version select element
+function attemptRenderGameVersionOptions(selectedMod, initial = false) {
+  if(!WEB_VERSION) {
+    //Only available for web version
+    return;
+  }
+
+  let modsConfig = externalConfig.modInfo.modsConfig;
+
+  let versionsArray = []; //Contains the versions we want to show in dropdown
+
+  //"none" mod and similar will show all versions in dropdown
+  let mightHaveVersionsSpecified = modsConfig.hasOwnProperty(selectedMod) && ['customUrl', 'testMod'].includes(selectedMod) === false;
+
+  if(mightHaveVersionsSpecified) {
+    //Try to get versions that this mod supports
+    let webVersions;
+
+    webVersions = modsConfig[selectedMod].web;
+
+    if(Array.isArray(webVersions) && webVersions.length !== 0) {
+      versionsArray = webVersions.map(v=>v.version);
+
+      //Check for invalid version numbers
+      if(versionsArray.find(v=>typeof v !== 'number' || !Number.isInteger(v) || v <= 0)) {
+        alert('Invalid game version numbers for selected mod');
+        throw new Error('Illegal version numbers for selected mod, these should be integers');
+      }
+
+      //Strip out version numbers that are too high
+      versionsArray = versionsArray.filter(v=>v<=webLatestVersion);
+      versionsArray = versionsArray.sort();
+    }
+  }
+
+  //Fallback behaviour is to just list versions as 1, 2, 3, ..., webLatestVersion
+  if(versionsArray.length === 0) {
+    versionsArray = new Array(webLatestVersion).fill(null).map((_, i)=>i + 1);
+  }
+
+  const versionsDropDown = document.getElementById('mod-game-version');
+
+  versionsDropDown.innerHTML = '';
+  
+  //Add options to the versions from high to low
+  for(let i = versionsArray.length - 1; i >= 0; i--) {
+    let option = document.createElement('option');
+    option.value = versionsArray[i];
+    option.textContent = versionsArray[i];
+
+    versionsDropDown.appendChild(option);
+  }
+
+  //Pre-select the correct option
+  if(initial) {
+    let currentGameVersion = getGameVersionFromUrl();
+
+    //Default to the first version number greater than the one in the url
+    let version = versionsArray.find(v=>v >= currentGameVersion) ?? versionsArray[versionsArray.length - 1];
+
+    versionsDropDown.value = version;
+  } else {
+    versionsDropDown.value = versionsArray[versionsArray.length - 1];
+  }
+}
+
+//Figures out which version the current page is on
+function getGameVersionFromUrl() {
+  if(!WEB_VERSION) {
+    throw new Error('This function should only be used on the web version');
+  }
+
+  let thisUrl = window.location.href;
+
+  if(thisUrl.includes('v/current')) {
+    return webLatestVersion
+  } else {
+    return parseInt(thisUrl.match(/v\/(\d+)/)[1]);
+  }
+}
+
+function redirectToSpecificGameVersion(gameVersion) {
+  if(gameVersion === webLatestVersion) {
+    window.location.href = '../../v/current/';
+  } else {
+    window.location.href = `../../v/${gameVersion}`;
+  }
+  console.log('Redirecting to ' + gameVersion);
 }
 
 window.testMod = {};
