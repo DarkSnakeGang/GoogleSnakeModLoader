@@ -269,6 +269,7 @@ if(WEB_VERSION) {
 let externalConfig = {
   modInfo: null,
   hasError: false,
+  hasXhrSyncError: false, //Tracks the rare error where an extension converts sync xhr into async.
   load: function() {
     //Load the external JSON configuration file which contains info about the different mods and the modloader itself.
     if(this.modInfo !== null) {return;}//Already loaded - exit early
@@ -420,6 +421,11 @@ document.body.appendChild = function(el) {
     externalConfig.load();
     if(externalConfig.hasError) {
       returnVal = document.body.appendChildOld(el);
+      return;
+    }
+    if(!externalConfig.modInfo) {
+      //Error as xhr sync must be behaving like async (e.g. due to an extension)
+      externalConfig.hasXhrSyncError = true;
       return;
     }
     let modsConfig = externalConfig.modInfo.modsConfig;
@@ -713,6 +719,10 @@ let addModSelectorPopup = function() {
         Error: Failed to load external configuration. <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/config_not_loaded.md" target="_blank" style="color: var(--mod-loader-link-font-col);">Explanation</a>
         ${googlesnakemodscomLinkHtml}
       </div>
+      <div id="xhr-sync-problem-message" style="font-family: helvetica, sans-serif;color: #f44336;margin-top: 2px;display: none;">
+        Error loading config, try disabling extensions <a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/xhr_sync_issue.md" target="_blank" style="color: var(--mod-loader-link-font-col);">Explanation</a>
+        ${googlesnakemodscomLinkHtml}
+      </div>
   `;
 
   let modIndicatorEl = document.createElement('div');
@@ -745,7 +755,20 @@ let addModSelectorPopup = function() {
 
     window.showSnakeErrMessage = true;//Used to prevent the indicator being auto-hidden
     modsConfig = {};
-  } else {
+  } else if(!externalConfig.modInfo || externalConfig.hasXhrSyncError) {
+    //Weird error with xhr behaving synchronously, show a warning (likely to be extensions interfering)
+    document.getElementById('xhr-sync-problem-message').style.display = 'block';
+    //Make sure that the indicator is actually visible
+    let modIndicatorEl = document.getElementById('mod-indicator');
+    if(modIndicatorEl) {
+      modIndicatorEl.style.display = 'block';
+    }
+
+    externalConfig.hasXhrSyncError = true;
+    window.showSnakeErrMessage = true;//Used to prevent the indicator being auto-hidden
+    modsConfig = {};
+  }else {
+    //Loaded correctly
     modsConfig = externalConfig.modInfo.modsConfig;
   }
 
@@ -1670,10 +1693,12 @@ window.findFunctionInCode = function(code, functionSignature, somethingInsideFun
   let functionSignatureSource = functionSignature.source;
   let functionSignatureFlags = functionSignature.flags;//Probably empty string
 
-  /*Check functionSignature ends in $*/
-  if (functionSignatureSource[functionSignatureSource.length - 1] !== "$") {
-    throw new Error("functionSignature regex should end in $");
+  if(!functionSignatureFlags.includes('g')) {
+    functionSignatureFlags += 'g';
   }
+
+  /*Remove any trailling $ signs from the end of the function signature (this is a legacy issue, I know it's bad)*/
+  functionSignatureSource = functionSignatureSource.replaceAll(/\$(?=\|)|\$$/g, '');
 
   /*Allow line breaks after commas or =. This is bit sketchy, but should be ok as findFunctionInCode is used in a quite limited way*/
   functionSignatureSource.replaceAll(/,|=/g,'$&\\n?');
@@ -1686,19 +1711,16 @@ window.findFunctionInCode = function(code, functionSignature, somethingInsideFun
     diagnoseRegexError(code, somethingInsideFunction);
   }
 
-  /*expand outwards from somethingInsideFunction until we get to the function signature, then count brackets
+  /*Find the occurence of function signature closest to where we found somethingInsideFunction, then count brackets
   to find the end of the function*/
-  let startIndex = 0;
-  for (let i = indexWithinFunction; i >= 0; i--) {
-    let startOfCode = code.substring(0, i);
-    startIndex = startOfCode.search(functionSignature);
-    if (startIndex !== -1) {
-      break;
-    }
-    if (i == 0) {
-      throw new Error("Couldn't find function signature");
-    }
+  let codeBeforeMatch = code.substring(0, indexWithinFunction);
+  let signatureMatches = [...codeBeforeMatch.matchAll(functionSignature)];
+
+  if(signatureMatches.length === 0) {
+    throw new Error("Couldn't find function signature");
   }
+
+  let startIndex = signatureMatches[signatureMatches.length - 1].index;
 
   let bracketCount = 0;
   let foundFirstBracket = false;
@@ -1736,7 +1758,6 @@ window.findFunctionInCode = function(code, functionSignature, somethingInsideFun
   if (logging) {
     console.log(fullFunction);
   }
-
   return fullFunction;
 }
 
