@@ -68,7 +68,7 @@
     "mouseMode": {
       "displayName": "Mouse Mode",
       "hasUrl": true,
-      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js",
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/MouseMod.js",
       "modDescription": {
         "descriptionName": "Mouse Mode",
         "authors": [
@@ -86,7 +86,7 @@
         },
         {
           "version": 3,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/modloadercode.js"
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/MouseMod.js"
         }
       ],
       "mobile": {
