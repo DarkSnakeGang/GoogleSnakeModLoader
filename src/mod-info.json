@@ -138,12 +138,16 @@
             "name": "Fizhes",
             "url": "https://www.youtube.com/@Fizhes"
           },
+	  {
+            "name": "TF2Llama",
+            "url": "https://www.youtube.com/@TF2Llama"
+          },
           {
             "name": "Yarmiplay",
             "url": "https://www.youtube.com/@Yarmiplay"
           }
         ],
-        "description": "This is a combination of More Menu Mod (By Fizhes) and Pudding Mod (By Yarmiplay)."
+        "description": "This is a combination of More Menu Mod, Visibility Mod and Pudding Mod."
       },
       "web": [
         {
@@ -242,7 +246,7 @@
             "url": "https://www.youtube.com/@Yarmiplay"
           }
         ],
-        "description": "This is a combination of More Menu Mod (By Fizhes), Mouse Mod (By TF2Llama), Visibility Mod (By TF2Llama and Yarmiplay) and Pudding Mod (By Yarmiplay)."
+        "description": "This is a combination of More Menu Mod, Mouse Mod, Visibility Mod and Pudding Mod."
       },
       "web": [
         {
