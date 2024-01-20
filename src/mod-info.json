@@ -221,6 +221,39 @@
         "support": true,
         "description": "Works"
       }
+    },
+    "ChimeraMod": {
+      "displayName": "Chimera Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/ChimeraMod.js",
+      "modDescription": {
+        "descriptionName": "ChimeraMod Mod",
+        "authors": [
+          {
+            "name": "Fizhes",
+            "url": "https://www.youtube.com/@Fizhes"
+          },
+          {
+            "name": "TF2Llama",
+            "url": "https://www.youtube.com/@TF2Llama"
+          },
+          {
+            "name": "Yarmiplay",
+            "url": "https://www.youtube.com/@Yarmiplay"
+          }
+        ],
+        "description": "This is a combination of More Menu Mod (By Fizhes), Mouse Mod (By TF2Llama), Visibility Mod (By TF2Llama and Yarmiplay) and Pudding Mod (By Yarmiplay)."
+      },
+      "web": [
+        {
+          "version": 3,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/ChimeraMod.js"
+        }
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Works, but reduced features"
+      }
     }
   }	
 }
