@@ -258,6 +258,31 @@
         "support": true,
         "description": "Works, but reduced features"
       }
+    },
+    "ConwayMod": {
+      "displayName": "Conway Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/ConwayMod/bare_bones_dice_support/ConwayMod.js",
+      "modDescription": {
+        "descriptionName": "Conway Mod",
+        "authors": [
+          {
+            "name": "cyt",
+            "url": "https://www.youtube.com/@cytrussToo"
+          }
+        ],
+        "description": "This is conway's game of life. Not supported on Tampermonkey."
+      },
+      "web": [
+        {
+          "version": 1,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/ConwayMod/bare_bones_dice_support/ConwayMod.js"
+        }
+      ],
+      "mobile": {
+        "support": false,
+        "description": "Requires a play/pause button to support."
+      }
     }
   }	
 }
