@@ -119,7 +119,7 @@
         },
         {
           "version": 3,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js"
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/arrow/PuddingMod.js"
         }
       ],
       "mobile": {
@@ -152,7 +152,7 @@
       "web": [
         {
           "version": 3,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js"
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/arrow/MorePudding.js"
         }
       ],
       "mobile": {
@@ -251,7 +251,7 @@
       "web": [
         {
           "version": 3,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/ChimeraMod.js"
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/arrow/ChimeraMod.js"
         }
       ],
       "mobile": {
