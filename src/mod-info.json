@@ -86,7 +86,7 @@
         },
         {
           "version": 3,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/MouseMod.js"
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/arrow/MouseMod.js"
         }
       ],
       "mobile": {
@@ -189,7 +189,7 @@
         },
         {
           "version": 3,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/VisibilityMod.js"
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/arrow/VisibilityMod.js"
         }
       ],
       "mobile": {
