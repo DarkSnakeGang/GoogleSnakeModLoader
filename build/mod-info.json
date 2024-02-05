@@ -197,10 +197,11 @@
         "description": "Full support"
       }
     },
-	"ChessMod": {
+    "ChessMod": {
       "displayName": "Chess Mod",
       "hasUrl": true,
       "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeChess/main/ChessMod.js",
+      "gsmOnly": true,
       "modDescription": {
         "descriptionName": "Chess Mod",
         "authors": [
@@ -263,6 +264,7 @@
       "displayName": "Conway Mod",
       "hasUrl": true,
       "url": "https://raw.githubusercontent.com/DarkSnakeGang/ConwayMod/bare_bones_dice_support/ConwayMod.js",
+      "gsmOnly": true,
       "modDescription": {
         "descriptionName": "Conway Mod",
         "authors": [
