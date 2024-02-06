@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (Intl)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.1.0
+// @version      1.1.1
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/Extras/snake_logo.png?raw=true
@@ -392,19 +392,23 @@
 // ==/UserScript==
 
 let IS_DEVELOPER_MODE = false;
-let VERSION = '1.1.0';//Gets set to version in build script
+let VERSION = '1.1.1';//Gets set to version in build script
 const UPDATE_URL = 'https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-intl.user.js';//Gets set from build script
 const WEB_VERSION = false;//web snake
 const IS_FBX_OR_WEB = WEB_VERSION || window.location.href.includes('fbx?fbx=snake_arcade');
 
 //web snake
-if(localStorage.getItem('snakeForceDevMode')) {
+if(localStorage.getItem('snakeForceDevMode') === 'true') {
   IS_DEVELOPER_MODE = true;
 }
 
 //web snake
 function snakeSetDevMode(bool) {
-  localStorage.setItem('snakeForceDevMode', bool);
+  if(bool) {
+    localStorage.setItem('snakeForceDevMode', bool);
+  } else {
+    localStorage.removeItem('snakeForceDevMode');
+  }
 }
 
 //web snake
@@ -630,9 +634,16 @@ document.body.appendChild = function(el) {
     }
 
     if(window.isSnakeMobileVersion && modsConfig[currentlySelectedMod].mobile && modsConfig[currentlySelectedMod].mobile.support === false) {
-      const errMessage = `This value snakeChosenMod does not support mobile: ${currentlySelectedMod}. Changing this to the "None" setting for next time.`;
+      const errMessage = `This value of snakeChosenMod does not support mobile: ${currentlySelectedMod}. Changing this to the "None" setting for next time.`;
       localStorage.setItem('snakeChosenMod', 'none');
       if(confirm(`Chosen mod (${currentlySelectedMod}) does not work on mobile. Changing this to none. Refresh the page?`)) {location.reload();}
+      throw new Error(errMessage);
+    }
+
+    if(!WEB_VERSION && modsConfig[currentlySelectedMod].gsmOnly) {
+      const errMessage = `This value of snakeChosenMod is only supported on the googlesnakemods.com website: ${currentlySelectedMod}. Changing this to the "None" setting for next time.`;
+      localStorage.setItem('snakeChosenMod', 'none');
+      if(confirm(`Chosen mod (${currentlySelectedMod}) only works on the googlesnakemods.com website. Changing the mod to "none". Refresh the page?`)) {location.reload();}
       throw new Error(errMessage);
     }
 
@@ -698,6 +709,7 @@ document.body.appendChild = function(el) {
         let snakeErrEl = document.getElementById('snake-error-message')
         if(snakeErrEl) {snakeErrEl.style.display = 'block';}
         window.showSnakeErrMessage = true;
+        showErrorTryGsmPopup(currentlySelectedMod);
         console.log('Displaying message to user and then running the google snake script and then throwing the original error that occurred in "alterSnakeCode"');
         (0,eval)(this.responseText);
         throw err;
@@ -743,7 +755,7 @@ let addModSelectorPopup = function() {
   }
 
   /*light theme*/
-  #mod-indicator, #mod-selector-dialogue-container, #start-message-dialogue-container {
+  #mod-indicator, #mod-selector-dialogue-container, #start-message-dialogue-container, #try-gsm-dialogue-container {
     --mod-loader-font-col: #000000;
     --mod-loader-main-bg: #fffce0;
     --mod-loader-title-bg: #ece9d4;
@@ -760,7 +772,7 @@ let addModSelectorPopup = function() {
   }
 
   /*dark theme*/
-  #mod-indicator.dark-mod-theme, #mod-selector-dialogue-container.dark-mod-theme, #start-message-dialogue-container.dark-mod-theme {
+  #mod-indicator.dark-mod-theme, #mod-selector-dialogue-container.dark-mod-theme, #start-message-dialogue-container.dark-mod-theme, #try-gsm-dialogue-container.dark-mod-theme {
     --mod-loader-font-col: #ffffff;
     --mod-loader-main-bg: #1F1F22;/*orig/second#343542;*/
     --mod-loader-title-bg: #34343a;/*second - #53556a;*//*orig - #66636f;*/
@@ -891,7 +903,7 @@ let addModSelectorPopup = function() {
   let googlesnakemodscomLinkHtml = '';
 
   if(!WEB_VERSION) {
-    googlesnakemodscomLinkHtml = `<br><a href="${googlesnakemodscomHref}" target="_blank" style="color: var(--mod-loader-link-font-col);">Try googlesnakemods.com instead</a>`;
+    googlesnakemodscomLinkHtml = `<br> <span style="color: #f44336;">Try</span> <a href="${googlesnakemodscomHref}" target="_blank" style="color: var(--mod-loader-link-font-col);">googlesnakemods.com</a> <span style="color: #f44336;">instead</span>`;
   }
 
   const modCornerIndicatorHTML = `${mobileCloseButton}
@@ -965,8 +977,10 @@ let addModSelectorPopup = function() {
   let modSelectorRadioOptions = '';
   let modDescriptions = '';
   for(const [key, value] of Object.entries(modsConfig)) {
-    if(window.isSnakeMobileVersion && value.mobile && value.mobile.support === false) {
+    if((window.isSnakeMobileVersion && value.mobile && value.mobile.support === false) ||
+       (!WEB_VERSION && value.gsmOnly)) {
       //If we are on mobile then hide mods which don't support mobile
+      //Likewise if we are on tampermonkey and there is a mod only supported on gsm
       continue;
     }
 
@@ -1097,6 +1111,11 @@ let addModSelectorPopup = function() {
         </div>
         <div id="settings-wrapper-2">
           <label style="color:var(--mod-loader-font-col) !important"><input id="background-color-picker" type="color" value="#FFFFFF"> Background color on fbx</label><br>
+          <label style="color:var(--mod-loader-font-col) !important">
+            Background Image Url:<br>
+            <input id="background-image-url" placeholder="www.example.com/image.png" size="23" type="text">
+            <span><a target="_blank" href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/background_image_help.md" style="color:var(--mod-loader-link-font-col)">help</a></span>
+          </label><br>
           <label style="color:var(--mod-loader-font-col) !important"><input id="use-custom-theme" type="checkbox">Use custom game theme</label><br>
           <div id="custom-theme-pickers" style="display: none;">
             <label style="color:var(--mod-loader-font-col) !important"><input id="custom-theme-col1" type="color" value="#1D1D1D"> Light Tiles</label><br>
@@ -1291,6 +1310,17 @@ let addModSelectorPopup = function() {
     })
   }
 
+  //background image url text box also has some code to prevent wasd being eaten
+  document.getElementById('background-image-url').addEventListener('input', function() {
+    updateAdvancedSetting('backgroundImageUrl', this.value);
+  });
+  document.getElementById('background-image-url').addEventListener('keypress', function(e) {
+    e.stopPropagation();
+  });
+  document.getElementById('background-image-url').addEventListener('keydown', function(e) {
+    e.stopPropagation();
+  });
+
   if(IS_DEVELOPER_MODE) {
     document.getElementById('custom-mod-name').addEventListener('input', function() {
       updateAdvancedSetting('customModName', this.value);
@@ -1324,13 +1354,6 @@ let addModSelectorPopup = function() {
   //Hide mod selector dialogue when clicking close button
   document.getElementById('close-mod-selector').addEventListener('click', function() {
     document.getElementById('mod-selector-dialogue-container').style.display = 'none';
-  });
-
-  //Also hide when clicking backdrop
-  document.getElementById('mod-selector-dialogue-container').addEventListener('click',function(event){
-    if(this === event.target) {
-      this.style.display='none'
-    }
   });
 
   //Apply button should save settings and refresh page
@@ -1391,6 +1414,12 @@ let addModSelectorPopup = function() {
       //web snake
       if (IS_FBX_OR_WEB && typeof advancedSettings.backgroundColor === 'string') {
         document.body.style.backgroundColor = advancedSettings.backgroundColor;
+      }
+
+      //Apply url to background
+      if(IS_FBX_OR_WEB && typeof advancedSettings.backgroundImageUrl === 'string' &&
+        advancedSettingsOriginal.backgroundImageUrl !== advancedSettings.backgroundImageUrl) {
+        updateBackgroundImage(advancedSettings.backgroundImageUrl, true);
       }
 
       //Apply custom theme setting
@@ -1471,6 +1500,9 @@ let addModSelectorPopup = function() {
     }
     if(advancedSettings.hasOwnProperty('backgroundColor')) {
       document.getElementById('background-color-picker').value = advancedSettings.backgroundColor;
+    }
+    if(advancedSettings.hasOwnProperty('backgroundImageUrl')) {
+      document.getElementById('background-image-url').value = advancedSettings.backgroundImageUrl;
     }
     if(advancedSettings.hasOwnProperty('themeCol1')) {
       document.getElementById('custom-theme-col1').value = advancedSettings.themeCol1;
@@ -1568,14 +1600,28 @@ let addModSelectorPopup = function() {
     if(IS_FBX_OR_WEB && typeof advancedSettings.backgroundColor === 'string') {
       document.body.style.backgroundColor = advancedSettings.backgroundColor;
     }
+
+    //Apply url to background
+    if(IS_FBX_OR_WEB && typeof advancedSettings.backgroundImageUrl === 'string') {
+      updateBackgroundImage(advancedSettings.backgroundImageUrl, false);
+    }
   }
 
   function applyMuteToGame() {
     //On fbx we can mute right way. On search, we need to wait until the game is visible.
     if(IS_FBX_OR_WEB) {
-      //Match mute button, but only if it's on (i.e. the image url includes the word up instead of the word off)
-      let muteButton = document.querySelector('img.EFcTud[jsaction="DGXxE"]:not([src*="off"])');
-      if(muteButton) {muteButton.click();}
+      //Match mute button, but only if it's on
+      //Old method (mute button is an image)
+      //Check image url includes the word up instead of the word off, to detect whether or not it is on
+      let muteButtonOld = document.querySelector('img.EFcTud[jsaction="DGXxE"]:not([src*="off"])');
+      if(muteButtonOld) {muteButtonOld.click();}
+      
+      //New method (mute button is a div containing an svg)
+      //get the 2nd image, and check if it is hidden. If so, then click on it to toggle mute
+      let muteButtonNew = document.querySelectorAll('div.EFcTud[jsaction="DGXxE"]')?.[1];
+      if(muteButtonNew && muteButtonNew.classList.contains('LaTyvd')) {
+        muteButtonNew.click();
+      }
       return;
     }
 
@@ -1588,18 +1634,32 @@ let addModSelectorPopup = function() {
       console.log('Game not visible yet. Waiting to apply mute.');
       setTimeout(applyMuteToGame, 400);
     } else {
-      //Game is visible so safe to mute.
-      let muteButton = document.querySelector('img.EFcTud[jsaction="DGXxE"]:not([src*="off"])');
-      if(muteButton) {muteButton.click();}
+      //Game is visible so safe to mute. (See comment several lines above for why we have two ways to do this)
+      let muteButtonOld = document.querySelector('img.EFcTud[jsaction="DGXxE"]:not([src*="off"])');
+      if(muteButtonOld) {muteButtonOld.click();}
+
+      let muteButtonNew = document.querySelectorAll('div.EFcTud[jsaction="DGXxE"]')?.[1];
+      if(muteButtonNew && muteButtonNew.classList.contains('LaTyvd')) {
+        muteButtonNew.click();
+      }
     }    
   }
 
   function applyFullscreenToGame() {
     //On fbx we can fullscreen right way. On search, we need to wait until the game is visible.
     if(IS_FBX_OR_WEB) {
-      //Match fullscreen button, but only if it's on (i.e. the image url includes the word up instead of the word off)
-      let fullscreenButton = document.querySelector('img.EFcTud[jsaction="zeJAAd"]:not([src*="exit"])');
-      if(fullscreenButton) {fullscreenButton.click();}
+      //Match fullscreen button, but only if it's on
+      //Old method (button is an image)
+      //Check if the button is off (i.e. the image url doesn't have the word exit)
+      let fullscreenButtonOld = document.querySelector('img.EFcTud[jsaction="zeJAAd"]:not([src*="exit"])');
+      if(fullscreenButtonOld) {fullscreenButtonOld.click();}
+
+      //New method (button is a div containing an svg)
+      //get the 2nd image, and check if it is hidden. If so, then click on it to toggle fullscreen
+      let fullscreenButtonNew = document.querySelectorAll('div.EFcTud[jsaction="zeJAAd"]')?.[1];
+      if(fullscreenButtonNew && fullscreenButtonNew.classList.contains('LaTyvd')) {
+        fullscreenButtonNew.click();
+      }
       return;
     }
 
@@ -1612,10 +1672,48 @@ let addModSelectorPopup = function() {
       console.log('Game not visible yet. Waiting to apply fullscreen.');
       setTimeout(applyFullscreenToGame, 400);
     } else {
-      //Game is visible so safe to fullscreen.
-      let fullscreenButton = document.querySelector('img.EFcTud[jsaction="zeJAAd"]:not([src*="exit"])');
-      if(fullscreenButton) {fullscreenButton.click();}
+      //Game is visible so safe to fullscreen. (See comment several lines above for why we have two ways to do this)
+      let fullscreenButtonOld = document.querySelector('img.EFcTud[jsaction="zeJAAd"]:not([src*="exit"])');
+      if(fullscreenButtonOld) {fullscreenButtonOld.click();}
+
+      let fullscreenButtonNew = document.querySelectorAll('div.EFcTud[jsaction="zeJAAd"]')?.[1];
+      if(fullscreenButtonNew && fullscreenButtonNew.classList.contains('LaTyvd')) {
+        fullscreenButtonNew.click();
+      }
     }    
+  }
+
+  //Change the background image on body.
+  function updateBackgroundImage(url, alertValidationMessage) {
+    url = url.trim();
+    if(url === '' || typeof url !== 'string') {
+      document.body.style.backgroundImage = 'none';
+      return;
+    }
+
+    if((!url.includes('.') || !url.includes('/')) && !url.startsWith('data:')) {
+      document.body.style.backgroundImage = 'none';
+      alertValidationMessage && alert(`Background image is not a proper url. Received: ${url}`);
+      return;
+    }
+
+    //Add https if missing
+    if(!url.startsWith('http') && !url.startsWith('data:')) {
+      url = `https://${url}`;
+    }
+
+    let image = new Image();
+    image.addEventListener('load', function() {
+      document.body.style.backgroundImage = `url(${url})`;
+      document.body.style.backgroundRepeat = 'no-repeat';
+      document.body.style.backgroundAttachment = 'fixed';
+      document.body.style.backgroundPosition = 'center center';
+      document.body.style.backgroundSize = 'cover';
+    });
+    image.addEventListener('error', function() {
+      alertValidationMessage && alert(`Background image failed to load. Tried to load the following: ${url}`);
+    });
+    image.src = url;
   }
 
   //Fetches json file with latest version and shows the update link if it is different to our version
@@ -1666,7 +1764,7 @@ let addModSelectorPopup = function() {
     const moreInfo = `<p><a href="https://github.com/DarkSnakeGang/GoogleSnakeModLoader/blob/main/docs/${modInfo.startMessage.moreInfoLink}" target="_blank" style="color: var(--mod-loader-link-font-col);font-size:1.5em">More info here</a></p>`
 
     const startMessagePopup = `
-      <div id="start-message-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:550px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;text-align:center">
+      <div id="start-message-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:550px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;text-align:center;max-width: calc(100vw - 35px);overflow-y: auto;max-height: calc(100vh - 110px);">
         ${modInfo.startMessage.showUpdatePrompt ? updateAvailableHeading : messageHeading}
 
         <p id="start-message-explanatory-text" style="font-size:1.5em;color: var(--mod-loader-font-col);"></p>
@@ -1679,11 +1777,11 @@ let addModSelectorPopup = function() {
       </div>
       `;
 
-    //Insert html for custom preset export dialogue box.
+    //Insert html for start-message dialogue box.
     let startMessageModalContainer = document.createElement('div');
     startMessageModalContainer.innerHTML = startMessagePopup;
     startMessageModalContainer.id = 'start-message-dialogue-container';
-    startMessageModalContainer.style = 'position:fixed; width:100%; height:100%; z-index: 9999999; left:0; top:0';
+    startMessageModalContainer.style = 'position:fixed; width:100%; height:100%; z-index: 10000001; left:0; top:0';
     document.body.appendChild(startMessageModalContainer);
 
     document.getElementById('start-message-explanatory-text').textContent = modInfo.startMessage.explanatoryText;
@@ -1730,6 +1828,61 @@ let addModSelectorPopup = function() {
 
     window.showSnakeErrMessage = true;//Used to prevent the indicator being auto-hidden
   }
+}
+
+
+function showErrorTryGsmPopup() {
+  //Don't show anything if already on web snake
+
+  if(WEB_VERSION) {
+    return;
+  }
+
+  let googlesnakemodscomHref = 'https://googlesnakemods.com/v/current/';
+  let storedMod = localStorage.getItem('snakeChosenMod');
+
+  if(typeof storedMod === 'string' && /^[a-z0-9 ._]*$/i.test(storedMod)) {
+    googlesnakemodscomHref += 'index.html?mod=' + storedMod;
+  }
+
+  const tryGsmPopup = `
+  <div id="try-gsm-dialogue" style="display: block;margin:40px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:550px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;text-align:center;max-width: calc(100vw - 35px);overflow-y: auto;max-height: calc(100vh - 110px);">
+    <h1 style="font-size: 2.2em;font-weight: bold;margin: 7px 0px 15px 0px;text-align: center;color: var(--mod-loader-font-col);">Error Occurred</h1>
+
+    <p style="font-size:1.5em;color: var(--mod-loader-font-col);">We have a site where mods will always work. We recommend playing there instead.</p>
+
+    <p><a href="${googlesnakemodscomHref}" style="color: var(--mod-loader-link-font-col);font-size:1.5em">googlesnakemods.com</a></p>
+
+    <div style="display: flex; justify-content: space-between">
+      <div id="close-try-gsm" class="mod-sel-btn" style="display:inline-block;background-color: var(--mod-loader-button-bg);padding: 4px;margin-top: 7px;margin-right:10px;border-radius: 3px;border: 2px solid var(--mod-loader-button-close-col);color: var(--mod-loader-button-close-col);font-weight: bold;user-select: none;cursor: pointer;">
+        Close
+      </div>
+      <div id="confirm-try-gsm" class="mod-sel-btn" style="display:inline-block;background-color: var(--mod-loader-button-bg);padding: 4px;margin-top: 7px;margin-right:10px;border-radius: 3px;border: 2px solid var(--mod-loader-button-apply-col);color: var(--mod-loader-button-apply-col);font-weight: bold;user-select: none;cursor: pointer;">
+        Play working version
+      </div>
+    </div>
+  </div>
+  `;
+
+  //Insert html for try-gsm dialogue box.
+  let tryGsmModalContainer = document.createElement('div');
+  tryGsmModalContainer.innerHTML = tryGsmPopup;
+  tryGsmModalContainer.id = 'try-gsm-dialogue-container';
+  tryGsmModalContainer.style = 'position:fixed; width:100%; height:100%; z-index: 10000000; left:0; top:0';
+  document.body.appendChild(tryGsmModalContainer);
+
+  //Dark theme - lazy code to grab advanced settings again
+  let advancedSettings = JSON.parse(localStorage.getItem('snakeAdvancedSettings')) ?? {};
+  if(advancedSettings && advancedSettings.darkModTheme) {
+    document.getElementById('try-gsm-dialogue-container').classList.add('dark-mod-theme');
+  }
+
+  document.getElementById('close-try-gsm').addEventListener('click', function() {
+    document.getElementById('try-gsm-dialogue-container').remove();
+  });
+  document.getElementById('confirm-try-gsm').addEventListener('click', function() {
+    location.href = googlesnakemodscomHref;
+  });
 }
 
 //Generate the game versions option dropdown for the mod-game-version select element

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Snake Mod Loader (fbx)
 // @namespace    https://github.com/DarkSnakeGang
-// @version      1.1.0
+// @version      1.1.1
 // @description  Allows you to run multiple different google snake mods
 // @author       DarkSnakeGang (https://github.com/DarkSnakeGang)
 // @icon         https://github.com/DarkSnakeGang/GoogleSnakeIcons/blob/main/Extras/snake_logo.png?raw=true
