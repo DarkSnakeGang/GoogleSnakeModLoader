@@ -5,4 +5,5 @@ These versions will be quite similar, although there is the benefit that it will
 
 version 1 - Latest version of Dice count             
 version 2 - Shield mode added  
-version 3 - Arrow mode added (+minor fix for board size bug and dice-shield softlock)
+version 3 - Arrow mode added (+minor fix for board size bug and dice-shield softlock)  
+version 4 - Daily challenge added, large default game size  
