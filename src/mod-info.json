@@ -58,6 +58,10 @@
         {
           "version": 3,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/stable_arrow/modloadercode.js"
+        },
+        {
+          "version": 4,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/stable_daily_challenge/modloadercode.js"
         }
       ],
       "mobile": {
