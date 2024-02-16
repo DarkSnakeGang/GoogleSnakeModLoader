@@ -29,6 +29,10 @@
         {
           "version": 3,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/arrow/modloadercode.js"
+        },
+	{
+          "version": 4,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/daily_challenge/modloadercode.js"
         }
       ],
       "mobile": {
