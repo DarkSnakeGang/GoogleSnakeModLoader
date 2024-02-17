@@ -169,6 +169,10 @@
         {
           "version": 3,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/arrow/MorePudding.js"
+        },
+        { 
+          "version": 4,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js"
         }
       ],
       "mobile": {
