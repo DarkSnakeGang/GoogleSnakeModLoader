@@ -33,6 +33,10 @@
 	{
           "version": 4,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/daily_challenge/modloadercode.js"
+        },
+	{
+          "version": 5,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/mobile_touchpad/modloadercode.js"
         }
       ],
       "mobile": {
