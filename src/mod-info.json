@@ -103,6 +103,10 @@
         {
           "version": 4,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/MouseMod.js"
+        },
+        {
+          "version": 5,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/MouseMod.js"
         }
       ],
       "mobile": {
@@ -139,6 +143,10 @@
         },
         {
           "version": 4,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/pre_dpad/PuddingMod.js"
+        },
+        {
+          "version": 5,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js"
         }
       ],
@@ -176,6 +184,10 @@
         },
         { 
           "version": 4,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/pre_dpad/MorePudding.js"
+        },
+        { 
+          "version": 5,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js"
         }
       ],
@@ -217,6 +229,10 @@
         },
         {
           "version": 4,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/VisibilityMod.js"
+        },
+        {
+          "version": 5,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/VisibilityMod.js"
         }
       ],
@@ -284,6 +300,10 @@
         },
 	{
           "version": 4,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/pre_dpad/ChimeraMod.js"
+        },
+	{
+          "version": 5,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/ChimeraMod.js"
         }
       ],
