@@ -337,6 +337,32 @@
         "support": false,
         "description": "Requires a play/pause button to support."
       }
+    },
+"CandyMod": {
+      "displayName": "Candy Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/ConwayMod/bare_bones_dice_support/ConwayMod.js",
+      "gsmOnly": true,
+      "modDescription": {
+        "descriptionName": "Candy Mod",
+        "authors": [
+          {
+            "name": "Yarmiplay",
+            "url": "https://www.youtube.com/@Yarmiplay"
+          }
+        ],
+        "description": "This mod adds Candy Mode after Blender. Each fruit adds snake length between 1 and 6. Including PuddingMod."
+      },
+      "web": [
+        {
+          "version": 5,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCandy/main/CandyMod.js"
+        }
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Works as intended."
+      }
     }
   }	
 }
