@@ -37,6 +37,10 @@
 	{
           "version": 5,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/mobile_touchpad/modloadercode.js"
+        },
+	{
+          "version": 6,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/hotdog/modloadercode.js"
         }
       ],
       "mobile": {
