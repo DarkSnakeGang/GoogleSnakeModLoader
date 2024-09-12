@@ -9,3 +9,4 @@ version 3 - Arrow mode added (+minor fix for board size bug and dice-shield soft
 version 4 - Daily challenge added, large default game size  
 version 5 - touchpad controls added to mobile  
 version 6 - hotdog mode  
+version 7 - magnet mode  
