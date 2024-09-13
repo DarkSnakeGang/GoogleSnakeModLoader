@@ -41,6 +41,10 @@
         {
           "version": 6,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/hotdog/modloadercode.js"
+        },
+	{
+          "version": 7,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/magnet/modloadercode.js"
         }
       ],
       "mobile": {
