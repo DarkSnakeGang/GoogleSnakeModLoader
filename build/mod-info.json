@@ -159,6 +159,10 @@
         },
         {
           "version": 6,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/hotdog/PuddingMod.js"
+        },
+        {
+          "version": 7,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js"
         }
       ],
