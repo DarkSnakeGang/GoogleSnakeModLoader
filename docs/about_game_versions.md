@@ -10,3 +10,4 @@ version 4 - Daily challenge added, large default game size
 version 5 - touchpad controls added to mobile  
 version 6 - hotdog mode  
 version 7 - magnet mode  
+version 8 - gate mode  
