@@ -49,6 +49,10 @@
 	{
           "version": 7,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/magnet/modloadercode.js"
+        },
+        {
+          "version": 8,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/gate/modloadercode.js"
         }
       ],
       "mobile": {
