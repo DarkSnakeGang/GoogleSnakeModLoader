@@ -173,8 +173,12 @@
           "version": 7,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/magnet/PuddingMod.js"
         },
-        {
+		{
           "version": 8,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/broken_gate/PuddingMod.js"
+        },
+        {
+          "version": 9,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js"
         }
       ],
@@ -394,3 +398,4 @@
     }
   }	
 }
+
