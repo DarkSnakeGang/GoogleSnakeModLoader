@@ -53,6 +53,10 @@
         {
           "version": 8,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/gate/modloadercode.js"
+        },
+		{
+          "version": 9,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/new_foods/modloadercode.js"
         }
       ],
       "mobile": {
@@ -398,4 +402,5 @@
     }
   }	
 }
+
 
