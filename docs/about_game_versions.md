@@ -11,5 +11,5 @@ version 5 - touchpad controls added to mobile
 version 6 - hotdog mode  
 version 7 - magnet mode  
 version 8 - gate mode  
-version 9 - avocado and mango fruits
-version 10 - more apple count options
+version 9 - avocado and mango fruits  
+version 10 - more apple count options  
