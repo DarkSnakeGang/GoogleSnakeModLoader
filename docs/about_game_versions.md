@@ -12,3 +12,4 @@ version 6 - hotdog mode
 version 7 - magnet mode  
 version 8 - gate mode  
 version 9 - avocado and mango fruits
+version 10 - more apple count options
