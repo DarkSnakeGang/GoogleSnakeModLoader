@@ -57,6 +57,10 @@
 		{
           "version": 9,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/new_foods/modloadercode.js"
+        },
+		{
+          "version": 10,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/new_counts/modloadercode.js"
         }
       ],
       "mobile": {
@@ -402,5 +406,6 @@
     }
   }	
 }
+
 
 
