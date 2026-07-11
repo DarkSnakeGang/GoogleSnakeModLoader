@@ -65,6 +65,18 @@ Use the relevant link for your browser.
 
 ## Pudding Mod
 ![image](https://github.com/DarkSnakeGang/GoogleSnakeModLoader/assets/69080709/57d51a32-3a69-4677-924f-3003e377fd9d)
+## Visibility Mod
+[Uploading bandicam 2025-12-31 15-57-16-049.bmp…]()
+## ConWay game's of snake
+[Uploading bandicam 2025-12-31 15-58-30-714.bmp…]()
+
+## Chess mod
+https://github.com/user-attachments/assets/3f0391a3-b435-4a0f-9923-bcfc63958bc4
+##  Chimera Mod
+[Uploading bandicam 2025-12-31 15-58-58-091.bmp…]()
+## Candy Mod
+[Uploading bandicam 2025-12-31 16-00-24-883.bmp…]()
+
 
 # Search terms for standard version
 
