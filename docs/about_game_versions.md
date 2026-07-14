@@ -13,3 +13,4 @@ version 7 - magnet mode
 version 8 - gate mode  
 version 9 - avocado and mango fruits  
 version 10 - more apple count options  
+version 11 - dimension mode 
