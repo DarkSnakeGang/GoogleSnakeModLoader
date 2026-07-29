@@ -192,6 +192,10 @@
         {
           "version": 10,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/v10/PuddingMod.js"
+        },
+        {
+          "version": 11,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/PuddingMod.js"
         }
       ],
       "mobile": {
