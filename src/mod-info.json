@@ -34,19 +34,19 @@
           "version": 3,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/arrow/modloadercode.js"
         },
-	{
+		{
           "version": 4,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/daily_challenge/modloadercode.js"
         },
-	{
+		{
           "version": 5,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/mobile_touchpad/modloadercode.js"
         },
-	{
+		{
           "version": 6,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/hotdog/modloadercode.js"
         },
-	{
+		{
           "version": 7,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/magnet/modloadercode.js"
         },
@@ -61,6 +61,10 @@
 	    {
           "version": 10,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/new_counts_pause/modloadercode.js"
+        },
+		{
+          "version": 11,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/bridge/modloadercode.js"
         }
       ],
       "mobile": {
