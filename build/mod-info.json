@@ -289,6 +289,10 @@
         },
         {
           "version": 5,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/v5/VisibilityMod.js"
+        },
+        {
+          "version": 12,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeDeleteStuffMod/main/VisibilityMod.js"
         }
       ],
