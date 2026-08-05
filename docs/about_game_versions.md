@@ -14,4 +14,5 @@ version 8 - gate mode
 version 9 - avocado and mango fruits  
 version 10 - more apple count options  
 version 11 - bridge mode  
-version 12 - tally count
+version 12 - tally count (bugged on cheese and sokoban, quick ending on hotdog mode)
+version 13 - fixed tally count
