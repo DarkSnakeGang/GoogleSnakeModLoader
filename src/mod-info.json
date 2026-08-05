@@ -65,6 +65,10 @@
 		{
           "version": 11,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/bridge/modloadercode.js"
+        },
+		{
+          "version": 12,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/tally/modloadercode.js"
         }
       ],
       "mobile": {
