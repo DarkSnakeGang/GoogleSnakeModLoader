@@ -215,6 +215,52 @@
         "description": "Works, no input display or speedinfo"
       }
     },
+    "RemixMod": {
+      "displayName": "Remix Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeRemix/main/RemixMod.js",
+      "gsmOnly": true,
+      "modDescription": {
+        "descriptionName": "Remix Mod",
+        "authors": [
+          {
+            "name": "Fizhes",
+            "url": "https://www.youtube.com/@Fizhes"
+          },
+          {
+            "name": "TF2Llama",
+            "url": "https://www.youtube.com/@TF2Llama"
+          },
+          {
+            "name": "Yarmiplay",
+            "url": "https://www.youtube.com/@Yarmiplay"
+          }
+        ],
+        "description": "More Pudding Mod which includes Candy, Chess and Burger modes."
+      },
+      "web": [
+        {
+          "version": 2,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeChess/main/ChessMod.js"
+        },
+        {
+          "version": 3,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeChess/main/ChessMod.js"
+        },
+        {
+          "version": 5,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCandy/main/CandyMod.js"
+        },
+        {
+          "version": 12,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeRemix/main/RemixMod.js"
+        }
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Works as intended."
+      }
+    },
     "MorePudding": {
       "displayName": "More Pudding Mod",
       "hasUrl": true,
@@ -249,6 +295,10 @@
         { 
           "version": 5,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/magnet/MorePudding.js"
+        },
+        {
+          "version": 12,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js"
         }
       ],
       "mobile": {
@@ -303,36 +353,6 @@
       "mobile": {
         "support": true,
         "description": "Full support"
-      }
-    },
-    "ChessMod": {
-      "displayName": "Chess Mod",
-      "hasUrl": true,
-      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeChess/main/ChessMod.js",
-      "gsmOnly": true,
-      "modDescription": {
-        "descriptionName": "Chess Mod",
-        "authors": [
-          {
-            "name": "Yarmiplay",
-            "url": "https://www.youtube.com/@Yarmiplay"
-          }
-        ],
-        "description": "Adds Chess Mode to the game and makes it the only available mode to play."
-      },
-      "web": [
-        {
-          "version": 2,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeChess/main/ChessMod.js"
-        },
-	{
-          "version": 3,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeChess/main/ChessMod.js"
-        }
-      ],
-      "mobile": {
-        "support": true,
-        "description": "Works"
       }
     },
     "ChimeraMod": {
@@ -400,32 +420,6 @@
       "mobile": {
         "support": false,
         "description": "Requires a play/pause button to support."
-      }
-    },
-"CandyMod": {
-      "displayName": "Candy Mod",
-      "hasUrl": true,
-      "url": "https://raw.githubusercontent.com/DarkSnakeGang/ConwayMod/bare_bones_dice_support/ConwayMod.js",
-      "gsmOnly": true,
-      "modDescription": {
-        "descriptionName": "Candy Mod",
-        "authors": [
-          {
-            "name": "Yarmiplay",
-            "url": "https://www.youtube.com/@Yarmiplay"
-          }
-        ],
-        "description": "This mod adds Candy Mode after Blender. Each fruit adds snake length between 1 and 6. Including PuddingMod."
-      },
-      "web": [
-        {
-          "version": 5,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCandy/main/CandyMod.js"
-        }
-      ],
-      "mobile": {
-        "support": true,
-        "description": "Works as intended."
       }
     }
   }	
