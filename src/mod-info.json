@@ -102,6 +102,10 @@
         {
           "version": 4,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/stable_daily_challenge/modloadercode.js"
+        },
+        {
+          "version": 12,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/v12/modloadercode.js"
         }
       ],
       "mobile": {
