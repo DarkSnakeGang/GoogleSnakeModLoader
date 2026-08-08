@@ -138,10 +138,14 @@
         },
         {
           "version": 4,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/MouseMod.js"
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/v5/MouseMod.js"
         },
         {
           "version": 5,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/v5/MouseMod.js"
+        },
+        {
+          "version": 12,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/MouseMod.js"
         }
       ],
