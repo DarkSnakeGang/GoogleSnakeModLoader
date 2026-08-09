@@ -244,7 +244,7 @@
             "url": "https://www.youtube.com/@Yarmiplay"
           }
         ],
-        "description": "More Pudding Mod which includes Candy, Chess and Burger modes."
+        "description": "This is a combination of More Menu Mod, Visibility Mod and Pudding Mod. Adds Candy, Chess and Burger modes, and also adds Cat Speed and Dice Counts. On older game versions, this loads the original Chess Mod or Candy Mod."
       },
       "web": [
         {
@@ -267,51 +267,6 @@
       "mobile": {
         "support": true,
         "description": "Works as intended."
-      }
-    },
-    "MorePudding": {
-      "displayName": "More Pudding Mod",
-      "hasUrl": true,
-      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js",
-      "modDescription": {
-        "descriptionName": "More Pudding Mod",
-        "authors": [
-          {
-            "name": "Fizhes",
-            "url": "https://www.youtube.com/@Fizhes"
-          },
-	  {
-            "name": "TF2Llama",
-            "url": "https://www.youtube.com/@TF2Llama"
-          },
-          {
-            "name": "Yarmiplay",
-            "url": "https://www.youtube.com/@Yarmiplay"
-          }
-        ],
-        "description": "This is a combination of More Menu Mod, Visibility Mod and Pudding Mod."
-      },
-      "web": [
-        {
-          "version": 3,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/arrow/MorePudding.js"
-        },
-        { 
-          "version": 4,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/pre_dpad/MorePudding.js"
-        },
-        { 
-          "version": 5,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/magnet/MorePudding.js"
-        },
-        {
-          "version": 12,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js"
-        }
-      ],
-      "mobile": {
-        "support": true,
-        "description": "Works, but reduced features"
       }
     },
     "VisibilityMod": {
@@ -361,47 +316,6 @@
       "mobile": {
         "support": true,
         "description": "Full support"
-      }
-    },
-    "ChimeraMod": {
-      "displayName": "Chimera Mod",
-      "hasUrl": true,
-      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/ChimeraMod.js",
-      "modDescription": {
-        "descriptionName": "Chimera Mod",
-        "authors": [
-          {
-            "name": "Fizhes",
-            "url": "https://www.youtube.com/@Fizhes"
-          },
-          {
-            "name": "TF2Llama",
-            "url": "https://www.youtube.com/@TF2Llama"
-          },
-          {
-            "name": "Yarmiplay",
-            "url": "https://www.youtube.com/@Yarmiplay"
-          }
-        ],
-        "description": "This is a combination of More Menu Mod, Mouse Mod, Visibility Mod and Pudding Mod."
-      },
-      "web": [
-        {
-          "version": 3,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/arrow/ChimeraMod.js"
-        },
-	{
-          "version": 4,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/pre_dpad/ChimeraMod.js"
-        },
-	{
-          "version": 5,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/magnet/ChimeraMod.js"
-        }
-      ],
-      "mobile": {
-        "support": true,
-        "description": "Works, but reduced features"
       }
     },
     "ConwayMod": {
