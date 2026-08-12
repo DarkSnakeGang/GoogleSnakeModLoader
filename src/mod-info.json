@@ -269,6 +269,31 @@
         "description": "Works as intended."
       }
     },
+    "SpeedrunMod": {
+      "displayName": "Speedrun Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/SpeedrunMod.js",
+      "modDescription": {
+        "descriptionName": "Speedrun Mod",
+        "authors": [
+          {
+            "name": "Yarmiplay",
+            "url": "https://www.youtube.com/@Yarmiplay"
+          }
+        ],
+        "description": "A lighter version of Pudding Mod."
+      },
+      "web": [
+        {
+          "version": 12,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/SpeedrunMod.js"
+        }
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Works, no input display or speedinfo"
+      }
+    },
     "VisibilityMod": {
       "displayName": "Visibility Mod",
       "hasUrl": true,
