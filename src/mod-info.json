@@ -269,6 +269,40 @@
         "description": "Works as intended."
       }
     },
+    "RemixUltraMod": {
+      "displayName": "Remix Ultra Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeRemix/main/RemixUltraMod.js",
+      "gsmOnly": true,
+      "modDescription": {
+        "descriptionName": "Remix Ultra Mod",
+        "authors": [
+          {
+            "name": "Fizhes",
+            "url": "https://www.youtube.com/@Fizhes"
+          },
+          {
+            "name": "TF2Llama",
+            "url": "https://www.youtube.com/@TF2Llama"
+          },
+          {
+            "name": "Yarmiplay",
+            "url": "https://www.youtube.com/@Yarmiplay"
+          }
+        ],
+        "description": "Remix Mod with Level Editor Mod included."
+      },
+      "web": [
+        {
+          "version": 12,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeRemix/main/RemixUltraMod.js"
+        }
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Works, but Level Editor has no support for mobile"
+      }
+    },
     "SpeedrunMod": {
       "displayName": "Speedrun Mod",
       "hasUrl": true,
