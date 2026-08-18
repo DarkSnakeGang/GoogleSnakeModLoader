@@ -150,6 +150,10 @@
         },
         {
           "version": 12,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/v12/MouseMod.js"
+        },
+        {
+          "version": 13,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeMouseMode/main/MouseMod.js"
         }
       ],
