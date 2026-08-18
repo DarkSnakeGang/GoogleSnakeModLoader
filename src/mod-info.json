@@ -231,6 +231,55 @@
         "description": "Works, no input display or speedinfo"
       }
     },
+    "MorePudding": {
+      "displayName": "More Pudding Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js",
+      "modDescription": {
+        "descriptionName": "More Pudding Mod",
+        "authors": [
+          {
+            "name": "Fizhes",
+            "url": "https://www.youtube.com/@Fizhes"
+          },
+          {
+            "name": "TF2Llama",
+            "url": "https://www.youtube.com/@TF2Llama"
+          },
+          {
+            "name": "Yarmiplay",
+            "url": "https://www.youtube.com/@Yarmiplay"
+          }
+        ],
+        "description": "This is a combination of More Menu Mod, Visibility Mod and Pudding Mod."
+      },
+      "web": [
+        {
+          "version": 3,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/arrow/MorePudding.js"
+        },
+        {
+          "version": 4,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/pre_dpad/MorePudding.js"
+        },
+        {
+          "version": 5,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/magnet/MorePudding.js"
+        },
+        {
+          "version": 12,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/v12/MorePudding.js"
+        },
+        {
+          "version": 13,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/MorePudding.js"
+        }
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Works, but reduced features"
+      }
+    },
     "RemixMod": {
       "displayName": "Remix Mod",
       "hasUrl": true,
