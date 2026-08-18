@@ -174,7 +174,7 @@
             "url": "https://www.youtube.com/@Yarmiplay"
           }
         ],
-        "description": "Adds more fruit types, snake skins and game themes. Tracks PBs and other stats. Has a 1 in a million chance of spawning a Golden Apple. And does a lot more!"
+        "description": "A visual and quality-of-life mod for speedrunning. Adds extra fruit, snake colors and board themes. Tracks PBs, stats, timers/splits and has a settings panel. Rare golden fruits can appear, including a 1 in a million Golden Apple. And does a lot more!"
       },
       "web": [
         {
@@ -331,7 +331,7 @@
       ],
       "mobile": {
         "support": true,
-        "description": "Works as intended."
+        "description": "Works, but reduced features"
       }
     },
     "RemixUltraMod": {
@@ -368,8 +368,8 @@
         }
       ],
       "mobile": {
-        "support": true,
-        "description": "Works, but Level Editor has no support for mobile"
+        "support": false,
+        "description": "No support for mobile"
       }
     },
     "SpeedrunMod": {
@@ -397,8 +397,8 @@
         }
       ],
       "mobile": {
-        "support": true,
-        "description": "Works, no input display or speedinfo"
+        "support": false,
+        "description": "No support for mobile"
       }
     },
     "VisibilityMod": {
