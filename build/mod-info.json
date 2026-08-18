@@ -106,6 +106,10 @@
         {
           "version": 12,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/v12/modloadercode.js"
+        },
+        {
+          "version": 13,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeLevelEditor/v13/modloadercode.js"
         }
       ],
       "mobile": {
