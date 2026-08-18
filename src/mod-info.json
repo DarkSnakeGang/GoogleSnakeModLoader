@@ -324,6 +324,10 @@
       "web": [
         {
           "version": 12,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/v12/SpeedrunMod.js"
+        },
+        {
+          "version": 13,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/SpeedrunMod.js"
         }
       ],
