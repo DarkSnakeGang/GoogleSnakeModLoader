@@ -162,6 +162,35 @@
         "description": "Full support"
       }
     },
+    "SpeedrunMod": {
+      "displayName": "Speedrun Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/SpeedrunMod.js",
+      "modDescription": {
+        "descriptionName": "Speedrun Mod",
+        "authors": [
+          {
+            "name": "Yarmiplay",
+            "url": "https://www.youtube.com/@Yarmiplay"
+          }
+        ],
+        "description": "A mod dedicated to speedrunning and competition."
+      },
+      "web": [
+        {
+          "version": 12,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/v12/SpeedrunMod.js"
+        },
+        {
+          "version": 13,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/SpeedrunMod.js"
+        }
+      ],
+      "mobile": {
+        "support": false,
+        "description": "No support for mobile"
+      }
+    },
     "PuddingMod": {
       "displayName": "Pudding Mod",
       "hasUrl": true,
@@ -365,35 +394,6 @@
         {
           "version": 13,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeRemix/main/RemixUltraMod.js"
-        }
-      ],
-      "mobile": {
-        "support": false,
-        "description": "No support for mobile"
-      }
-    },
-    "SpeedrunMod": {
-      "displayName": "Speedrun Mod",
-      "hasUrl": true,
-      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/SpeedrunMod.js",
-      "modDescription": {
-        "descriptionName": "Speedrun Mod",
-        "authors": [
-          {
-            "name": "Yarmiplay",
-            "url": "https://www.youtube.com/@Yarmiplay"
-          }
-        ],
-        "description": "A mod dedicated to speedrunning and competition."
-      },
-      "web": [
-        {
-          "version": 12,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/v12/SpeedrunMod.js"
-        },
-        {
-          "version": 13,
-          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakePudding/main/SpeedrunMod.js"
         }
       ],
       "mobile": {
