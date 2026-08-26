@@ -401,6 +401,31 @@
         "description": "No support for mobile"
       }
     },
+    "HamiltonMod": {
+      "displayName": "Hamilton Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeWallSolver/main/HamiltonMod.js",
+      "modDescription": {
+        "descriptionName": "Hamilton Mod",
+        "authors": [
+          {
+            "name": "Yarmiplay",
+            "url": "https://www.youtube.com/@Yarmiplay"
+          }
+        ],
+        "description": "In wall mode only, solves the live wall pattern and draws a thin red polyline tour on the board. Uses the Wall Solver in a background worker so gameplay does not freeze. The score-bar wall icon changes color to show searching, a found solution, or no solution."
+      },
+      "web": [
+        {
+          "version": 13,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeWallSolver/main/HamiltonMod.js"
+        }
+      ],
+      "mobile": {
+        "support": true,
+        "description": "Full support"
+      }
+    },
     "VisibilityMod": {
       "displayName": "Visibility Mod",
       "hasUrl": true,
