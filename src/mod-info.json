@@ -264,6 +264,32 @@
         "description": "Works, no input display or speedinfo"
       }
     },
+    "MultiplayerMod": {
+      "displayName": "Multiplayer Mod",
+      "hasUrl": true,
+      "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeOnline/main/MultiplayerMod.js",
+      "gsmOnly": true,
+      "modDescription": {
+        "descriptionName": "Multiplayer Mod",
+        "authors": [
+          {
+            "name": "Yarmiplay",
+            "url": "https://www.youtube.com/@Yarmiplay"
+          }
+        ],
+        "description": "Remix Mod with online multiplayer. Play co-op or against each other, or spectate. Requires a dedicated server to be online."
+      },
+      "web": [
+        {
+          "version": 13,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeOnline/main/MultiplayerMod.js"
+        }
+      ],
+      "mobile": {
+        "support": false,
+        "description": "No support for mobile"
+      }
+    },
     "MorePudding": {
       "displayName": "More Pudding Mod",
       "hasUrl": true,
