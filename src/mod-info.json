@@ -69,6 +69,10 @@
 		{
           "version": 12,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/tally/modloadercode.js"
+        },
+		{
+          "version": 13,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeCustomMenuStuff/v13/modloadercode.js"
         }
       ],
       "mobile": {
