@@ -424,6 +424,10 @@
         {
           "version": 13,
           "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeRemix/main/RemixUltraMod.js"
+        },
+        {
+          "version": 14,
+          "url": "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeRemix/v14/RemixUltraMod.js"
         }
       ],
       "mobile": {
